@@ -1,0 +1,38 @@
+#
+# This systemd unit starts a phonebook instance using Podman.
+# Most parts of this file come from podman-generate-systemd.
+#
+[Unit]
+Description=phonebook server
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
+Restart=always
+ExecStartPre=/bin/rm -f %t/phonebook.pid %t/phonebook.ctr-id
+ExecStartPre=bash -c "while [ ! -f certificates/NethServer.pem ]; do sleep 1; done"
+ExecStartPre=bash -c "while [ ! -f certificates/NethServer.key ]; do sleep 1; done"
+
+ExecStart=/usr/bin/podman run \
+    --detach \
+    --init \
+    --conmon-pidfile=%t/phonebook.pid \
+    --cidfile=%t/phonebook.ctr-id \
+    --cgroups=no-conmon \
+    --log-opt=tag=%u \
+    --replace --name=%N \
+    --env=PHONEBOOK* \
+    --env=NETHVOICE_MARIADB_PORT \
+    --volume=/dev/log:/dev/log \
+    --volume=tancredi:/var/lib/tancredi:z \
+    --volume=./certificates:/etc/certificates:Z \
+    --network=host \
+    ${NETHVOICE_PHONEBOOK_IMAGE}
+
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/phonebook.ctr-id
+PIDFile=%t/phonebook.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

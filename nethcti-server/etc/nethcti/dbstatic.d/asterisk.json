@@ -1,0 +1,66 @@
+{
+    "ampusers": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "incoming": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "offhour": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "rest_users": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "userman_users": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "rest_cti_profiles_paramurl": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "pin": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    },
+    "pin_protected_routes": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "freepbxuser",
+        "dbpassword": "dummyampdbpass",
+        "dbname": "asterisk"
+    }
+}

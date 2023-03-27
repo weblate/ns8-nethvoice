@@ -1,0 +1,66 @@
+#
+# This systemd unit starts a freepbx instance using Podman.
+# Most parts of this file come from podman-generate-systemd.
+#
+[Unit]
+Description=FreePBX
+Requires=asterisk.service mariadb.service
+After=asterisk.service mariadb.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
+Restart=always
+ExecStartPre=/bin/rm -f %t/freepbx.pid %t/freepbx.ctr-id
+ExecStart=/usr/bin/podman run \
+    --detach \
+    --conmon-pidfile=%t/freepbx.pid \
+    --cidfile=%t/freepbx.ctr-id \
+    --cgroups=no-conmon \
+    --log-opt=tag=%u \
+    --replace --name=%N \
+    --volume=spool:/var/spool/asterisk:z \
+    --volume=asterisk:/etc/asterisk:z \
+    --volume=nethcti:/etc/nethcti:z \
+    --volume=sounds:/var/lib/asterisk/sounds:z \
+    --volume=moh:/var/lib/asterisk/moh:z \
+    --volume=agi-bin:/var/lib/asterisk/agi-bin:z \
+    --volume=lookup.d:/usr/src/nethvoice/lookup.d:z \
+    --volume=pbooksources:/etc/phonebook/sources.d/:z \
+    --volume=scripts:/usr/share/phonebooks/scripts/:z \
+    --volume=post_scripts:/usr/share/phonebooks/post_scripts/:z \
+    --volume=/dev/log:/dev/log \
+    --env=MARIADB_ROOT_PASSWORD \
+    --env=NETHVOICE* \
+    --env=APACHE_RUN_USER \
+    --env=APACHE_RUN_GROUP \
+    --env=ASTMANAGERHOST \
+    --env=ASTMANAGERPORT \
+    --env=AMPMGRUSER \
+    --env=AMPMGRPASS \
+    --env=AMPDBUSER \
+    --env=AMPDBPASS \
+    --env=AMPDBHOST \
+    --env=AMPDBNAME \
+    --env=CDRDBUSER \
+    --env=CDRDBPASS \
+    --env=NETHCTI* \
+    --env=APACHE_PORT \
+    --env=APACHE_SSL_PORT \
+    --env=TANCREDIPORT \
+    --env=BRAND_NAME \
+    --env=BRAND_SITE \
+    --env=BRAND_DOCS \
+    --env=PHONEBOOK* \
+    --env=SUBSCRIPTION_SYSTEMID \
+    --env=SUBSCRIPTION_SECRET \
+    --network=host \
+    ${NETHVOICE_FREEPBX_IMAGE}
+
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/freepbx.ctr-id
+PIDFile=%t/freepbx.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

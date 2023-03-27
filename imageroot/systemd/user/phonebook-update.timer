@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for phonebook source update
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+Unit=phonebook-update.service
+
+[Install]
+WantedBy=timers.target

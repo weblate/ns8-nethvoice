@@ -1,0 +1,8 @@
+[Unit]
+Description=Diffie-Hellman group generator
+
+[Service]
+Type=oneshot
+ExecStart=runagent generate-dhpem
+WorkingDirectory=%S/state
+SyslogIdentifier=%u/%N

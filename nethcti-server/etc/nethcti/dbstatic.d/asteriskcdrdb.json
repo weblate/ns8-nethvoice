@@ -1,0 +1,34 @@
+{
+    "history_call": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "cdruser",
+        "dbpassword": "dummycdrdbpass",
+        "dbname": "asteriskcdrdb"
+    },
+    "cel": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "cdruser",
+        "dbpassword": "dummycdrdbpass",
+        "dbname": "asteriskcdrdb"
+    },
+    "voicemail": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "cdruser",
+        "dbpassword": "dummycdrdbpass",
+        "dbname": "asteriskcdrdb"
+    },
+    "queue_log": {
+        "dbhost": "localhost",
+        "dbport": "13306",
+        "dbtype": "mysql",
+        "dbuser": "cdruser",
+        "dbpassword": "dummycdrdbpass",
+        "dbname": "asteriskcdrdb"
+    }
+}

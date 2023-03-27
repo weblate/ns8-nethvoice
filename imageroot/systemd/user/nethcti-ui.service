@@ -1,0 +1,37 @@
+#
+# This systemd unit starts a nethcti instance using Podman.
+# Most parts of this file come from podman-generate-systemd.
+#
+[Unit]
+Description=NethCTI ui daemon
+Wants=nethcti-server.service
+After=nethcti-server.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
+Restart=always
+ExecStartPre=/bin/rm -f %t/nethcti-ui.pid %t/nethcti-ui.ctr-id
+ExecStart=/usr/bin/podman run \
+    --detach \
+    --conmon-pidfile=%t/nethcti-ui.pid \
+    --cidfile=%t/nethcti-ui.ctr-id \
+    --cgroups=no-conmon \
+    --log-opt=tag=%u \
+    --replace --name=%N \
+    --volume=/dev/log:/dev/log \
+    --network=host \
+    --env=PRODUCT_NAME=${NETHCTI_PRODUCT_NAME} \
+    --env=COMPANY_NAME=${NETHCTI_COMPANY_NAME} \
+    --env=COMPANY_URL=${NETHCTI_COMPANY_URL} \
+    --env=API_ENDPOINT=${NETHVOICE_HOST} \
+    --env=PORT=${NETHCTI_UI_PORT} \
+    ${NETHVOICE_CTI_UI_IMAGE}
+
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/nethcti-ui.ctr-id
+PIDFile=%t/nethcti-ui.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

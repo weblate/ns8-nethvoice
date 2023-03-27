@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Configure nethvoice",
+    "$id": "http://nethserver.org/json-schema/task/input/nethvoice/configure",
+    "description": "Configure nethvoice",
+    "examples": [],
+    "type": "object",
+    "required": [
+        "nethvoice_host",
+        "nethcti_ui_host"
+    ],
+    "properties": {
+        "nethvoice_host": {
+            "type": "string",
+            "format": "hostname"
+        },
+        "nethcti_ui_host": {
+            "type": "string",
+            "format": "hostname"
+        }
+    }
+}
