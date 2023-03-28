@@ -1,48 +1,44 @@
-#
-# This systemd unit starts a mariadb instance using Podman.
-# Most parts of this file come from podman-generate-systemd.
-#
 [Unit]
-Description=mariadb server
+Description=MariaDB server
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 EnvironmentFile=%S/state/environment
 WorkingDirectory=%S/state
-Restart=always
-ExecStartPre=/bin/rm -f %t/mariadb.pid %t/mariadb.ctr-id
+Restart=on-failure
+TimeoutStopSec=70
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
 ExecStart=/usr/bin/podman run \
-	--detach \
-	--conmon-pidfile=%t/mariadb.pid \
-	--cidfile=%t/mariadb.ctr-id \
-	--cgroups=no-conmon \
-	--log-opt=tag=%u \
-	--replace --name=%N \
-	--volume=mariadb-data:/var/lib/mysql:Z \
-	--publish=127.0.0.1:${NETHVOICE_MARIADB_PORT}:3306 \
-	--health-cmd "healthcheck.sh --su-mysql --connect --innodb_initialized" \
-	--env=MARIADB_ROOT_PASSWORD \
-	--env=MARIADB_MYSQL_LOCALHOST_USER=1 \
-	--env=AMPDBUSER \
-	--env=AMPDBPASS \
-	--env=CDRDBUSER \
-	--env=CDRDBPASS \
-	--env=CTIUSER \
-	--env=NETHCTI_DB_USER \
-	--env=NETHCTI_DB_PASSWORD \
-	--env=PHONEBOOK_DB_NAME \
-	--env=PHONEBOOK_DB_USER \
-	--env=PHONEBOOK_DB_PASS \
-	--env=REPORTS_PASSWORD \
-	${NETHVOICE_MARIADB_IMAGE}
+        --cidfile=%t/%n.ctr-id \
+        --cgroups=no-conmon \
+        --rm \
+        --sdnotify=conmon \
+        --detach \
+        --log-opt=tag=%u \
+        --replace \
+        --name=%N \
+        --volume=mariadb-data:/var/lib/mysql:Z \
+        --publish=127.0.0.1:${NETHVOICE_MARIADB_PORT}:3306 \
+        --health-cmd "healthcheck.sh --su=mysql --connect --innodb_initialized" \
+        --env=MARIADB_ROOT_PASSWORD \
+        --env=MARIADB_MYSQL_LOCALHOST_USER=1 \
+        --env=AMPDBUSER \
+        --env=AMPDBPASS \
+        --env=CDRDBUSER \
+        --env=CDRDBPASS \
+		--env=CTIUSER \
+        --env=NETHCTI_DB_USER \
+        --env=NETHCTI_DB_PASSWORD \
+        --env=PHONEBOOK_DB_NAME \
+        --env=PHONEBOOK_DB_USER \
+        --env=PHONEBOOK_DB_PASS \
+        --env=REPORTS_PASSWORD \
+        ${NETHVOICE_MARIADB_IMAGE}
 
-# Wait till db is initialized
-ExecStartPost=until podman healthcheck run mariadb; do sleep 5; done
-
-ExecStop=/usr/bin/podman stop --ignore --cidfile %t/mariadb.ctr-id -t 10
-ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/mariadb.ctr-id
-PIDFile=%t/mariadb.pid
-Type=forking
+ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
+Type=notify
+NotifyAccess=all
 
 [Install]
 WantedBy=default.target
