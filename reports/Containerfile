@@ -3,10 +3,10 @@
 FROM docker.io/library/alpine:3.17.2 as repofetcher
 WORKDIR /app
 RUN apk add --no-cache git
-ARG NETHVOICE_REPORT_VERSION=ns8
-RUN git clone --depth 1 \
-        --branch ${NETHVOICE_REPORT_VERSION} \
-        https://github.com/nethesis/nethvoice-report
+ARG NETHVOICE_REPORT_COMMIT=03b1ae27e08e2fab90b1bf5c51f197506e868940
+RUN git clone https://github.com/nethesis/nethvoice-report \
+    && cd nethvoice-report \
+    && git checkout $NETHVOICE_REPORT_COMMIT
 
 ### UI ###
 FROM docker.io/library/node:14.21.2-alpine as node_build
@@ -29,6 +29,12 @@ RUN rm public/config/config.production.js \
 # From build, copy content in nginx container
 FROM docker.io/library/nginx:1.23.3-alpine as ui-production
 COPY --from=node_build /app/dist /usr/share/nginx/html
+# Adding production scripts
+ADD https://raw.githubusercontent.com/eficode/wait-for/d48601a8a90c3d22fade68d09b4240739fb44a46/wait-for /usr/bin/wait-for
+COPY ui-entrypoint.sh /entrypoint
+RUN chmod +x /usr/bin/wait-for \
+    && chmod +x /entrypoint
+ENTRYPOINT [ "/entrypoint" ]
 
 ### API ###
 # Init go builder, installing needed dev packages
@@ -64,11 +70,19 @@ RUN go build
 FROM docker.io/library/alpine:3.17.2 as api-production
 # Installing runtime dependencies
 RUN apk add --no-cache \
+        jq \
         librrd \
-        linux-pam-dev
+        linux-pam-dev \
+        mariadb-client
+# Adding production scripts
+ADD https://raw.githubusercontent.com/eficode/wait-for/d48601a8a90c3d22fade68d09b4240739fb44a46/wait-for /usr/bin/wait-for
+COPY api-entrypoint.sh /entrypoint
+RUN chmod +x /usr/bin/wait-for \
+    && chmod +x /entrypoint
 # Copying executables and setting release environment
 ENV GIN_MODE=release
 COPY --from=apibuilder /app/api /usr/bin/api
 COPY --from=taskbuilder /app/tasks /usr/bin/tasks
 COPY --from=repofetcher /app/nethvoice-report/root/opt/nethvoice-report/api /opt/nethvoice-report/api
-CMD [ "api" ]
+COPY migration.sql.tmpl /opt/nethvoice-report/api/migration.sql.tmpl
+ENTRYPOINT [ "/entrypoint" ]
