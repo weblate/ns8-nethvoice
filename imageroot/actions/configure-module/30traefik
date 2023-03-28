@@ -7,9 +7,15 @@
 
 import os
 import sys
+import json
 
 import agent
 import agent.tasks
+
+data = json.load(sys.stdin)
+lets_encrypt = data.get("lets_encrypt", False)
+
+agent.set_env('TRAEFIK_LETS_ENCRYPT', lets_encrypt)
 
 # Find default traefik instance for current node
 default_traefik_id = agent.resolve_agent_id('traefik@node')
@@ -24,7 +30,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-wizard',
         'url':  'http://127.0.0.1:' + os.environ["APACHE_PORT"] + '/' + os.environ["BRAND_NAME"].lower(),
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
         'path': '/' + os.environ["BRAND_NAME"].lower(),
     },
@@ -41,7 +47,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-freepbx',
         'url':  'http://127.0.0.1:' + os.environ["APACHE_PORT"] + '/freepbx',
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
         'path': '/freepbx',
     },
@@ -58,7 +64,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-tancredi',
         'url':  'http://127.0.0.1:' + os.environ["TANCREDIPORT"] + '/tancredi',
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
         'path': '/tancredi',
     },
@@ -75,7 +81,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-provisioning',
         'url':  'http://127.0.0.1:' + os.environ["TANCREDIPORT"] + '/provisioning',
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
         'path': '/tancredi',
     },
@@ -91,7 +97,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-ui',
         'url':  'http://127.0.0.1:' + os.environ["NETHCTI_UI_PORT"],
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHCTI_UI_HOST"],
     },
 )
@@ -107,7 +113,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-server-api',
         'url':  'http://127.0.0.1:' + os.environ["NETHCTI_SERVER_API_PORT"],
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
         'path': '/webrest',
         'strip_prefix': True,
@@ -130,7 +136,7 @@ response = agent.tasks.run(
         'instance': os.environ['MODULE_ID'] + '-server-websocket',
         'url':  'http://127.0.0.1:' + os.environ["NETHCTI_SERVER_WS_PORT"] + '/socket.io',
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
+        'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
         'path': '/socket.io',
         'headers': {
