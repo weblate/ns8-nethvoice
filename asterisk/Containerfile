@@ -34,8 +34,9 @@ RUN mkdir download \
     && wget -nv --no-check-certificate https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-core-en-2.11.1.zip \
     && wget -nv --no-check-certificate https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-extra-en-2.11.1.zip \
     && unzip -o 'asterisk-sounds-*-en-*.zip' -d /var/lib/asterisk/sounds/en \
+    && chown -R asterisk:asterisk /var/lib/asterisk/sounds \
     && popd && rm -rf download
-COPY --chown=asterisk:asterisk etc/asterisk /etc/asterisk /var/lib/asterisk/sounds
+COPY --chown=asterisk:asterisk etc/asterisk /etc/asterisk
 COPY etc/odbc.ini /etc/odbc.ini
 COPY var/lib/asterisk /var/lib/asterisk
 RUN chown asterisk:asterisk /var/lib/asterisk/db
