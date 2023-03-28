@@ -86,3 +86,4 @@ COPY --from=taskbuilder /app/tasks /usr/bin/tasks
 COPY --from=repofetcher /app/nethvoice-report/root/opt/nethvoice-report/api /opt/nethvoice-report/api
 COPY migration.sql.tmpl /opt/nethvoice-report/api/migration.sql.tmpl
 ENTRYPOINT [ "/entrypoint" ]
+CMD [ "api" ]
