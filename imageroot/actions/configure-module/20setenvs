@@ -66,7 +66,7 @@ get_from_request('reports_international_prefix',
 os.makedirs('report', exist_ok=True)
 
 reports_config = {
-    'listen_address': '0.0.0.0:8585',
+    'listen_address': '0.0.0.0:' + os.getenv('REPORTS_API_PORT'),
     'redis_network_type': 'tcp',
     'redis_address': '127.0.0.1:' + os.getenv('REPORTS_REDIS_PORT'),
     'ttl_cache': 480,
