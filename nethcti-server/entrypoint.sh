@@ -276,8 +276,8 @@ cat > $FILE <<EOF
   },
   "tls": {
     "port": "8183",
-    "key": "/etc/asterisk/keys/NethServer.key",
-    "cert": "/etc/asterisk/keys/NethServer.crt"
+    "key": "/etc/certificates/NethServer.key",
+    "cert": "/etc/certificates/NethServer.crt"
   },
   "websocket": {
     "http_port": "${NETHCTI_SERVER_WS_PORT}"
