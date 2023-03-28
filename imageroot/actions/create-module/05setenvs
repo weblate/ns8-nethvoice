@@ -35,8 +35,15 @@ agent.set_env('NETHCTI_SERVER_API_PORT', port_list[6])
 agent.set_env('NETHCTI_SERVER_WS_PORT', port_list[7])
 agent.set_env('PHONEBOOK_LDAP_PORT', port_list[8])
 
-# Set root password for MariaDB
+# Set MariaDB config
 agent.set_env('MARIADB_ROOT_PASSWORD', gen_password())
+# specify port to mysql
+os.makedirs('./mariadb', exist_ok=True)
+with open('./mariadb/99_ns8.cnf', 'w', encoding='utf-8') as file:
+    file.write('[mariadb]\n')
+    file.write(f'port={port_list[0]}\n')
+    file.write('[mariadb-client]\n')
+    file.write(f'port={port_list[0]}\n')
 
 # Set DB configuration variables
 agent.set_env('AMPDBUSER', 'freepbxuser')
