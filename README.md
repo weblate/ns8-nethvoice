@@ -17,13 +17,15 @@ Output example:
 
 Let's assume that the nethvoice instance is named `nethvoice1`.
 
-Launch `configure-module`, by setting the following parameters:
+Launch `configure-module`, by setting the following mandatory parameters:
 -  `nethcti_ui_host`: the NethCTI virtualhost, for instance "cti.makako.nethesis.it"
--  `user_domain`: the user domain where users should be taken that has been configured on NethServer interface
+-  `user_domain`: the user domain where users should be taken that has been configured on NS8 interface
 -  `nethvoice_host`: the nethvoice virtualhost, for instance "makako.nethesis.it"
 -  `nethvoice_host_local_networks`: an array of local networks used for SIP NAT. Each network is an object with `network`, `netmask`, `gateway`
 -  `subscription_systemid`: the id of the system registered on my.nethesis.it "XXXXXXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"
 -  `subscription_secret`: the secret of the system on my.nethesis.it "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+Optional parameters:
 -  `nethcti_prefix`: phone prefix. Suggested: ""
 -  `nethcti_autoc2c`: enable automatic click to call on NethCTI. Suggested: "enabled"
 -  `nethcti_trunks_events`: enable events from trunks. Suggested: "enabled"
@@ -43,17 +45,22 @@ Launch `configure-module`, by setting the following parameters:
 -  `lets_encrypt`: set to `true` to enable Let's Encrypt certificate
 
 Example:
+```
+api-cli run module/nethvoice1/configure-module --data '{
+    "nethcti_ui_host": "cti.makako.nethesis.it",
+    "lets_encrypt": false,
+    "user_domain": "domain1.it",
+    "nethvoice_host": "makako.nethesis.it",
+    "nethvoice_host_local_networks": [],
+    "subscription_systemid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX",
+    "subscription_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
 
-    api-cli run module/nethvoice1/configure-module --data '{"nethcti_ui_host":"cti.makako.nethesis.it","user_domain":"nsdc.nethesis.it", "nethvoice_host":"makako.nethesis.it", "nethvoice_host_local_networks":[ { "network":"192.168.5.0", "netmask":"255.255.255.0", "gateway":"192.168.5.1" }, { "network":"172.25.5.83", "netmask":"255.255.254.0", "gateway":"172.25.5.253" } ], "subscription_systemid":"XXXXXXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX", "subscription_secret":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "nethcti_prefix":"", "nethcti_autoc2c":"enabled", "nethcti_trunks_events":"enabled", "nethcti_alerts":"false", "nethcti_authentication_enabled":"true", "nethcti_unauthe_call":"disabled", "nethcti_unauthe_call_ip":"", "nethcti_jabber_url":"", "nethcti_jabber_domain":"", "nethcti_cdr_script":"", "nethcti_cdr_script_timeout":"", "nethcti_cdr_script_call_in":"", "nethvoice_public_host":"makako.nethesis.it", "nethcti_log_level":"info", "conference_jitsi_url":"https://jitsi.nethserver.net","nethcti_server_host":"cti.makako.nethesis.it", "lets_encrypt": false}'
-
-The above command will:
-- start and configure the nethvoice instance
-- (describe configuration process)
-- ...
-
-Send a test HTTP request to the nethvoice backend service:
-
-    curl http://127.0.0.1/nethvoice/
+You can access NethVoice wizard at:
+```
+https://makako.nethesis.it/nethvoice/
+```
 
 ## Uninstall
 
