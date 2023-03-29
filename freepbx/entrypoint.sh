@@ -126,19 +126,8 @@ if [[ ! -f /etc/asterisk/extensions_additional.conf ]]; then
 	php -r 'include_once "/etc/freepbx_db.conf"; $db->query("UPDATE admin SET value = \"true\" WHERE variable = \"need_reload\"");'
 fi
 
-# Check if apply changes is needed
-php <<'EOF'
-<?php
-include_once '/etc/freepbx_db.conf';
-$stmt = $db->prepare('SELECT value FROM admin WHERE variable = "need_reload"');
-$stmt->execute();
-if ($stmt->fetchAll()[0][0] == "true" ) exit(1);
-EOF
-
-# Apply changes if needed
-if [[ $? == 1 ]]; then
-	su - asterisk -s /bin/sh -c "/var/lib/asterisk/bin/fwconsole reload"
-fi
+# Always apply changes on start
+su - asterisk -s /bin/sh -c "/var/lib/asterisk/bin/fwconsole reload"
 
 # Configure users
 php /configure_users.php
