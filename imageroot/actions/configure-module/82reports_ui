@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2023 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+"""
+This file is created with separation of resposability in mind.
+This configures UI segment of reports.
+"""
+
+import json
+import sys
+import os
+
+import agent
+
+# Create folder scaffolding
+os.makedirs('report', exist_ok=True)
+
+# Fetch request
+request = json.load(sys.stdin)
+
+
+def set_from_request(env_name, var_name, default=""):
+    if var_name in request:
+        agent.set_env(env_name, request[var_name])
+    else:
+        agent.set_env(env_name, default)
+
+
+set_from_request(
+    'REPORTS_UI_APP_NAME',
+    'reports_ui_app_name',
+    'NethVoice Reports'
+)
+set_from_request(
+    'REPORTS_UI_HELP_URL',
+    'reports_ui_help_url',
+    'https://nethvoice.docs.nethesis.it/it/v14/'
+)
+set_from_request(
+    'REPORTS_UI_COMPANY_NAME',
+    'reports_ui_company_name',
+    'Nethesis'
+)
+
+# Create configuration file
+with open('./report/ui-config.js', 'w', encoding='utf-8') as file:
+    file.write('window.CONFIG = {\n')
+    file.write(f'  APP_NAME: "{ os.getenv("REPORTS_UI_APP_NAME") }",\n')
+    file.write(f'  HELP_URL: "{ os.getenv("REPORTS_UI_HELP_URL") }",\n')
+    file.write(
+        f'  COMPANY_NAME: "{ os.getenv("REPORTS_UI_COMPANY_NAME") }",\n'
+    )
+    file.write(
+        f'  API_ENDPOINT: "{ os.environ["NETHVOICE_HOST"] }/pbx-report/api",\n'
+    )
+    file.write(f'  API_SCHEME: "https://",\n')
+    file.write('};\n')
