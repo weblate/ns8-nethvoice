@@ -26,7 +26,7 @@ ExecStart=/usr/bin/podman run \
     --env=NETHVOICE_MARIADB_PORT \
     --volume=/dev/log:/dev/log \
     --volume=tancredi:/var/lib/tancredi:z \
-    --volume=./certificates:/etc/certificates:Z \
+    --volume=./certificates:/etc/certificates:z \
     --network=host \
     ${NETHVOICE_PHONEBOOK_IMAGE}
 
