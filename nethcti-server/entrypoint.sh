@@ -389,5 +389,8 @@ var customConfig = {
 
 EOF
 
+# Prepare socket dir for reload
+mkdir -p /run/nethvoice/
+
 # Execute given CMD
 exec "$@"
