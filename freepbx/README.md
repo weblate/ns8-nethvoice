@@ -1,5 +1,36 @@
 # FreePBX container
 
+FreePBX container for NethServer 8
+
+
+FreePBX and nethvoice-wizard-ui files are imported from NethVoice14 for NS7, nethvoice-wizard-restapi is taken from https://github.com/nethesis/nethvoice-wizard-restapi/tree/ns8 and phonebook update scripts are from https://github.com/nethesis/nethserver-phonebook-mysql/tree/ns8
+
+## Environment variables
+
+- `APACHE_RUN_USER` user Apache is run with (Asterisk)
+- `APACHE_RUN_GROUP` group Apache is run with (Asterisk)
+- `ASTMANAGERHOST` is the ip where AMI , Asterisk Manager Interface is exposed. 127.0.0.1 in network=host configuration
+- `ASTMANAGERPORT` port of AMI, Asterisk Manager Interface
+- `AMPMGRUSER` User automatically configured to access ti AMI
+- `AMPMGRPASS` Password of AMI user
+- `AMPDBUSER` FreePBX MariaDB database user (default: freepbxuser)
+- `AMPDBPASS` FreePBX MariaDB database password
+- `AMPDBHOST` FreePBX MariaDB database host (default: 127.0.0.1)
+- `AMPDBNAME` FreePBX MariaDB database name (default: asterisk)
+- `CDRDBUSER` CDR MariaDB database user (default: freepbxuser)
+- `CDRDBPASS` CDR MariaDB database pass
+- `NETHCTI*`
+    - `NETHCTI_DB_USER` NethCTI MariaDB database user (default: nethcti3)
+    - `NETHCTI_DB_PASSWORD` NethCTI MariaDB database password
+    - `NETHCTI_AMI_PASSWORD` NethCTI AMI password 
+- `APACHE_PORT` Port used for httpd
+- `TANCREDIPORT` Port used bt Tancredi
+- `BRAND_NAME` Name for branding (default: NethVoice)
+- `BRAND_SITE` Site or branding (default: www.nethesis.it)
+- `BRAND_DOCS` Site or documentation (default: ?)
+- `SUBSCRIPTION_SYSTEMID` my.nethesis.it server SystemID
+- `SUBSCRIPTION_SECRET` my.nethesis.it server secret
+
 Patches used after import:
 ```diff
 --- imageroot/freepbx/root/var/www/html/freepbx/admin/libraries/BMO/PKCS.class.php.ori	2022-09-16 10:13:24.195498228 +0200
