@@ -15,6 +15,7 @@ import sys
 import os
 
 import agent
+from jinja2 import Environment, FileSystemLoader
 
 # Create folder scaffolding
 os.makedirs('report', exist_ok=True)
@@ -47,15 +48,16 @@ set_from_request(
 )
 
 # Create configuration file
+env = Environment(
+    loader=FileSystemLoader('../templates/'),
+    autoescape=True
+)
+
+template = env.get_template('reports-ui.j2')
 with open('./report/ui-config.js', 'w', encoding='utf-8') as file:
-    file.write('window.CONFIG = {\n')
-    file.write(f'  APP_NAME: "{ os.getenv("REPORTS_UI_APP_NAME") }",\n')
-    file.write(f'  HELP_URL: "{ os.getenv("REPORTS_UI_HELP_URL") }",\n')
-    file.write(
-        f'  COMPANY_NAME: "{ os.getenv("REPORTS_UI_COMPANY_NAME") }",\n'
-    )
-    file.write(
-        f'  API_ENDPOINT: "{ os.environ["NETHVOICE_HOST"] }/pbx-report/api",\n'
-    )
-    file.write(f'  API_SCHEME: "https://",\n')
-    file.write('};\n')
+    file.write(template.render({
+        'app_name': os.getenv("REPORTS_UI_APP_NAME"),
+        'help_url': os.getenv("REPORTS_UI_HELP_URL"),
+        'company_name': os.getenv("REPORTS_UI_COMPANY_NAME"),
+        'api_endpoint': f'{os.environ["NETHVOICE_HOST"]}/pbx-report/api',
+    }))
