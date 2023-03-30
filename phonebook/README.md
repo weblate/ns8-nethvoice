@@ -3,6 +3,9 @@
 Phonebook container for NethServer 8
 This container connects to MariaDB phonebook database, read the phonebook and expose it using LDAPS
 
+
+Phonebook code repository is https://github.com/nethesis/nethserver-phonebook-mysql/tree/ns8
+
 ## Environment variables
 
 - `PHONEBOOK_DB_NAME` name of phonebook database

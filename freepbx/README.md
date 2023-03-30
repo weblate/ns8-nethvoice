@@ -2,6 +2,9 @@
 
 FreePBX container for NethServer 8
 
+
+FreePBX and nethvoice-wizard-ui files are imported from NethVoice14 for NS7, nethvoice-wizard-restapi is taken from https://github.com/nethesis/nethvoice-wizard-restapi/tree/ns8 and phonebook update scripts are from https://github.com/nethesis/nethserver-phonebook-mysql/tree/ns8
+
 ## Environment variables
 
 - `APACHE_RUN_USER` user Apache is run with (Asterisk)

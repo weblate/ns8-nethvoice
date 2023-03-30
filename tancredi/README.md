@@ -3,6 +3,8 @@
 Tancredi container for NethServer 8
 
 
+Tancredi code repository are https://github.com/nethesis/tancredi and https://github.com/nethesis/nethserver-tancredi/
+
 ## Environment variables
 
 - `AMPDBPASS` password of asterisk database
