@@ -20,8 +20,6 @@ ExecStart=/usr/bin/podman run \
     --log-opt=tag=%u \
     --replace --name=%N \
     --env=LOCAL_IP \
-    --env=RTPSTART \
-    --env=RTPEND \
     --volume=/dev/log:/dev/log \
     --network=host \
     ${NETHVOICE_JANUS_IMAGE} \
