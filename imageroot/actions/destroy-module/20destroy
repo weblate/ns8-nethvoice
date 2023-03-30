@@ -17,7 +17,7 @@ if default_traefik_id is None:
     sys.exit(2)
 
 # Remove traefik route
-for service in ["wizard", "freepbx", "tancredi", "provisioning", "ui", "server-api", "server-websocket"]:
+for service in ["wizard", "freepbx", "tancredi", "provisioning", "ui", "server-api", "server-websocket", "janus"]:
     response = agent.tasks.run(
         agent_id=default_traefik_id,
         action='delete-route',
