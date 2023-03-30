@@ -28,14 +28,13 @@ RUN rm public/config/config.production.js \
 
 # From build, copy content in nginx container
 FROM docker.io/library/nginx:1.23.3-alpine as ui-production
-COPY --from=node_build /app/dist /usr/share/nginx/html
+COPY --from=node_build /app/dist /var/www/html/pbx-report
 # Adding production scripts
 ADD https://raw.githubusercontent.com/eficode/wait-for/d48601a8a90c3d22fade68d09b4240739fb44a46/wait-for /usr/bin/wait-for
-COPY ui-entrypoint.sh /entrypoint
+COPY ui/entrypoint.sh /docker-entrypoint.d/99-wait-for-app.sh
+COPY ui/etc/nginx/ /etc/nginx/
 RUN chmod +x /usr/bin/wait-for \
-    && chmod +x /entrypoint
-ENTRYPOINT [ "/entrypoint" ]
-CMD ["nginx", "-g", "daemon off;"]
+    && chmod +x /docker-entrypoint.d/99-wait-for-app.sh
 
 ### API ###
 # Init go builder, installing needed dev packages
@@ -77,7 +76,7 @@ RUN apk add --no-cache \
         mariadb-client
 # Adding production scripts
 ADD https://raw.githubusercontent.com/eficode/wait-for/d48601a8a90c3d22fade68d09b4240739fb44a46/wait-for /usr/bin/wait-for
-COPY api-entrypoint.sh /entrypoint
+COPY api/entrypoint.sh /entrypoint
 RUN chmod +x /usr/bin/wait-for \
     && chmod +x /entrypoint
 # Copying executables and setting release environment
@@ -85,6 +84,6 @@ ENV GIN_MODE=release
 COPY --from=apibuilder /app/api /usr/bin/api
 COPY --from=taskbuilder /app/tasks /usr/bin/tasks
 COPY --from=repofetcher /app/nethvoice-report/root/opt/nethvoice-report/api /opt/nethvoice-report/api
-COPY migration.sql.tmpl /opt/nethvoice-report/api/migration.sql.tmpl
+COPY api/migration.sql.tmpl /opt/nethvoice-report/api/migration.sql.tmpl
 ENTRYPOINT [ "/entrypoint" ]
 CMD [ "api" ]
