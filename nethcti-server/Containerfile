@@ -17,6 +17,7 @@ COPY usr/lib/node/nethcti-server/scripts scripts
 COPY usr/lib/node/nethcti-server/sql sql
 COPY usr/lib/node/nethcti-server/nethcti-cli.js .
 COPY usr/lib/node/nethcti-server/nethcti.js .
+COPY usr/local/bin/rpm /usr/local/bin/rpm
 COPY --from=node_modules /app/package.json .
 COPY --from=node_modules /app/package-lock.json .
 COPY --from=node_modules /app/node_modules node_modules

@@ -8,12 +8,11 @@ HOST=$1
 
 mkdir -vp certificates
 
-# trap to clean tmp files
-certtmp=$(mktemp cert.pem.XXXXXX)
-keytmp=$(mktemp key.pem.XXXXXX)
-csrtmp=$(mktemp csr.pem.XXXXXX)
+cd certificates
 
-trap 'rm -f ${certtmp} ${keytmp} ${csrtmp}' EXIT
+certtmp="NethServer.pem"
+keytmp="NethServer.key"
+csrtmp="NethServer.csr"
 
 umask 0077
 
@@ -29,6 +28,9 @@ openssl x509 -req -sha256 -days 3650 \
     -signkey ${keytmp} \
     -out ${certtmp}
 
-cat ${keytmp} ${certtmp} > certificates/NethServer.pem
-mv ${keytmp} certificates/NethServer.key
-mv ${certtmp} certificates/NethServer.crt
+# required by nethcti-server
+cp ${certtmp} "NethServer.crt"
+
+# required by asterisk
+mkdir integration/
+ln -s ../$certtmp integration/certificate.pem
