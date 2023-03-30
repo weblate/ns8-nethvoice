@@ -35,6 +35,7 @@ COPY ui-entrypoint.sh /entrypoint
 RUN chmod +x /usr/bin/wait-for \
     && chmod +x /entrypoint
 ENTRYPOINT [ "/entrypoint" ]
+CMD ["nginx", "-g", "daemon off;"]
 
 ### API ###
 # Init go builder, installing needed dev packages

@@ -40,7 +40,7 @@ with open('./report/api-config.json', 'w', encoding='utf-8') as file:
     file.write(template.render({
         'reports_api_port': os.environ['REPORTS_API_PORT'],
         'reports_redis_port': os.environ['REPORTS_REDIS_PORT'],
-        'reports_mariadb_port': os.environ['NETHVOICE_MARIADB_PORT'],
+        'nethvoice_mariadb_port': os.environ['NETHVOICE_MARIADB_PORT'],
         'reports_password': os.environ['REPORTS_PASSWORD'],
         'reports_secret': os.environ['REPORTS_SECRET'],
         'reports_api_key': os.environ['REPORTS_API_KEY'],
@@ -52,7 +52,7 @@ response = agent.tasks.run(
     agent_id=agent.resolve_agent_id('traefik@node'),
     action='set-route',
     data={
-        'instance': os.environ['MODULE_ID'] + '-report-api',
+        'instance': os.environ['MODULE_ID'] + '-reports-api',
         'url': 'http://127.0.0.1:' + os.environ["REPORTS_API_PORT"],
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
         'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
@@ -67,11 +67,11 @@ agent.run_helper(
     'systemctl',
     '--user',
     'enable',
-    'report-api.service'
+    'reports-api.service'
 ).check_returncode()
 agent.run_helper(
     'systemctl',
     '--user',
     'restart',
-    'report-api.service'
+    'reports-api.service'
 ).check_returncode()
