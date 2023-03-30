@@ -15,7 +15,7 @@ cat > $FILE <<EOF
         "prefix": "${NETHCTI_PREFIX}",
         "auto_c2c": "${NETHCTI_AUTOC2C}",
         "trunks_events": "${NETHCTI_TRUNKS_EVENTS}",
-        "qm_alarms_notifications": ${NETHCTI_ALERTS}
+        "qm_alarms_notifications": ${NETHCTI_ALERTS:-true}
 }
 EOF
 
