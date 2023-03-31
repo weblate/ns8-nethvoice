@@ -149,3 +149,25 @@ response = agent.tasks.run(
     },
 )
 agent.assert_exp(response['exit_code'] == 0)
+
+## Set up Janus on same host
+response = agent.tasks.run(
+    agent_id=agent.resolve_agent_id('traefik@node'),
+    action='set-route',
+    data={
+        'instance': os.environ['MODULE_ID'] + '-janus',
+        'url':  'http://127.0.0.1:' + os.environ["JANUS_TRANSPORT_PORT"],
+        'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
+        'lets_encrypt': lets_encrypt,
+        'host': os.environ["NETHVOICE_HOST"],
+        'path': '/janus',
+        'headers': {
+            'response': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': "true",
+                'Access-Control-Allow-Headers': '*'
+            }
+        }
+    },
+)
+agent.assert_exp(response['exit_code'] == 0)
