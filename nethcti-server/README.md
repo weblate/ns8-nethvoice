@@ -45,3 +45,8 @@ NethCTI Server container for NethServer 8
     - `PHONEBOOK_DB_PASS` password of the NethVoice centralized phonebook database
     - `PHONEBOOK_DB_PORT` port of the NethVoice centralized phonebook database
     - `PHONEBOOK_DB_USER` user of the NethVoice centralized phonebook database
+
+You can reload the CTI using:
+```
+podman exec -ti nethcti-server node nethcti-cli reload
+```
