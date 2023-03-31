@@ -181,6 +181,8 @@ mkdir -p \
 	/var/www/html/freepbx/admin/modules/certman/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/conferences/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customdests/cache \
+	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customextens/cache \
 	/var/www/html/freepbx/admin/modules/dashboard/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/featurecodeadmin/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/ivr/assets/less/cache \
@@ -199,6 +201,8 @@ chown -R asterisk:asterisk \
 	/var/www/html/freepbx/admin/modules/certman/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/conferences/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customdests/cache \
+	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customextens/cache \
 	/var/www/html/freepbx/admin/modules/dashboard/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/featurecodeadmin/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/ivr/assets/less/cache \
