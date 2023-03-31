@@ -58,7 +58,7 @@ with open('./report/ui-config.js', 'w', encoding='utf-8') as file:
         'app_name': reports_ui_app_name,
         'help_url': reports_ui_help_url,
         'company_name': reports_ui_company_name,
-        'api_endpoint': f'{os.environ["NETHVOICE_HOST"]}/pbx-report/api',
+        'api_endpoint': f'{os.environ["NETHVOICE_HOST"]}/pbx-report-api',
     }))
 
 # Traefik endpoint
