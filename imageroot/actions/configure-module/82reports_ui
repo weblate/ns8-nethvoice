@@ -76,3 +76,17 @@ response = agent.tasks.run(
     },
 )
 agent.assert_exp(response['exit_code'] == 0)
+
+# Enable service and restart
+agent.run_helper(
+    'systemctl',
+    '--user',
+    'enable',
+    'reports-ui.service'
+).check_returncode()
+agent.run_helper(
+    'systemctl',
+    '--user',
+    'restart',
+    'reports-ui.service'
+).check_returncode()
