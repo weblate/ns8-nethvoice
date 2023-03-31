@@ -174,6 +174,7 @@ buildah run "${container}" /bin/sh <<'EOF'
 mkdir -p \
 	/etc/phonebook/sources.d/ \
 	/var/run/asterisk/ \
+	/var/run/nethvoice/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/calendar/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/cdr/assets/less/cache \
@@ -191,6 +192,7 @@ mkdir -p \
 chown -R asterisk:asterisk \
 	/etc/phonebook/sources.d/ \
 	/var/run/asterisk/ \
+	/var/run/nethvoice/ \
         /var/www/html/freepbx/admin/assets/less/cache \
         /var/www/html/freepbx/admin/modules/calendar/assets/less/cache \
         /var/www/html/freepbx/admin/modules/cdr/assets/less/cache \
