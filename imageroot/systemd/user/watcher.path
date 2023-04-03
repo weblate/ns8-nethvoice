@@ -1,0 +1,5 @@
+[Path]
+PathModified=%S/state/notify
+
+[Install]
+WantedBy=default.target

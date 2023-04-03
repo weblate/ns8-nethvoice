@@ -62,6 +62,23 @@ You can access NethVoice wizard at:
 https://makako.nethesis.it/nethvoice/
 ```
 
+## Notify for service restart
+
+After FreePBX configurations have been applied, some containers should be restarted or reloaded.
+When the `.config/state/notify` changes, the `watcher.path` starts the `watcher.service` unit.
+
+If a container wants to signal a restart, it must mount the file using the `volume` option. Eg:
+```
+--volume=./notify:/notify
+```
+
+Then, change the file from inside the container:
+```
+touch /notify
+```
+
+If you want to restart/reload a new service, add a new `ExecStart` enty inside the `watcher.service` unit.
+
 ## Uninstall
 
 To uninstall the instance:
