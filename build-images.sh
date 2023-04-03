@@ -173,6 +173,7 @@ EOF
 buildah run "${container}" /bin/sh <<'EOF'
 mkdir -p \
 	/etc/phonebook/sources.d/ \
+	/var/lib/asterisk/.gnupg \
 	/var/run/asterisk/ \
 	/var/run/nethvoice/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
@@ -193,6 +194,7 @@ mkdir -p \
 	/var/www/html/freepbx/admin/modules/voicemail/assets/less/cache
 chown -R asterisk:asterisk \
 	/etc/phonebook/sources.d/ \
+	/var/lib/asterisk/.gnupg \
 	/var/run/asterisk/ \
 	/var/run/nethvoice/ \
 	/var/www/html/freepbx/admin/assets/less/cache \

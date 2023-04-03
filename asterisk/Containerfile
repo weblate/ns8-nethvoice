@@ -40,7 +40,6 @@ COPY --chown=asterisk:asterisk etc/asterisk /etc/asterisk
 COPY etc/odbc.ini /etc/odbc.ini
 COPY var/lib/asterisk /var/lib/asterisk
 RUN chown asterisk:asterisk /var/lib/asterisk/db
-RUN mkdir -p /var/lib/asterisk/.gnupg && chown asterisk:asterisk /var/lib/asterisk/.gnupg
 COPY entrypoint.sh /entrypoint
 ENTRYPOINT [ "/entrypoint" ]
 CMD [ "/usr/sbin/asterisk", "-f", "-C", "/etc/asterisk/asterisk.conf" ]
