@@ -267,13 +267,6 @@ function nethcti3_get_config_late($engine) {
             }
         }
 
-        //enable Janus Gateway if there are WebRTC extensions
-        if ($enableJanus) {
-            // enable janus in configuration database
-            system('/usr/bin/sudo /sbin/e-smith/config setprop janus-gateway status enabled');
-            system('/usr/bin/sudo /sbin/e-smith/signal-event runlevel-adjust');
-        }
-
         // Write users.json configuration file
         $res = $nethcti3->writeCTIConfigurationFile('/users.json',$json);
 
@@ -378,9 +371,6 @@ function nethcti3_get_config_late($engine) {
         // Generate nethvoice report based on NethCTI configuration
         nethvoice_report_config();
 
-        //Move provisioning files from /var/lib/tftpnethvoice to /var/lib/tftpboot
-	system("/usr/bin/sudo /usr/bin/scl enable rh-php56 -- php /var/www/html/freepbx/rest/lib/moveProvisionFiles.php");
-
 	// Convert /etc/asterisk symlinks to file copied
 	if (file_exists('/var/lib/asterisk/bin/symlink2copies.sh')) {
 	        system("/var/lib/asterisk/bin/symlink2copies.sh");
@@ -395,10 +385,6 @@ function nethcti3_get_config_late($engine) {
 
 function nethcti3_get_config_early($engine) {
     include_once('/var/www/html/freepbx/rest/lib/libCTI.php');
-    // Check proviosioning engine and continue only for Tancredi
-    exec("/usr/bin/sudo /sbin/e-smith/config getprop nethvoice ProvisioningEngine", $out);
-    if ($out[0] !== 'tancredi') return TRUE;
-
     global $amp_conf;
     // Call Tancredi API to set variables that needs to be set on FreePBX retrieve conf
     // get featurecodes
