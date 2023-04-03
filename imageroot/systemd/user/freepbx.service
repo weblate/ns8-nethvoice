@@ -30,6 +30,7 @@ ExecStart=/usr/bin/podman run \
     --volume=pbooksources:/etc/phonebook/sources.d/:z \
     --volume=scripts:/usr/share/phonebooks/scripts/:z \
     --volume=post_scripts:/usr/share/phonebooks/post_scripts/:z \
+    --volume=reports_config:/opt/nethvoice-report/api/:z \
     --volume=/dev/log:/dev/log \
     --volume=./notify:/notify:z \
     --env=NETHVOICE* \
