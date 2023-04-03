@@ -171,18 +171,3 @@ response = agent.tasks.run(
     },
 )
 agent.assert_exp(response['exit_code'] == 0)
-
-# Reports api endpoint
-response = agent.tasks.run(
-    agent_id=agent.resolve_agent_id('traefik@node'),
-    action='set-route',
-    data={
-        'instance': os.environ['MODULE_ID'] + '-report-api',
-        'url': 'http://127.0.0.1:' + os.environ["REPORTS_API_PORT"],
-        'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
-        'lets_encrypt': os.environ["TRAEFIK_LETS_ENCRYPT"] == "True",
-        'host': os.environ["NETHVOICE_HOST"],
-        'path': '/pbx-report/api'
-    },
-)
-agent.assert_exp(response['exit_code'] == 0)
