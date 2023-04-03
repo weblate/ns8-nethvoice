@@ -11,6 +11,8 @@ RUN npm ci
 
 FROM base as production
 RUN apk add --no-cache openldap-clients
+RUN groupadd -g 991 -r asterisk && useradd -u 990 -r -s /bin/false -d /var/lib/asterisk -M -c 'Asterisk User' -g asterisk asterisk
+RUN mkdir -p /etc/nethcti && chown asterisk:asterisk /etc/nethcti
 COPY var/lib/nethserver/nethcti/templates/customer_card /var/lib/nethserver/nethcti/templates/customer_card
 COPY usr/lib/node/nethcti-server/plugins plugins
 COPY usr/lib/node/nethcti-server/scripts scripts
