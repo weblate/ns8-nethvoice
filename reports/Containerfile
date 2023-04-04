@@ -73,7 +73,8 @@ RUN apk add --no-cache \
         jq \
         librrd \
         linux-pam-dev \
-        mariadb-client
+        mariadb-client \
+        openldap-clients
 # Adding production scripts
 ADD https://raw.githubusercontent.com/eficode/wait-for/d48601a8a90c3d22fade68d09b4240739fb44a46/wait-for /usr/bin/wait-for
 COPY api/entrypoint.sh /entrypoint
