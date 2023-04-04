@@ -32,5 +32,7 @@ openssl x509 -req -sha256 -days 3650 \
 cp ${certtmp} "NethServer.crt"
 
 # required by asterisk
-mkdir integration/
-ln -s ../$certtmp integration/certificate.pem
+mkdir -p integration/
+if [[ ! -f integration/certificate.pem ]]; then
+	ln -s ../$certtmp integration/certificate.pem
+fi
