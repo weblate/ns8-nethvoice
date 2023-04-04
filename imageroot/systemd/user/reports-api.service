@@ -20,6 +20,11 @@ ExecStart=/usr/bin/podman run \
         --volume=reports_config:/opt/nethvoice-report/freepbx/:z \
         --network=host \
         --env REPORTS_INTERNATIONAL_PREFIX \
+        --env NETHVOICE_LDAP_SCHEMA \
+        --env NETHVOICE_LDAP_BASE \
+        --env NETHVOICE_LDAP_USER \
+        --env NETHVOICE_LDAP_HOST \
+        --env NETHVOICE_LDAP_PORT \
         --detach \
         --name %N \
         ${NETHVOICE_REPORTS_API_IMAGE}
