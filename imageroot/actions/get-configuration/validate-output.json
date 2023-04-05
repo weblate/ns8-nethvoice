@@ -4,5 +4,21 @@
     "$id": "http://nethserver.org/json-schema/task/output/nethvoice/get-configuration",
     "description": "Get nethvoice configuration",
     "examples": [],
-    "type": "object"
+    "type": "object",
+    "required": [
+        "nethvoice_host",
+        "nethcti_ui_host"
+    ],
+    "properties": {
+        "nethvoice_host": {
+            "description": "Host where nethvoice instance should be exposed to",
+            "type": "string",
+            "format": "hostname"
+        },
+        "nethcti_ui_host": {
+            "description": "CTI host, must be different than nethvoice_host",
+            "type": "string",
+            "format": "hostname"
+        }
+    }
 }

@@ -9,6 +9,9 @@ import json
 import sys
 import agent
 
-config = {}
+config = {
+    'nethvoice_host': os.getenv('NETHVOICE_HOST'),
+    'nethcti_ui_host': os.getenv('NETHCTI_UI_HOST')
+}
 
 json.dump(config, fp=sys.stdout)

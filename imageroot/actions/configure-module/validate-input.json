@@ -6,7 +6,8 @@
     "examples": [
         {
             "nethvoice_host": "voice.ns8.local",
-            "nethcti_ui_host": "cti.ns8.local"
+            "nethcti_ui_host": "cti.ns8.local",
+            "user_domain": "domain.ns8.local"
         },
         {
             "nethvoice_host": "voice.ns8.local",
@@ -18,7 +19,8 @@
                     "gateway": "192.168.122.1"
                 }
             ],
-            "nethcti_log_level": "info"
+            "nethcti_log_level": "info",
+            "user_domain": "domain.ns8.local"
         }
     ],
     "type": "object",
@@ -59,7 +61,6 @@
         },
         "nethvoice_host": {
             "description": "Host where nethvoice instance should be exposed to",
-
             "type": "string",
             "format": "hostname"
         },
@@ -157,6 +158,11 @@
         "lets_encrypt": {
             "description": "Enable Let's Encrypt certificate",
             "type": "boolean"
+        },
+        "user_domain": {
+            "description": "Domain where the user accessing Nethvoice are stored",
+            "type": "string",
+            "format": "hostname"
         }
     }
 }
