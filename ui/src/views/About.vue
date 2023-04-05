@@ -1,20 +1,28 @@
+<!--
+  Copyright (C) 2022 Nethesis S.r.l.
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
 <template>
-  <div class="bx--grid bx--grid--full-width">
-    <div class="bx--row">
-      <div class="bx--col-lg-16 page-title">
+  <cv-grid fullWidth>
+    <cv-row>
+      <cv-column class="page-title">
         <h2>{{ $t("about.title") }}</h2>
-      </div>
-    </div>
-    <div class="bx--row">
-      <div class="bx--col-lg-16">
+      </cv-column>
+    </cv-row>
+    <cv-row>
+      <cv-column>
+        <NsInlineNotification
+          v-if="error.version"
+          kind="error"
+          :title="$t('error.cannot_retrieve_installed_modules')"
+          :description="error.version"
+          :showCloseButton="false"
+        />
+      </cv-column>
+    </cv-row>
+    <cv-row>
+      <cv-column>
         <cv-tile :light="true">
-          <NsInlineNotification
-            v-if="error.version"
-            kind="error"
-            :title="$t('error.cannot_retrieve_installed_modules')"
-            :description="error.version"
-            :showCloseButton="false"
-          />
           <cv-skeleton-text
             v-if="loading.moduleInfo"
             :paragraph="true"
@@ -30,128 +38,116 @@
             />
           </div>
           <div v-else>
-            <section>
-              <div class="logo-and-name">
-                <div class="app-logo">
-                  <img
-                    :src="
-                      app.logo
-                        ? app.logo
-                        : require('@/assets/module_default_logo.png')
-                    "
-                    :alt="app.name + ' logo'"
-                  />
-                </div>
-                <div class="app-name">
-                  <h3>{{ app.name }}</h3>
-                </div>
+            <div class="logo-and-name">
+              <div class="app-logo">
+                <img
+                  :src="
+                    app.logo
+                      ? app.logo
+                      : require('@/assets/module_default_logo.png')
+                  "
+                  :alt="app.name + ' logo'"
+                />
               </div>
-            </section>
+              <div class="app-name">
+                <h3>{{ app.name }}</h3>
+              </div>
+            </div>
             <div class="description">
               {{ getApplicationDescription(app) }}
             </div>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{ core.$t("software_center.instance") }}:</span
-                >
-                {{ instanceName }}
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{ core.$t("common.version") }}:</span
-                >
-                {{ version }}
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{
-                    core.$tc(
-                      "software_center.categories",
-                      app.categories.length
-                    )
-                  }}:</span
-                >
-                {{ getApplicationCategories(app) }}
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{ core.$t("software_center.documentation") }}:
-                </span>
+            <div class="key-value-setting">
+              <span class="label">{{
+                core.$t("software_center.instance")
+              }}</span>
+              <span class="value">{{ instanceName }}</span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{ core.$t("common.version") }}</span>
+              <span class="value">{{ version }}</span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{
+                core.$tc("software_center.categories", app.categories.length)
+              }}</span>
+              <span class="value">{{ getApplicationCategories(app) }}</span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{
+                core.$t("software_center.documentation")
+              }}</span>
+              <span class="value">
                 <cv-link :href="app.docs.documentation_url" target="_blank">
                   {{ app.docs.documentation_url }}
                 </cv-link>
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{ core.$t("software_center.bugs") }}:
-                </span>
+              </span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{ core.$t("software_center.bugs") }}</span>
+              <span class="value">
                 <cv-link :href="app.docs.bug_url" target="_blank">
                   {{ app.docs.bug_url }}
                 </cv-link>
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{ core.$t("software_center.source_code") }}:
-                </span>
+              </span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{
+                core.$t("software_center.source_code")
+              }}</span>
+              <span class="value">
                 <cv-link :href="app.docs.code_url" target="_blank">
                   {{ app.docs.code_url }}
                 </cv-link>
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{ core.$t("software_center.source_package") }}:
-                </span>
+              </span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{
+                core.$t("software_center.source_package")
+              }}</span>
+              <span class="value">
                 {{ app.source }}
-              </div>
-            </section>
-            <section>
-              <div>
-                <span class="section-title"
-                  >{{
-                    core.$tc("software_center.authors", app.authors.length)
-                  }}:
-                </span>
+              </span>
+            </div>
+            <div class="key-value-setting">
+              <span class="label">{{
+                core.$tc("software_center.authors", app.authors.length)
+              }}</span>
+              <span class="value">
                 <span v-if="app.authors.length == 1"
                   >{{ app.authors[0].name }}
                   <cv-link
+                    v-if="app.authors[0].email"
                     :href="'mailto:' + app.authors[0].email"
                     target="_blank"
+                    class="email"
                   >
                     {{ app.authors[0].email }}
                   </cv-link>
                 </span>
-                <ul v-else>
+                <ul v-else class="authors">
                   <li
                     v-for="(author, index) in app.authors"
                     :key="index"
                     class="author"
                   >
                     {{ author.name }}
-                    <cv-link :href="'mailto:' + author.email" target="_blank">
+                    <cv-link
+                      v-if="author.email"
+                      :href="'mailto:' + author.email"
+                      target="_blank"
+                      class="email"
+                    >
                       {{ author.email }}
                     </cv-link>
                   </li>
                 </ul>
-              </div>
-            </section>
+              </span>
+            </div>
           </div>
         </cv-tile>
-      </div>
-    </div>
-  </div>
+      </cv-column>
+    </cv-row>
+  </cv-grid>
 </template>
 
 <script>
@@ -161,12 +157,13 @@ import {
   QueryParamService,
   TaskService,
   UtilService,
+  PageTitleService,
 } from "@nethserver/ns8-ui-lib";
 
 export default {
   name: "About",
   components: {},
-  mixins: [TaskService, QueryParamService, UtilService],
+  mixins: [TaskService, QueryParamService, UtilService, PageTitleService],
   pageTitle() {
     return this.$t("about.title") + " - " + this.appName;
   },
@@ -208,53 +205,31 @@ export default {
     next();
   },
   methods: {
-    async getModuleInfo() {
+    getModuleInfo() {
       this.loading.moduleInfo = true;
-      const taskAction = "get-module-info";
-
-      // register to task completion
-      this.core.$root.$once(
-        taskAction + "-completed",
-        this.getModuleInfoCompleted
-      );
-
-      const res = await to(
-        this.createClusterTaskForApp({
-          action: taskAction,
-          data: {
-            id: "nethvoice", // TODO
-          },
-          extra: {
-            title: this.$t("action." + taskAction),
-            isNotificationHidden: true,
-          },
-        })
-      );
-      const err = res[0];
-
-      if (err) {
-        console.error("error retrieving moodule info", err);
-        this.error.moduleInfo = this.getErrorMessage(err);
-        this.loading.moduleInfo = false;
-        return;
-      }
-    },
-    getModuleInfoCompleted(taskContext, taskResult) {
-      this.app = taskResult.output;
+      const metadata = require("../../public/metadata.json");
+      this.app = metadata;
       this.loading.moduleInfo = false;
     },
     getApplicationDescription(app) {
       return this.getAppDescription(app, this.core);
     },
     getApplicationCategories(app) {
-      return this.getAppCategories(app, this.core);
+      return this.getAppCategories(app, this.core) || "-";
     },
     async listInstalledModules() {
       const taskAction = "list-installed-modules";
+      const eventId = this.getUuid();
+
+      // register to task error
+      this.core.$root.$once(
+        `${taskAction}-aborted-${eventId}`,
+        this.listInstalledModulesAborted
+      );
 
       // register to task completion
       this.core.$root.$once(
-        taskAction + "-completed",
+        `${taskAction}-completed-${eventId}`,
         this.listInstalledModulesCompleted
       );
 
@@ -262,19 +237,25 @@ export default {
         this.createClusterTaskForApp({
           action: taskAction,
           extra: {
-            title: this.core.$t("action." + taskAction),
+            title: this.$t("action." + taskAction),
             isNotificationHidden: true,
+            eventId,
           },
         })
       );
-      const errApps = res[0];
+      const err = res[0];
 
-      if (errApps) {
-        console.error("error retrieving installed apps", errApps);
-        this.error.version = this.getErrorMessage(errApps);
+      if (err) {
+        console.error(`error creating task ${taskAction}`, err);
+        this.error.version = this.getErrorMessage(err);
         this.loading.version = false;
         return;
       }
+    },
+    listInstalledModulesAborted(taskResult, taskContext) {
+      console.error(`${taskContext.action} aborted`, taskResult);
+      this.error.version = this.$t("error.generic_error");
+      this.loading.version = false;
     },
     listInstalledModulesCompleted(taskContext, taskResult) {
       let apps = [];
@@ -284,7 +265,7 @@ export default {
           apps.push(instance);
         }
       }
-      const app = apps.find((el) => (el.id = this.instanceName));
+      const app = apps.find((el) => el.id == this.instanceName);
       this.version = app.version;
       this.loading.version = false;
     },
@@ -303,8 +284,8 @@ export default {
 }
 
 .app-logo {
-  width: 4rem;
-  height: 4rem;
+  max-width: 4rem;
+  max-height: 4rem;
   margin-right: $spacing-05;
   flex-shrink: 0;
 }
@@ -328,5 +309,14 @@ section {
 
 .author {
   margin-left: $spacing-05;
+  margin-bottom: $spacing-02;
+}
+
+.authors {
+  margin-top: $spacing-02;
+}
+
+.email {
+  margin-left: $spacing-02;
 }
 </style>

@@ -1,3 +1,7 @@
+<!--
+  Copyright (C) 2022 Nethesis S.r.l.
+  SPDX-License-Identifier: GPL-3.0-or-later
+-->
 <template>
   <div id="ns8-app">
     <cv-content id="main-content" class="app-content">
@@ -12,22 +16,29 @@
 import AppSideMenu from "./components/AppSideMenu";
 import AppMobileSideMenu from "./components/AppMobileSideMenu";
 import { mapState, mapActions } from "vuex";
-import { QueryParamService, TaskService } from "@nethserver/ns8-ui-lib";
+import {
+  QueryParamService,
+  TaskService,
+  UtilService,
+} from "@nethserver/ns8-ui-lib";
 import to from "await-to-js";
 
 export default {
   name: "App",
   components: { AppSideMenu, AppMobileSideMenu },
-  mixins: [QueryParamService, TaskService],
+  mixins: [QueryParamService, TaskService, UtilService],
   computed: {
     ...mapState(["instanceName", "instanceLabel", "core"]),
   },
   created() {
     const core = window.parent.core;
     this.setCoreInStore(core);
-    const instanceName = /#\/apps\/(\w+)/.exec(window.parent.location.hash)[1];
+    const instanceName = /#\/apps\/([a-zA-Z0-9_-]+)/.exec(
+      window.parent.location.hash
+    )[1];
     this.setInstanceNameInStore(instanceName);
     this.getInstanceLabel();
+    this.setAppName();
 
     // listen to change route events
     const context = this;
@@ -55,13 +66,21 @@ export default {
       "setInstanceNameInStore",
       "setInstanceLabelInStore",
       "setCoreInStore",
+      "setAppNameInStore",
     ]),
     async getInstanceLabel() {
       const taskAction = "get-name";
+      const eventId = this.getUuid();
+
+      // register to task error
+      this.core.$root.$once(
+        `${taskAction}-aborted-${eventId}`,
+        this.getInstanceLabelAborted
+      );
 
       // register to task completion
       this.core.$root.$once(
-        taskAction + "-completed",
+        `${taskAction}-completed-${eventId}`,
         this.getInstanceLabelCompleted
       );
 
@@ -71,6 +90,7 @@ export default {
           extra: {
             title: this.$t("action." + taskAction),
             isNotificationHidden: true,
+            eventId,
           },
         })
       );
@@ -78,15 +98,23 @@ export default {
 
       if (err) {
         console.error(`error creating task ${taskAction}`, err);
-        this.createErrorNotification(
+        this.createErrorNotificationForApp(
           err,
           this.$t("task.cannot_create_task", { action: taskAction })
         );
         return;
       }
     },
+    getInstanceLabelAborted(taskResult, taskContext) {
+      console.error(`${taskContext.action} aborted`, taskResult);
+    },
     getInstanceLabelCompleted(taskContext, taskResult) {
       this.setInstanceLabelInStore(taskResult.output.name);
+    },
+    setAppName() {
+      const metadata = require("../public/metadata.json");
+      const appName = metadata.name;
+      this.setAppNameInStore(appName);
     },
   },
 };

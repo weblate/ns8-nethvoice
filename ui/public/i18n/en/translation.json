@@ -1,7 +1,8 @@
 {
   "common": {
     "required": "Required",
-    "work_in_progress": "Work in progress"
+    "work_in_progress": "Work in progress",
+    "processing": "Processing..."
   },
   "status": {
     "title": "Status",
@@ -20,10 +21,10 @@
     "no_volumes": "No volumes"
   },
   "settings": {
-    "title": "Settings"
-  },
-  "logs": {
-    "title": "Logs"
+    "title": "Settings",
+    "configure_instance": "Configure {instance}",
+    "save": "Save",
+    "test_field": "Test field"
   },
   "about": {
     "title": "About"
@@ -35,7 +36,11 @@
     "get-status": "Get status",
     "get-configuration": "Get configuration",
     "configure-module": "Configure module",
-    "get-module-info": "Get module info"
+    "get-module-info": "Get module info",
+    "get-name": "Get name",
+    "list-backup-repositories": "List backup repositories",
+    "list-backups": "List backups",
+    "list-installed-modules": "List installed modules"
   },
   "error": {
     "error": "Error",
