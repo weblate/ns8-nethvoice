@@ -13,20 +13,15 @@ reponame="nethvoice"
 # Create a new empty container image
 container=$(buildah from scratch)
 
-# Reuse existing nodebuilder-nethvoice container, to speed up builds
-#if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-nethvoice; then
-#    echo "Pulling NodeJS runtime..."
-#    buildah from --name nodebuilder-nethvoice -v "${PWD}:/usr/src:Z" docker.io/library/node:lts
-#fi
-
-#echo "Build static UI files with node..."
-#buildah run nodebuilder-nethvoice sh -c "cd /usr/src/ui && yarn install && yarn build"
-
 # Add imageroot directory to the container image
 buildah add "${container}" imageroot /imageroot
-mkdir -p  ui/dist
-touch ui/dist/index.html
-buildah add "${container}" ui/dist /ui
+
+# build the UI
+pushd ui
+buildah build --force-rm --layers --jobs "$(nproc)" --target dist --output type=local,dest=dist
+buildah add "${container}" dist /ui
+popd
+
 # Setup the entrypoint, ask to reserve one TCP port with the label and set a rootless container
 buildah config \
     --label="org.nethserver.authorizations=traefik@any:routeadm node:fwadm" \

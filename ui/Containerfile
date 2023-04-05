@@ -1,0 +1,19 @@
+FROM docker.io/library/node:18.15.0 as node_builder
+WORKDIR /app
+# install deps
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install --frozen-lockfile
+# copy application
+COPY public public
+COPY src src
+COPY .browserslistrc .
+COPY .eslintrc.js .
+COPY babel.config.js .
+COPY vue.config.js .
+# build application
+ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN yarn build
+
+FROM scratch as dist
+COPY --from=node_builder /app/dist /
