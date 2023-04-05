@@ -150,6 +150,9 @@ COMPOSER_ALLOW_SUPERUSER=1 php composer.phar install --no-dev
 rm -fr README.md composer.json composer.lock composer.phar
 EOF
 
+# Replace FreepBX cron implementation with noop
+buildah add "${container}" freepbx/var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
+
 # enable apache rewrite module
 buildah run "${container}" a2enmod rewrite proxy*
 

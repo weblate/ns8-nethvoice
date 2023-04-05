@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/systemctl --user reload nethcti-server.service
+ExecStart=/usr/bin/bash -c "if /usr/bin/systemctl --user is-active -q nethcti-server ; then /usr/bin/systemctl --user reload nethcti-server.service; else /usr/bin/systemctl --user start nethcti-server.service; fi"
 
 [Install]
 WantedBy=default.target
