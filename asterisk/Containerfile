@@ -11,6 +11,7 @@ RUN groupadd -g 991 -r asterisk \
         asterisk18-debuginfo \
         asterisk18-addons-mysql \
         asterisk18-voicemail-odbcstorage \
+        asterisk-codecs-g729 \
         unixODBC \
         mysql-connector-odbc \
         unzip \
