@@ -33,6 +33,8 @@ cp ${certtmp} "NethServer.crt"
 
 # required by asterisk
 mkdir -p integration/
-if [[ ! -f integration/certificate.pem ]]; then
-	ln -s ../$certtmp integration/certificate.pem
-fi
+chmod a+rx integration
+cat ${keytmp} ${certtmp} > integration/certificate.pem
+cat ${keytmp} > integration/webserver.key
+cat ${certtmp} > integration/webserver.crt
+chmod a+r integration/*
