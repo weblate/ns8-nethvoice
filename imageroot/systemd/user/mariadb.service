@@ -19,7 +19,7 @@ ExecStart=/usr/bin/podman run \
 	--log-opt=tag=%u \
 	--replace --name=%N \
 	--volume=mariadb-data:/var/lib/mysql:Z \
-        --volume=/dev/log:/dev/log \
+	--volume=/dev/log:/dev/log \
 	--publish=127.0.0.1:${NETHVOICE_MARIADB_PORT}:3306 \
 	--env=MARIADB_ROOT_PASSWORD \
 	--env=NETHVOICE_MARIADB_PORT \
@@ -29,6 +29,7 @@ ExecStart=/usr/bin/podman run \
 	--env=CDRDBHOST \
 	--env=CDRDBPASS \
 	--env=CTIUSER \
+	--env=NETHCTI_DB_USER \
 	--env=NETHCTI_DB_PASSWORD \
 	--env=PHONEBOOK* \
 	--network=host \
