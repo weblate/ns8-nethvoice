@@ -23,15 +23,37 @@
       <cv-column>
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
-            <!-- TODO remove test field and code configuration fields -->
             <cv-text-input
-              :label="$t('settings.test_field')"
-              v-model="testField"
-              :placeholder="$t('settings.test_field')"
+              :label="$t('settings.nethvoice_host')"
+              v-model="form.nethvoice_host"
+              placeholder="voice.example.com"
               :disabled="loading.getConfiguration || loading.configureModule"
-              :invalid-message="error.testField"
-              ref="testField"
-            ></cv-text-input>
+              :invalid-message="error.nethvoice_host"
+              ref="nethvoice_host"
+            />
+            <cv-text-input
+              :label="$t('settings.nethcti_ui_host')"
+              v-model="form.nethcti_ui_host"
+              placeholder="cti.example.com"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              :invalid-message="error.nethcti_ui_host"
+              ref="nethcti_ui_host"
+            />
+            <cv-toggle
+              :label="$t('settings.lets_encrypt')"
+              value="lets_encrypt"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              v-model="form.lets_encrypt"
+            />
+            <!-- TODO: use cluster/list-user-domains to list available domains, otherwise allow manual imput --->
+            <cv-text-input
+              :label="$t('settings.user_domain')"
+              v-model="form.user_domain"
+              placeholder="domain.example.com"
+              :disabled="loading.getConfiguration || loading.configureModule"
+              :invalid-message="error.user_domain"
+              ref="user_domain"
+            />
             <cv-row v-if="error.configureModule">
               <cv-column>
                 <NsInlineNotification
@@ -85,7 +107,12 @@ export default {
         page: "settings",
       },
       urlCheckInterval: null,
-      testField: "", // TODO remove
+      form: {
+        nethvoice_host: "",
+        nethcti_ui_host: "",
+        lets_encrypt: false,
+        user_domain: "",
+      },
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -93,7 +120,10 @@ export default {
       error: {
         getConfiguration: "",
         configureModule: "",
-        testField: "", // TODO remove
+        nethvoice_host: "",
+        nethcti_ui_host: "",
+        lets_encrypt: "",
+        user_domain: "",
       },
     };
   },
@@ -160,29 +190,35 @@ export default {
       this.loading.getConfiguration = false;
       const config = taskResult.output;
 
-      // TODO set configuration fields
-      // ...
-
-      // TODO remove
       console.log("config", config);
 
-      // TODO focus first configuration field
-      this.focusElement("testField");
+      this.form.nethvoice_host = config.nethvoice_host;
+      this.form.nethcti_ui_host = config.nethcti_ui_host;
+      this.form.lets_encrypt = config.lets_encrypt;
+      this.form.user_domain = config.user_domain;
+
+      this.focusElement("nethvoice_host");
     },
     validateConfigureModule() {
       this.clearErrors(this);
       let isValidationOk = true;
 
-      // TODO remove testField and validate configuration fields
-      if (!this.testField) {
-        // test field cannot be empty
-        this.error.testField = this.$t("common.required");
-
-        if (isValidationOk) {
-          this.focusElement("testField");
-          isValidationOk = false;
-        }
+      if (!this.form.nethvoice_host) {
+        this.error.nethvoice_host = this.$t("error.required");
+        isValidationOk = false;
       }
+
+      if (!this.form.nethcti_ui_host) {
+        this.error.nethcti_ui_host = this.$t("error.required");
+        isValidationOk = false;
+      }
+
+      if (this.form.nethvoice_host === this.form.nethcti_ui_host) {
+        this.error.nethvoice_host = this.$t("error.same_host");
+        this.error.nethcti_ui_host = this.$t("error.same_host");
+        isValidationOk = false;
+      }
+
       return isValidationOk;
     },
     configureModuleValidationFailed(validationErrors) {
@@ -227,7 +263,10 @@ export default {
         this.createModuleTaskForApp(this.instanceName, {
           action: taskAction,
           data: {
-            // TODO configuration fields
+            nethvoice_host: this.form.nethvoice_host,
+            nethcti_ui_host: this.form.nethcti_ui_host,
+            lets_encrypt: this.form.lets_encrypt,
+            user_domain: this.form.user_domain,
           },
           extra: {
             title: this.$t("settings.configure_instance", {

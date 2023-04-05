@@ -24,7 +24,10 @@
     "title": "Settings",
     "configure_instance": "Configure {instance}",
     "save": "Save",
-    "test_field": "Test field"
+    "nethvoice_host": "Nethvoice base host",
+    "nethcti_ui_host": "NethCTI UI base host",
+    "lets_encrypt": "Request Let's Encrypt certificate",
+    "user_domain": "User Domain"
   },
   "about": {
     "title": "About"
@@ -43,6 +46,8 @@
     "list-installed-modules": "List installed modules"
   },
   "error": {
+    "required": "Required",
+    "same_host": "Cannot use the same host for Nethvoice and NethCTI Server",
     "error": "Error",
     "generic_error": "Something went wrong",
     "validation_error": "Validation error",
