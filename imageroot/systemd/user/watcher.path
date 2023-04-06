@@ -1,5 +1,8 @@
+#
+# Watch for files named <action>_<service>
+#
 [Path]
-PathModified=%S/state/notify/restart
+PathExistsGlob=%S/state/notify/*_*
 
 [Install]
 WantedBy=default.target
