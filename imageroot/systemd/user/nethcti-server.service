@@ -28,6 +28,7 @@ ExecStart=/usr/bin/podman run \
     --volume=./certificates:/etc/certificates:z \
     --volume=/dev/log:/dev/log \
     --env=ASTMANAGERPORT \
+    --env=APACHE_PORT \
     --env=NETHCTI* \
     --env=NETHVOICE* \
     --env=PHONEBOOK* \
@@ -39,7 +40,9 @@ ExecStart=/usr/bin/podman run \
     --env=CDRDBNAME \
     --env=CDRDBUSER \
     --env=CDRDBPASS \
-    --network=host \
+    --publish=${NETHCTI_TCP_PORT}:${NETHCTI_TCP_PORT} \
+    --publish=${NETHCTI_TLS_PORT}:${NETHCTI_TLS_PORT} \
+    --network slirp4netns:allow_host_loopback=true \
     ${NETHVOICE_CTI_SERVER_IMAGE}
 
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/nethcti-server.ctr-id

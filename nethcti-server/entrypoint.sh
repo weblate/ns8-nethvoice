@@ -10,7 +10,7 @@ cat > $FILE <<EOF
 {
         "user": "proxycti",
         "pass": "${NETHCTI_AMI_PASSWORD}",
-        "host": "127.0.0.1",
+        "host": "10.0.2.2",
         "port": "${ASTMANAGERPORT:-5038}",
         "prefix": "${NETHCTI_PREFIX}",
         "auto_c2c": "${NETHCTI_AUTOC2C}",
@@ -50,7 +50,7 @@ FILE=/etc/nethcti/dbstatic.d/asteriskcdrdb.json
 cat > $FILE <<EOF
 {
     "history_call": {
-        "dbhost": "${CDRDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${CDRDBUSER}",
@@ -58,7 +58,7 @@ cat > $FILE <<EOF
         "dbname": "${CDRDBNAME}"
     },
     "cel": {
-        "dbhost": "${CDRDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${CDRDBUSER}",
@@ -66,7 +66,7 @@ cat > $FILE <<EOF
         "dbname": "${CDRDBNAME}"
     },
     "voicemail": {
-        "dbhost": "${CDRDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${CDRDBUSER}",
@@ -74,7 +74,7 @@ cat > $FILE <<EOF
         "dbname": "${CDRDBNAME}"
     },
     "queue_log": {
-        "dbhost": "${CDRDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${CDRDBUSER}",
@@ -88,7 +88,7 @@ FILE=/etc/nethcti/dbstatic.d/asterisk.json
 cat > $FILE <<EOF
 {
     "ampusers": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -96,7 +96,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "incoming": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -104,7 +104,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "offhour": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -112,7 +112,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "rest_users": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -120,7 +120,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "userman_users": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -128,7 +128,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "rest_cti_profiles_paramurl": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -136,7 +136,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "pin": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -144,7 +144,7 @@ cat > $FILE <<EOF
         "dbname": "${AMPDBNAME}"
     },
     "pin_protected_routes": {
-        "dbhost": "${AMPDBHOST}",
+        "dbhost": "10.0.2.2",
         "dbport": "${NETHVOICE_MARIADB_PORT}",
         "dbtype": "mysql",
         "dbuser": "${AMPDBUSER}",
@@ -159,7 +159,7 @@ FILE=/etc/nethcti/dbstatic.d/nethcti3.json
 cat > $FILE <<EOF
 {
     "cti_phonebook": {
-        "dbhost":     "127.0.0.1",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${NETHVOICE_MARIADB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${NETHCTI_DB_USER}",
@@ -167,7 +167,7 @@ cat > $FILE <<EOF
         "dbname":     "nethcti3"
     },
     "customer_card": {
-        "dbhost":     "127.0.0.1",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${NETHVOICE_MARIADB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${NETHCTI_DB_USER}",
@@ -175,7 +175,7 @@ cat > $FILE <<EOF
         "dbname":     "nethcti3"
     },
     "user_dbconn": {
-        "dbhost":     "127.0.0.1",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${NETHVOICE_MARIADB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${NETHCTI_DB_USER}",
@@ -183,7 +183,7 @@ cat > $FILE <<EOF
         "dbname":     "nethcti3"
     },
     "auth": {
-        "dbhost":     "127.0.0.1",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${NETHVOICE_MARIADB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${NETHCTI_DB_USER}",
@@ -191,7 +191,7 @@ cat > $FILE <<EOF
         "dbname":     "nethcti3"
     },
     "offhour_files": {
-        "dbhost":     "127.0.0.1",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${NETHVOICE_MARIADB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${NETHCTI_DB_USER}",
@@ -199,7 +199,7 @@ cat > $FILE <<EOF
         "dbname":     "nethcti3"
     },
     "user_settings": {
-        "dbhost":     "127.0.0.1",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${NETHVOICE_MARIADB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${NETHCTI_DB_USER}",
@@ -213,11 +213,11 @@ FILE=/etc/nethcti/dbstatic.d/phonebook.json
 cat > $FILE <<EOF
 {
 	"phonebook": {
-        "dbhost":     "${PHONEBOOK_DB_HOST}",
+        "dbhost":     "10.0.2.2",
         "dbport":     "${PHONEBOOK_DB_PORT}",
         "dbtype":     "mysql",
         "dbuser":     "${PHONEBOOK_DB_USER}",
-	"dbpassword": "${PHONEBOOK_DB_PASS}",
+	"dbpassword":     "${PHONEBOOK_DB_PASS}",
         "dbname":     "${PHONEBOOK_DB_NAME}"
   }
 }
@@ -271,11 +271,11 @@ FILE=/etc/nethcti/services.json
 cat > $FILE <<EOF
 {
   "tcp": {
-    "port": "8182",
+    "port": "${NETHCTI_TCP_PORT}",
     "base_templates": "http://${NETHVOICE_HOST}/webrest/static/templates/notification_popup"
   },
   "tls": {
-    "port": "8183",
+    "port": "${NETHCTI_TLS_PORT}",
     "key": "/etc/certificates/NethServer.key",
     "cert": "/etc/certificates/NethServer.crt"
   },
@@ -299,8 +299,8 @@ cat > $FILE <<EOF
       "/offhour": "http://127.0.0.1:50009/offhour",
       "/profiling": "http://127.0.0.1:50010/profiling",
       "/videoconf": "http://127.0.0.1:50011/videoconf",
-      "/freepbx": "https://127.0.0.1/freepbx",
-      "/authentication": "http://127.0.0.1:50113/authentication"
+      "/freepbx": "https://10.0.2.2:${APACHE_PORT}/freepbx",
+      "/authentication": "http://127.0.0.1:50012/authentication"
     }
   },
   "rest": {
@@ -356,7 +356,7 @@ cat > $FILE <<EOF
       "address": "localhost"
     },
     "authentication": {
-      "port": "50113",
+      "port": "50012",
       "proto": "http",
       "address": "localhost"
     }
