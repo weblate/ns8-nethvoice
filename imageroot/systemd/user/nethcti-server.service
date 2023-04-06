@@ -40,6 +40,7 @@ ExecStart=/usr/bin/podman run \
     --env=CDRDBNAME \
     --env=CDRDBUSER \
     --env=CDRDBPASS \
+    --publish=${NETHCTI_SERVER_API_PORT}:${NETHCTI_SERVER_API_PORT} \
     --publish=${NETHCTI_TCP_PORT}:${NETHCTI_TCP_PORT} \
     --publish=${NETHCTI_TLS_PORT}:${NETHCTI_TLS_PORT} \
     --network slirp4netns:allow_host_loopback=true \
