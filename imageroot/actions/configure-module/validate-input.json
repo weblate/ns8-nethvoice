@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Configure nethvoice",
+    "title": "Configure NethVoice",
     "$id": "http://nethserver.org/json-schema/task/input/nethvoice/configure",
-    "description": "Configure nethvoice",
+    "description": "Configure NethVoice",
     "examples": [
         {
             "nethvoice_host": "voice.ns8.local",
@@ -30,7 +30,7 @@
     ],
     "properties": {
         "nethvoice_host_local_networks": {
-            "description": "Local networks where nethvoice instance should be exposed to",
+            "description": "Local networks where NethVoice instance should be exposed to",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -60,7 +60,7 @@
             }
         },
         "nethvoice_host": {
-            "description": "Host where nethvoice instance should be exposed to",
+            "description": "Host where NethVoice instance should be exposed to",
             "type": "string",
             "format": "hostname"
         },
@@ -160,7 +160,7 @@
             "type": "boolean"
         },
         "user_domain": {
-            "description": "Domain where the user accessing Nethvoice are stored",
+            "description": "Domain where the user accessing NethVoice are stored",
             "type": "string",
             "format": "hostname"
         }

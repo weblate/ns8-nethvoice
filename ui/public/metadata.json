@@ -1,19 +1,20 @@
 {
-  "name": "kickstart",
+  "name": "NethVoice",
   "description": {
-    "en": "My kickstart module"
+    "en": "NethVoice Module",
+    "it": "Modulo NethVoice"
   },
   "categories": [],
   "authors": [
     {
-      "name": "Name Surname",
-      "email": "author@yourmail.org"
+      "name": "Nethesis",
+      "email": "sviluppo@nethesis.it"
     }
   ],
   "docs": {
-    "documentation_url": "https://docs.kickstart.com/",
+    "documentation_url": "https://github.com/nethesis/ns8-nethvoice",
     "bug_url": "https://github.com/NethServer/dev",
-    "code_url": "https://github.com/author/ns8-kickstart"
+    "code_url": "https://github.com/nethesis/ns8-nethvoice"
   },
-  "source": "ghcr.io/nethserver/kickstart"
+  "source": "ghcr.io/nethesis/ns8-nethvoice"
 }
