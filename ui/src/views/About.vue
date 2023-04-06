@@ -44,7 +44,7 @@
                   :src="
                     app.logo
                       ? app.logo
-                      : require('@/assets/module_default_logo.png')
+                      : require('@/assets/nethvoice-logo.svg')
                   "
                   :alt="app.name + ' logo'"
                 />
