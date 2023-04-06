@@ -12,11 +12,13 @@ RUN groupadd -g 991 -r asterisk \
         asterisk18-debuginfo \
         asterisk18-addons-mysql \
         asterisk18-voicemail-odbcstorage \
+        asterisk-codecs-g729 \
         unixODBC \
         mysql-connector-odbc \
         unzip \
         wget \
     && rm -fr /var/cache/yum
+RUN rm -f /usr/lib64/asterisk/modules/res_timing_dahdi.so
 RUN mkdir download \
     && pushd download \
     && mkdir -p /var/lib/asterisk/sounds/{it,en,es,de,fr} \

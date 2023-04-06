@@ -13,8 +13,13 @@ cd certificates
 certtmp="NethServer.pem"
 keytmp="NethServer.key"
 csrtmp="NethServer.csr"
+dhtmp="dh.pem"
 
+# generate dhparam, the dsaparam makes it fast
 umask 0077
+dhtmp=$(mktemp dh.pem.XXXXXX)
+trap 'rm -f ${dhtmp}' EXIT
+openssl dhparam -dsaparam -out "${dhtmp}" 2048
 
 # we request csr
 openssl req -nodes -newkey rsa:2048 \
@@ -33,6 +38,8 @@ cp ${certtmp} "NethServer.crt"
 
 # required by asterisk
 mkdir -p integration/
-if [[ ! -f integration/certificate.pem ]]; then
-	ln -s ../$certtmp integration/certificate.pem
-fi
+chmod a+rx integration
+cat ${keytmp} ${certtmp} > integration/certificate.pem
+cat ${keytmp} > integration/webserver.key
+cat ${certtmp} > integration/webserver.crt
+chmod a+r integration/*

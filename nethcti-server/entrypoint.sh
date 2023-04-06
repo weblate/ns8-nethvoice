@@ -392,5 +392,8 @@ EOF
 # Prepare socket dir for reload
 mkdir -p /run/nethvoice/
 
+# Make sure config dir is writable from nethcti and freepbx containers
+chown -R asterisk:asterisk /etc/nethcti
+
 # Execute given CMD
 exec "$@"

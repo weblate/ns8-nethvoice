@@ -135,4 +135,7 @@ php /configure_users.php
 # Sync users
 fwconsole userman --syncall --force --verbose
 
+# Make sure config dir is writable from nethcti and freepbx containers
+chown -R asterisk:asterisk /etc/nethcti
+
 exec "$@"
