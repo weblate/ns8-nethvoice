@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2023 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# Execute systemd actions on services
+#
+# The script looks for files named <action>_<service> inside the notify directory
+
+for file in $(find notify/ -type f); do
+    action=$(basename $file | cut -d'_' -f1)
+    service=$(basename $file | cut -d'_' -f2)
+    rm -f $file
+    if [ "$action" = "reload" ]; then
+        # Execute reload only if the service is running
+        /usr/bin/systemctl --user is-active -q $service || continue
+    fi
+    /usr/bin/systemctl --user $action $service
+done
