@@ -395,5 +395,13 @@ mkdir -p /run/nethvoice/
 # Make sure config dir is writable from nethcti and freepbx containers
 chown -R asterisk:asterisk /etc/nethcti
 
+# Do not start if the service is not configured and the CMD has not been overriden
+echo -e "Action: Login\nActionID: 1\nUsername: proxycti\nSecret: ${NETHCTI_AMI_PASSWORD}\n" | nc 127.0.0.1 ${ASTMANAGERPORT:-5038} | grep -q "Authentication accepted"
+auth_ok=$?
+if [ ! -f /etc/nethcti/users.json -o $auth_ok -gt 0 ]  && [ "$1 $2" == "npm start" ]; then
+    echo "Configuration is not ready: server not started."
+    exit 0
+fi
+
 # Execute given CMD
 exec "$@"

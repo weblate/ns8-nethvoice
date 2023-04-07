@@ -4,8 +4,6 @@
 #
 [Unit]
 Description=NethCTI ui daemon
-Wants=nethcti-server.service
-After=nethcti-server.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
