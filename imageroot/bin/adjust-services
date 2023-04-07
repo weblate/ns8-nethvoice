@@ -7,7 +7,7 @@
 
 # Execute systemd actions on services
 #
-# The script looks for files named <srestart>_<service> inside the notify directory
+# The script looks for files named <action>_<service> inside the notify directory
 
 for file in $(find notify/ -type f); do
     action=$(basename $file | cut -d'_' -f1)
