@@ -27,7 +27,7 @@
               :label="$t('settings.nethvoice_host')"
               v-model="form.nethvoice_host"
               placeholder="voice.example.com"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="loadingState"
               :invalid-message="error.nethvoice_host"
               ref="nethvoice_host"
             />
@@ -35,23 +35,24 @@
               :label="$t('settings.nethcti_ui_host')"
               v-model="form.nethcti_ui_host"
               placeholder="cti.example.com"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="loadingState"
               :invalid-message="error.nethcti_ui_host"
               ref="nethcti_ui_host"
             />
             <cv-toggle
               :label="$t('settings.lets_encrypt')"
               value="lets_encrypt"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="loadingState"
               v-model="form.lets_encrypt"
             />
-            <!-- TODO: use cluster/list-user-domains to list available domains, otherwise allow manual imput --->
-            <cv-text-input
-              :label="$t('settings.user_domain')"
-              v-model="form.user_domain"
-              placeholder="domain.example.com"
-              :disabled="loading.getConfiguration || loading.configureModule"
+            <NsComboBox
+              :title="$t('settings.user_domain')"
+              :options="domainList"
+              :auto-highlight="true"
+              :label="$t('settings.user_domain_placeholder')"
+              :disabled="loadingState"
               :invalid-message="error.user_domain"
+              v-model="form.user_domain"
               ref="user_domain"
             />
             <cv-row v-if="error.configureModule">
@@ -68,9 +69,10 @@
               kind="primary"
               :icon="Save20"
               :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              >{{ $t("settings.save") }}</NsButton
+              :disabled="loadingState"
             >
+              {{ $t("settings.save") }}
+            </NsButton>
           </cv-form>
         </cv-tile>
       </cv-column>
@@ -116,7 +118,9 @@ export default {
       loading: {
         getConfiguration: false,
         configureModule: false,
+        userDomains: false,
       },
+      domainList: [],
       error: {
         getConfiguration: "",
         configureModule: "",
@@ -129,6 +133,11 @@ export default {
   },
   computed: {
     ...mapState(["instanceName", "core", "appName"]),
+    loadingState() {
+      return Object.values(this.loading).some(
+        (loadingState) => loadingState === true
+      );
+    },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -141,7 +150,7 @@ export default {
     next();
   },
   created() {
-    this.getConfiguration();
+    this.getUserDomains();
   },
   methods: {
     async getConfiguration() {
@@ -189,8 +198,6 @@ export default {
     getConfigurationCompleted(taskContext, taskResult) {
       this.loading.getConfiguration = false;
       const config = taskResult.output;
-
-      console.log("config", config);
 
       this.form.nethvoice_host = config.nethvoice_host;
       this.form.nethcti_ui_host = config.nethcti_ui_host;
@@ -295,6 +302,60 @@ export default {
       this.loading.configureModule = false;
 
       // reload configuration
+      this.getConfiguration();
+    },
+    async getUserDomains() {
+      this.loading.userDomains = true;
+
+      const taskAction = "list-user-domains";
+      const eventId = this.getUuid();
+
+      // register to task error
+      this.core.$root.$once(
+        `${taskAction}-aborted-${eventId}`,
+        this.getUserDomainsAborted
+      );
+
+      // register to task completion
+      this.core.$root.$once(
+        `${taskAction}-completed-${eventId}`,
+        this.getUserDomainsCompleted
+      );
+
+      const res = await to(
+        this.createClusterTaskForApp({
+          action: taskAction,
+          extra: {
+            title: this.$t("action." + taskAction),
+            isNotificationHidden: true,
+            eventId,
+          },
+        })
+      );
+      const err = res[0];
+
+      if (err) {
+        console.error(`error creating task ${taskAction}`, err);
+        this.error.getConfiguration = this.getErrorMessage(err);
+        this.loading.userDomains = false;
+        return;
+      }
+    },
+    getUserDomainsAborted(taskResult, taskContext) {
+      console.error(`${taskContext.action} aborted`, taskResult);
+      this.error.getConfiguration = this.$t("error.generic_error");
+      this.loading.userDomains = false;
+      this.getConfiguration();
+    },
+    getUserDomainsCompleted(taskContext, taskResult) {
+      taskResult.output.domains.forEach((value) =>
+        this.domainList.push({
+          name: value.name,
+          label: value.name,
+          value: value.name,
+        })
+      );
+      this.loading.userDomains = false;
       this.getConfiguration();
     },
   },

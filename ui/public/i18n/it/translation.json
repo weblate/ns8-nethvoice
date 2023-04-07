@@ -38,7 +38,9 @@
         "nethvoice_host": "Host base di NethVoice",
         "save": "Salva",
         "title": "Impostazioni",
-        "user_domain": "Host Dominio Utenti"
+        "user_domain": "Host Dominio Utenti",
+        "user_domain_placeholder": "Seleziona un dominio utenti all'interno del cluster.",
+        "user_domain_selector": "Sorgente Dominio Utenti"
     },
     "status": {
         "app_images": "Immagine app|Immagini app",

@@ -38,7 +38,9 @@
     "nethvoice_host": "NethVoice base host",
     "save": "Save",
     "title": "Settings",
-    "user_domain": "User Domain"
+    "user_domain": "User Domain",
+    "user_domain_placeholder": "Select an available domain inside the cluster.",
+    "user_domain_selector": "User Domain Source"
   },
   "status": {
     "app_images": "App image | App images",
