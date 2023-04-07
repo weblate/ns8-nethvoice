@@ -396,7 +396,7 @@ mkdir -p /run/nethvoice/
 chown -R asterisk:asterisk /etc/nethcti
 
 # Do not start if the service is not configured and the CMD has not been overriden
-echo -e "Action: Login\nActionID: 1\nUsername: proxycti\nSecret: ${NETHCTI_AMI_PASSWORD}\n" | nc 127.0.0.1 ${ASTMANAGERPORT:-5038} | grep -q "Authentication accepted"
+echo -e "Action: Login\nActionID: 1\nUsername: proxycti\nSecret: ${NETHCTI_AMI_PASSWORD}\n" | nc 10.0.2.2 ${ASTMANAGERPORT:-5038} | grep -q "Authentication accepted"
 auth_ok=$?
 if [ ! -f /etc/nethcti/users.json -o $auth_ok -gt 0 ]  && [ "$1 $2" == "npm start" ]; then
     echo "Configuration is not ready: server not started."
