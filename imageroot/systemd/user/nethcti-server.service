@@ -6,7 +6,6 @@
 Description=NethCTI server daemon
 Wants=asterisk.service
 After=asterisk.service
-ConditionPathExists=%S/state/notify/
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
