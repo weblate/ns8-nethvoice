@@ -161,8 +161,7 @@
         },
         "user_domain": {
             "description": "Domain where the user accessing NethVoice are stored",
-            "type": "string",
-            "format": "hostname"
+            "type": "string"
         }
     }
 }
