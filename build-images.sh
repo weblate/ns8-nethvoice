@@ -30,7 +30,7 @@ buildah add "${container}" ui/dist /ui
 # Setup the entrypoint, ask to reserve one TCP port with the label and set a rootless container
 buildah config \
     --label="org.nethserver.authorizations=traefik@any:routeadm node:fwadm" \
-    --label="org.nethserver.tcp-ports-demand=24" \
+    --label="org.nethserver.tcp-ports-demand=4024" \
     --label="org.nethserver.rootfull=0" \
     --label="org.nethserver.images=$repobase/nethvoice-mariadb:${IMAGETAG:-latest} $repobase/nethvoice-freepbx:${IMAGETAG:-latest} $repobase/nethvoice-asterisk:${IMAGETAG:-latest} $repobase/nethvoice-cti-server:${IMAGETAG:-latest} $repobase/nethvoice-cti-ui:${IMAGETAG:-latest} $repobase/nethvoice-tancredi:${IMAGETAG:-latest} $repobase/nethvoice-janus:${IMAGETAG:-latest} $repobase/nethvoice-phonebook:${IMAGETAG:-latest}" \
     --entrypoint=/ \
@@ -312,6 +312,7 @@ echo "[*] Build Janus Gateway container"
 reponame="nethvoice-janus"
 container=$(buildah from docker.io/canyan/janus-gateway:master)
 buildah add "${container}" janus/ /
+buildah run "${container}" mkdir /etc/certificates
 buildah config --entrypoint='["/entrypoint.sh"]' "${container}"
 
 # Commit the image
