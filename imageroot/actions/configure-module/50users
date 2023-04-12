@@ -14,6 +14,7 @@ from agent.ldapproxy import Ldapproxy
 request = json.load(sys.stdin)
 domain = request.get('user_domain', '')
 domparams = Ldapproxy().get_domain(domain)
+agent.set_env('USER_DOMAIN', domain)
 if not domain or not domparams:
     sys.exit(0)
 
@@ -23,4 +24,3 @@ agent.set_env('NETHVOICE_LDAP_USER', domparams['bind_dn'])
 agent.set_env('NETHVOICE_LDAP_PASS', domparams['bind_password'])
 agent.set_env('NETHVOICE_LDAP_SCHEMA', domparams['schema'])
 agent.set_env('NETHVOICE_LDAP_BASE', domparams['base_dn'])
-agent.set_env('USER_DOMAIN', domain)
