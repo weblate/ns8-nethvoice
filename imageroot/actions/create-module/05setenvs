@@ -39,8 +39,9 @@ agent.set_env('NETHCTI_INTERNAL_REST_PORT9', port_list[17])
 agent.set_env('NETHCTI_INTERNAL_REST_PORT10', port_list[18])
 agent.set_env('NETHCTI_INTERNAL_REST_PORT11', port_list[19])
 agent.set_env('NETHCTI_INTERNAL_REST_PORT12', port_list[20])
-agent.set_env('NETHCTI_TCP_PORT', port_list[21])
-agent.set_env('NETHCTI_TLS_PORT', port_list[22])
+agent.set_env('NETHCTI_INTERNAL_REST_PORT13', port_list[21])
+agent.set_env('NETHCTI_TCP_PORT', port_list[22])
+agent.set_env('NETHCTI_TLS_PORT', port_list[23])
 
 # Set root password for MariaDB
 agent.set_env('MARIADB_ROOT_PASSWORD',''.join(random.choice(string.ascii_letters+string.digits) for _ in range(32)))
