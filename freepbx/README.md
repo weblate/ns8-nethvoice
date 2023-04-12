@@ -23,6 +23,15 @@ FreePBX and nethvoice-wizard-ui files are imported from NethVoice14 for NS7, net
     - `NETHCTI_DB_USER` NethCTI MariaDB database user (default: nethcti3)
     - `NETHCTI_DB_PASSWORD` NethCTI MariaDB database password
     - `NETHCTI_AMI_PASSWORD` NethCTI AMI password 
+- `NETHVOICE_MARIADB_PORT` port of MariaDB phonebook database
+- `PHONEBOOK_DB_NAME` name of phonebook database
+- `PHONEBOOK_DB_USER` user of phonebook database
+- `PHONEBOOK_DB_PASS` password of phonebook database
+- `PHONEBOOK_DB_HOST` host of phonebook database
+- `PHONEBOOK_LDAP_LIMIT` limit of LDAP results. Default is 500
+- `PHONEBOOK_LDAP_PORT` port of LDAP server
+- `PHONEBOOK_LDAP_USER` user of LDAP server
+- `PHONEBOOK_LDAP_PASS` password of LDAP server
 - `APACHE_PORT` Port used for httpd
 - `TANCREDIPORT` Port used bt Tancredi
 - `BRAND_NAME` Name for branding (default: NethVoice)
