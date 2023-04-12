@@ -1,7 +1,12 @@
+//
+// Copyright (C) 2023 Nethesis S.r.l.
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import { loadLanguage } from "./i18n";
 
 import CarbonComponentsVue from "@carbon/vue";
 Vue.use(CarbonComponentsVue);
@@ -13,10 +18,6 @@ Vue.use(VueAxios, axios);
 
 import ns8Lib from "@nethserver/ns8-ui-lib";
 Vue.use(ns8Lib);
-
-// global mixin to set page title
-import { PageTitleService } from "@nethserver/ns8-ui-lib";
-Vue.mixin(PageTitleService);
 
 // i18n
 import VueI18n from "vue-i18n";
@@ -35,10 +36,8 @@ for (const f in Filters) {
 
 Vue.use(VueI18n);
 const i18n = new VueI18n();
-const messages = require("../public/i18n/language.json");
-const langCode = navigator.language.substr(0, 2);
-i18n.setLocaleMessage(langCode, messages);
-i18n.locale = langCode;
+const navigatorLang = navigator.language.substring(0, 2);
+loadLanguage(navigatorLang, i18n);
 
 Vue.config.productionTip = false;
 

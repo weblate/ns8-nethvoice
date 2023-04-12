@@ -7,8 +7,15 @@
 
 import json
 import sys
+import os
+
 import agent
 
-config = {}
+config = {
+    'nethvoice_host': os.getenv('NETHVOICE_HOST', ''),
+    'nethcti_ui_host': os.getenv('NETHCTI_UI_HOST', ''),
+    'lets_encrypt': os.getenv('TRAEFIK_LETS_ENCRYPT') == 'True',
+    'user_domain': os.getenv('USER_DOMAIN', '')
+}
 
 json.dump(config, fp=sys.stdout)

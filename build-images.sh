@@ -10,34 +10,15 @@ repobase="${REPOBASE:-ghcr.io/nethserver}"
 # Configure the image name
 reponame="nethvoice"
 
-# Create a new empty container image
-container=$(buildah from scratch)
-
-# Reuse existing nodebuilder-nethvoice container, to speed up builds
-#if ! buildah containers --format "{{.ContainerName}}" | grep -q nodebuilder-nethvoice; then
-#    echo "Pulling NodeJS runtime..."
-#    buildah from --name nodebuilder-nethvoice -v "${PWD}:/usr/src:Z" docker.io/library/node:lts
-#fi
-
-#echo "Build static UI files with node..."
-#buildah run nodebuilder-nethvoice sh -c "cd /usr/src/ui && yarn install && yarn build"
-
-# Add imageroot directory to the container image
-buildah add "${container}" imageroot /imageroot
-mkdir -p  ui/dist
-touch ui/dist/index.html
-buildah add "${container}" ui/dist /ui
-# Setup the entrypoint, ask to reserve one TCP port with the label and set a rootless container
-buildah config \
-    --label="org.nethserver.authorizations=traefik@any:routeadm node:fwadm" \
-    --label="org.nethserver.tcp-ports-demand=4024" \
-    --label="org.nethserver.rootfull=0" \
-    --label="org.nethserver.images=$repobase/nethvoice-mariadb:${IMAGETAG:-latest} $repobase/nethvoice-freepbx:${IMAGETAG:-latest} $repobase/nethvoice-asterisk:${IMAGETAG:-latest} $repobase/nethvoice-cti-server:${IMAGETAG:-latest} $repobase/nethvoice-cti-ui:${IMAGETAG:-latest} $repobase/nethvoice-tancredi:${IMAGETAG:-latest} $repobase/nethvoice-janus:${IMAGETAG:-latest} $repobase/nethvoice-phonebook:${IMAGETAG:-latest}" \
-    --entrypoint=/ \
-    "${container}"
-
-# Commit the image
-buildah commit "${container}" "${repobase}/${reponame}"
+# Build NS8 Module image
+buildah build \
+	--force-rm \
+	--layers \
+	--jobs "$(nproc)" \
+	--build-arg REPOBASE="${repobase}" \
+	--build-arg IMAGETAG="${IMAGETAG:-latest}" \
+	--target dist \
+	--tag "${repobase}/${reponame}"
 # Append the image URL to the images array
 images+=("${repobase}/${reponame}")
 

@@ -7,16 +7,16 @@
 
 import json
 import sys
+
 import agent
-import os
 from agent.ldapproxy import Ldapproxy
 
 request = json.load(sys.stdin)
 domain = request.get('user_domain', '')
-if not domain:
-    sys.exit(0)
-
 domparams = Ldapproxy().get_domain(domain)
+agent.set_env('USER_DOMAIN', domain)
+if not domain or not domparams:
+    sys.exit(0)
 
 agent.set_env('NETHVOICE_LDAP_HOST', domparams['host'])
 agent.set_env('NETHVOICE_LDAP_PORT', domparams['port'])

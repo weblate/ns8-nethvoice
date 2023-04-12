@@ -4,5 +4,23 @@
     "$id": "http://nethserver.org/json-schema/task/output/nethvoice/get-configuration",
     "description": "Get nethvoice configuration",
     "examples": [],
-    "type": "object"
+    "type": "object",
+    "properties": {
+        "nethvoice_host": {
+            "description": "Host where nethvoice instance should be exposed to",
+            "type": "string"
+        },
+        "nethcti_ui_host": {
+            "description": "CTI host, must be different than nethvoice_host",
+            "type": "string"
+        },
+        "lets_encrypt": {
+            "description": "Enable Let's Encrypt certificate",
+            "type": "boolean"
+        },
+        "user_domain": {
+            "description": "Domain where the user accessing Nethvoice are stored",
+            "type": "string"
+        }
+    }
 }
