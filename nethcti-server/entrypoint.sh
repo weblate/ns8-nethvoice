@@ -271,11 +271,11 @@ FILE=/etc/nethcti/services.json
 cat > $FILE <<EOF
 {
   "tcp": {
-    "port": "8182",
+    "port": "NETHCTI_TCP_PORT",
     "base_templates": "http://${NETHVOICE_HOST}/webrest/static/templates/notification_popup"
   },
   "tls": {
-    "port": "8183",
+    "port": "NETHCTI_TLS_PORT",
     "key": "/etc/certificates/NethServer.key",
     "cert": "/etc/certificates/NethServer.crt"
   },
@@ -285,78 +285,78 @@ cat > $FILE <<EOF
   "http_proxy": {
     "http_port":  "${NETHCTI_SERVER_API_PORT}",
     "router": {
-      "/user": "http://127.0.0.1:50000/user",
-      "/phonebook": "http://127.0.0.1:50001/phonebook",
-      "/astproxy": "http://127.0.0.1:50002/astproxy",
-      "/historycall": "http://127.0.0.1:50003/historycall",
-      "/histcallswitch": "http://127.0.0.1:50003/histcallswitch",
-      "/histcallsgroups": "http://127.0.0.1:50003/histcallsgroups",
-      "/static": "http://127.0.0.1:50004",
-      "/voicemail": "http://127.0.0.1:50005/voicemail",
-      "/dbconn": "http://127.0.0.1:50006/dbconn",
-      "/custcard": "http://127.0.0.1:50007/custcard",
-      "/streaming": "http://127.0.0.1:50008/streaming",
-      "/offhour": "http://127.0.0.1:50009/offhour",
-      "/profiling": "http://127.0.0.1:50010/profiling",
-      "/videoconf": "http://127.0.0.1:50011/videoconf",
-      "/freepbx": "https://127.0.0.1/freepbx",
-      "/authentication": "http://127.0.0.1:50113/authentication"
+      "/user": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT1}/user",
+      "/phonebook": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT2}/phonebook",
+      "/astproxy": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT3}/astproxy",
+      "/historycall": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT4}/historycall",
+      "/histcallswitch": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT4}/histcallswitch",
+      "/histcallsgroups": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT4}/histcallsgroups",
+      "/static": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT5}",
+      "/voicemail": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT6}/voicemail",
+      "/dbconn": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT7}/dbconn",
+      "/custcard": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT8}/custcard",
+      "/streaming": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT9}/streaming",
+      "/offhour": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT10}/offhour",
+      "/profiling": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT11}/profiling",
+      "/videoconf": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT12}/videoconf",
+      "/freepbx": "https://127.0.0.1:${APACHE_PORT}/freepbx",
+      "/authentication": "http://127.0.0.1:${NETHCTI_INTERNAL_REST_PORT13}/authentication"
     }
   },
   "rest": {
     "user": {
-      "port": "50000",
+      "port": "${NETHCTI_INTERNAL_REST_PORT1}",
       "address": "localhost"
     },
     "phonebook": {
-      "port":    "50001",
+      "port":    "${NETHCTI_INTERNAL_REST_PORT2}",
       "address": "localhost"
     },
     "astproxy": {
-      "port": "50002",
+      "port": "${NETHCTI_INTERNAL_REST_PORT3}",
       "address": "localhost"
     },
     "history": {
-      "port": "50003",
+      "port": "${NETHCTI_INTERNAL_REST_PORT4}",
       "address": "localhost"
     },
     "static": {
-      "port": "50004",
+      "port": "${NETHCTI_INTERNAL_REST_PORT5}",
       "address": "localhost",
       "webroot": "/usr/lib/node/nethcti-server/plugins/com_static_http/static",
       "customWebroot": "/var/lib/nethserver/nethcti/static"
     },
     "voicemail": {
-      "port": "50005",
+      "port": "${NETHCTI_INTERNAL_REST_PORT6}",
       "address": "localhost"
     },
     "dbconn": {
-      "port": "50006",
+      "port": "${NETHCTI_INTERNAL_REST_PORT7}",
       "address": "localhost"
     },
     "customer_card": {
-      "port": "50007",
+      "port": "${NETHCTI_INTERNAL_REST_PORT8}",
       "address": "localhost",
       "templates_customercards": "/var/lib/nethserver/nethcti/templates/customer_card"
     },
     "streaming": {
-      "port": "50008",
+      "port": "${NETHCTI_INTERNAL_REST_PORT9}",
       "address": "localhost"
     },
     "offhour": {
-      "port": "50009",
+      "port": "${NETHCTI_INTERNAL_REST_PORT10}",
       "address": "localhost"
     },
     "profiling": {
-      "port": "50010",
+      "port": "${NETHCTI_INTERNAL_REST_PORT11}",
       "address": "localhost"
     },
     "videoconf": {
-      "port": "50011",
+      "port": "${NETHCTI_INTERNAL_REST_PORT12}",
       "address": "localhost"
     },
     "authentication": {
-      "port": "50113",
+      "port": "${NETHCTI_INTERNAL_REST_PORT13}",
       "proto": "http",
       "address": "localhost"
     }

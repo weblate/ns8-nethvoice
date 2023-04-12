@@ -27,6 +27,7 @@ ExecStart=/usr/bin/podman run \
     --volume=./certificates:/etc/certificates:z \
     --volume=/dev/log:/dev/log \
     --env=ASTMANAGERPORT \
+    --env=APACHE_PORT \
     --env=NETHCTI* \
     --env=NETHVOICE* \
     --env=PHONEBOOK* \
