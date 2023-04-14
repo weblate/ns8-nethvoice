@@ -1,48 +1,131 @@
-FROM docker.io/library/centos:7.9.2009
-WORKDIR /var/lib/asterisk
-COPY etc/yum.repos.d/nethserver.repo /etc/yum.repos.d
-RUN groupadd -g 991 -r asterisk \
-    && useradd -u 990 -r -s /bin/false -d /var/lib/asterisk -M -c 'Asterisk User' -g asterisk asterisk \
-    && yum install -y \
-        asterisk18-core \
-        asterisk18-addons-core \
-        asterisk18-dahdi \
-        asterisk18-odbc \
-        asterisk18-voicemail \
-        asterisk18-debuginfo \
-        asterisk18-addons-mysql \
-        asterisk18-voicemail-odbcstorage \
-        asterisk-codecs-g729 \
-        unixODBC \
-        mysql-connector-odbc \
+FROM docker.io/library/debian:bullseye as build
+WORKDIR /build
+# download asterisk version
+ARG ASTERISK_VERSION=20.0.1
+COPY sha/asterisk-${ASTERISK_VERSION}.sha256 .
+ADD https://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz .
+# check sha matches and untar
+RUN sha256sum --check asterisk-${ASTERISK_VERSION}.sha256 \
+    && tar -zxvf asterisk-${ASTERISK_VERSION}.tar.gz
+# patches applied successfully, installing build dependencies
+RUN apt-get update \
+    && apt-get install -y \
+        # utils
         unzip \
+        # build
+        gcc \
+        g++ \
+        make \
         wget \
-    && rm -fr /var/cache/yum
-RUN rm -f /usr/lib64/asterisk/modules/res_timing_dahdi.so
-RUN mkdir download \
-    && pushd download \
-    && mkdir -p /var/lib/asterisk/sounds/{it,en,es,de,fr} \
-    && wget -nv https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-core-it-2.11.1.zip \
-    && wget -nv https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-extra-it-2.11.1.zip \
+        bzip2 \
+        patch \
+        file \
+        # core
+        uuid-dev \
+        libedit-dev \
+        libxml2-dev \
+        libsqlite3-dev \
+        # res_config_mysql
+        default-libmysqlclient-dev \
+        # cel_odbc
+        unixodbc-dev \
+        # snmp
+        libsnmp-dev \
+        # ldap
+        libldap2-dev \
+    && rm -rf /var/cache/apt/lists
+# prepare asterisk build
+WORKDIR /build/asterisk-${ASTERISK_VERSION}
+# copy and apply patches
+COPY patches/asterisk-18-mp3.patch .
+COPY patches/lazymembers.patch .
+RUN patch -p1 < asterisk-18-mp3.patch \
+    && patch -p1 < lazymembers.patch \
+    # configure build
+    && ./configure --with-jansson-bundled \
+    && make menuselect.makeopts \
+    && menuselect/menuselect \
+        # required modules
+        --enable chan_ooh323 \
+        --enable res_config_mysql \
+        --enable app_voicemail_odbc \
+        # disable modules
+        --disable CORE-SOUNDS-EN-GSM \
+        # disable deprecated modules
+        --disable res_adsi \
+        --disable app_getcpeid \
+        --disable app_adsiprog \
+        menuselect.makeopts \
+    # build asterisk
+    && make \
+    # install asterisk
+    && make install \
+    # generate samples
+    && make samples
+# add sounds to build while checking sha256sum
+COPY sha/asterisk-sounds.sha256 .
+ADD https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-core-it-2.11.1.zip .
+ADD https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-extra-it-2.11.1.zip .
+ADD https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-core-en-2.11.1.zip .
+ADD https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-extra-en-2.11.1.zip .
+ADD https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/es-ES/download/asterisk-sounds-core-es-ES-2.9.15.zip .
+ADD https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/es-ES/download/asterisk-sounds-extra-es-ES-2.9.15.zip .
+ADD https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/fr-FR/download/asterisk-sounds-core-fr-FR-2.3.10.zip .
+ADD https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/fr-FR/download/asterisk-sounds-extra-fr-FR-2.3.10.zip .
+ADD https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/de/download/asterisk-sounds-core-de-2.11.19.zip .
+ADD https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/de/download/asterisk-sounds-extra-de-2.11.19.zip .
+RUN sha256sum --check asterisk-sounds.sha256 \
     && unzip -o 'asterisk-sounds-*-it-*.zip' -d /var/lib/asterisk/sounds/it \
-    && wget -nv --no-check-certificate http://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/es-ES/download/asterisk-sounds-core-es-ES-2.9.15.zip \
-    && wget -nv --no-check-certificate https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/es-ES/download/asterisk-sounds-extra-es-ES-2.9.15.zip \
-    && unzip -o 'asterisk-sounds-*-es-*.zip' -d /var/lib/asterisk/sounds/es \
-    && wget -nv --no-check-certificate https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/fr-FR/download/asterisk-sounds-core-fr-FR-2.3.10.zip \
-    && wget -nv --no-check-certificate https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/fr-FR/download/asterisk-sounds-extra-fr-FR-2.3.10.zip \
-    && unzip -o 'asterisk-sounds-*-fr-*.zip' -d /var/lib/asterisk/sounds/fr \
-    && wget -nv --no-check-certificate https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/de/download/asterisk-sounds-core-de-2.11.19.zip \
-    && wget -nv --no-check-certificate https://www.asterisksounds.org/sites/asterisksounds.org/files/sounds/de/download/asterisk-sounds-extra-de-2.11.19.zip \
-    && unzip -o 'asterisk-sounds-*-de-*.zip' -d /var/lib/asterisk/sounds/de \
-    && wget -nv --no-check-certificate https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-core-en-2.11.1.zip \
-    && wget -nv --no-check-certificate https://github.com/nethesis/nethvoice-langs/releases/download/2.0.0/asterisk-sounds-extra-en-2.11.1.zip \
     && unzip -o 'asterisk-sounds-*-en-*.zip' -d /var/lib/asterisk/sounds/en \
-    && chown -R asterisk:asterisk /var/lib/asterisk/sounds \
-    && popd && rm -rf download
-COPY --chown=asterisk:asterisk etc/asterisk /etc/asterisk
-COPY etc/odbc.ini /etc/odbc.ini
-COPY var/lib/asterisk /var/lib/asterisk
-RUN chown asterisk:asterisk /var/lib/asterisk/db
+    && unzip -o 'asterisk-sounds-*-es-*.zip' -d /var/lib/asterisk/sounds/es \
+    && unzip -o 'asterisk-sounds-*-fr-*.zip' -d /var/lib/asterisk/sounds/fr \
+    && unzip -o 'asterisk-sounds-*-de-*.zip' -d /var/lib/asterisk/sounds/de
+
+
+FROM docker.io/library/debian:bullseye-slim as dist
+# install runtime dependencies
+RUN apt-get update \
+    && apt-get install -y \
+        # core
+        libxml2 \
+        libsqlite3-0 \
+        libedit2 \
+        # mysql
+        default-mysql-client-core \
+        # odbc
+        unixodbc \
+        # snmp
+        libsnmp40 \
+        # ldap
+        libldap-2.4-2 \
+    && rm -rf /var/cache/apt/lists \
+    # generate asterisk user and group
+    && groupadd -g 991 -r asterisk \
+    && useradd -u 990 -r -s /bin/bash -d /var/lib/asterisk -M -c 'Asterisk User' -g asterisk asterisk
+# copy config files
+COPY --from=build --chown=asterisk:asterisk /etc/asterisk /etc/asterisk
+COPY --chown=asterisk:asterisk conf/etc/asterisk /etc/asterisk
+# copy libraries
+COPY --from=build --chown=asterisk:asterisk /usr/lib/asterisk /usr/lib/asterisk
+COPY --from=build /usr/lib/libasterisk* /usr/lib/
+# copy binaries
+COPY --from=build /usr/sbin/astcanary /usr/sbin
+COPY --from=build /usr/sbin/astdb2bdb /usr/sbin
+COPY --from=build /usr/sbin/astdb2sqlite3 /usr/sbin
+COPY --from=build --chown=asterisk:asterisk /usr/sbin/asterisk /usr/sbin
+COPY --from=build /usr/sbin/astgenkey /usr/sbin
+COPY --from=build /usr/sbin/astversion /usr/sbin
+COPY --from=build /usr/sbin/autosupport /usr/sbin
+COPY --from=build /usr/sbin/rasterisk /usr/sbin
+COPY --from=build /usr/sbin/safe_asterisk /usr/sbin
+# copy variable files
+COPY --from=build --chown=asterisk:asterisk /var/lib/asterisk /var/lib/asterisk
+COPY --chown=asterisk:asterisk conf/var/lib/asterisk/agi-bin /var/lib/asterisk/agi-bin
+# copy miscellaneous files/dirs
+COPY --from=build /var/cache/asterisk /var/cache/asterisk
+COPY --from=build --chown=asterisk:asterisk /var/spool/asterisk /var/spool/asterisk
+COPY --from=build --chown=asterisk:asterisk /var/run/asterisk /var/run/asterisk
+COPY --from=build --chown=asterisk:asterisk /var/log/asterisk /var/log/asterisk
 COPY entrypoint.sh /entrypoint
 ENTRYPOINT [ "/entrypoint" ]
-CMD [ "/usr/sbin/asterisk", "-f", "-C", "/etc/asterisk/asterisk.conf" ]
+CMD [ "asterisk", "-f" ]

@@ -44,7 +44,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build Asterisk container"
 reponame="nethvoice-asterisk"
 pushd asterisk
-buildah build --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
+buildah build --force-rm --layers --jobs "$(nproc)" --target dist --tag "${repobase}/${reponame}"
 popd
 
 # Append the image URL to the images array

@@ -1,14 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 #
 # Copyright (C) 2022 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-# initialize manager.conf with credentials from environment
-if [[ ! -f /etc/asterisk/manager.conf ]]; then
-        # Configure asterisk manager
-        cat > /etc/asterisk/manager.conf <<EOF
+# If /etc/asterisk/manager.conf does not exist, init the file
+if [ ! -f /etc/asterisk/manager.conf ]; then
+    cat > /etc/asterisk/manager.conf <<EOF
 [general]
 enabled = yes
 port = ${ASTMANAGERPORT:-5038}
@@ -23,10 +22,10 @@ read = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,
 write = system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,cdr,dialplan,originate,message
 writetimeout = 5000
 
-#include manager_additional.conf
-#include manager_custom.conf
+#tryinclude manager_additional.conf
+#tryinclude manager_custom.conf
 EOF
-chown asterisk:asterisk /etc/asterisk/manager.conf
+    chown asterisk:asterisk /etc/asterisk/manager.conf
 fi
 
 # Configure ODBC for asteriskcdrdb
@@ -38,10 +37,5 @@ Port = ${NETHVOICE_MARIADB_PORT}
 Driver = MySQL
 Description = ODBC on asteriskcdrdb
 EOF
-
-chown asterisk:asterisk /var/lib/asterisk/db
-
-# Setup ca bundle for pjsip
-ln -sf /etc/pki/tls/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
 
 exec "$@"
