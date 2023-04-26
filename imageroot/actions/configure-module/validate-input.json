@@ -20,7 +20,9 @@
                 }
             ],
             "nethcti_log_level": "info",
-            "user_domain": "domain.ns8.local"
+            "user_domain": "domain.ns8.local",
+            "app_brand_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "flexisip_log_level": "debug"
         }
     ],
     "type": "object",
@@ -132,6 +134,16 @@
                 "warn"
             ]
         },
+        "flexisip_log_level": {
+            "description": "Log level of Flexisip",
+            "type": "string",
+            "enum": [
+                "debug",
+                "warning",
+                "error",
+                "message"
+            ]
+        },
         "conference_jitsi_url": {
             "description": "Jitsi conference URL",
             "type": "string",
@@ -161,6 +173,10 @@
         },
         "user_domain": {
             "description": "Domain where the user accessing NethVoice are stored",
+            "type": "string"
+        },
+        "app_brand_id": {
+            "description": "Mobile app brand ID used for push proxy",
             "type": "string"
         }
     }

@@ -22,7 +22,7 @@ COPY imageroot /imageroot
 COPY --from=ui_builder /app/dist /ui
 ENTRYPOINT [ "/" ]
 LABEL org.nethserver.authorizations="traefik@any:routeadm node:fwadm"
-LABEL org.nethserver.tcp-ports-demand="4024"
+LABEL org.nethserver.tcp-ports-demand="29"
 LABEL org.nethserver.rootfull="0"
 ARG REPOBASE=ghcr.io/nethserver
 ARG IMAGETAG=latest
@@ -33,4 +33,6 @@ LABEL org.nethserver.images="${REPOBASE}/nethvoice-mariadb:${IMAGETAG} \
     ${REPOBASE}/nethvoice-cti-ui:${IMAGETAG} \
     ${REPOBASE}/nethvoice-tancredi:${IMAGETAG} \
     ${REPOBASE}/nethvoice-janus:${IMAGETAG} \
-    ${REPOBASE}/nethvoice-phonebook:${IMAGETAG}"
+    ${REPOBASE}/nethvoice-phonebook:${IMAGETAG} \
+    ${REPOBASE}/nethvoice-flexisip:${IMAGETAG} \
+    docker.io/redis:7-alpine"
