@@ -83,7 +83,7 @@ response = agent.tasks.run(
         'http2https':  os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
         'lets_encrypt': lets_encrypt,
         'host': os.environ["NETHVOICE_HOST"],
-        'path': '/tancredi',
+        'path': '/provisioning',
     },
 )
 
