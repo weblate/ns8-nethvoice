@@ -20,8 +20,8 @@ RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/phpagi.conf
 RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/privacy.conf /etc/asterisk/
 RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/queues.conf /etc/asterisk/
 RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/ucc_restrict.conf /etc/asterisk/
-RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/agi-bin /var/lib/asterisk/
-RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/bin /var/lib/asterisk/
+RUN cp -a /var/www/html/freepbx/admin/modules/framework/amp_conf/agi-bin /var/lib/asterisk/
+RUN cp -a /var/www/html/freepbx/admin/modules/framework/amp_conf/bin /var/lib/asterisk/
 
 # Download other modules
 # for baseurl in $(grep wget retrieve_modules.sh | awk '{print $2}' | sed 's/archive.*/tags/'); do pkgurl=https://github.com$(curl $baseurl 2>/dev/null | grep '\.tar\.gz' | head -n1 | cut -d\" -f4) ; pkgname=$(echo $pkgurl | cut -d/ -f5 | tr '[:upper:]' '[:lower:]'); echo -e "RUN mkdir -p /var/www/html/freepbx/admin/modules/$pkgname && \\\n\t/bin/rm -fr /var/www/html/freepbx/admin/modules/$pkgname/* && \\\n\tcurl -sL $pkgurl -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/$pkgname"; done
