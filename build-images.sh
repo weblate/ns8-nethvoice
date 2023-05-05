@@ -69,7 +69,11 @@ EOF
 buildah copy "${container}" freepbx/var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
 
 buildah run "${container}" /bin/sh <<EOF
-sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:\$\{APACHE_PORT\}>/' /etc/apache2/sites-enabled/000-default.conf
+sed -i -e '/<VirtualHost \*:80>/a <LocationMatch "^\/nethvoice$">\n  Redirect 301 "%{HTTP:X-Forwarded-Proto}:\/\/%{HTTP:X-Forwarded-Host}\/nethvoice\/\n<\/LocationMatch>' \
+       -e '/<VirtualHost \*:80>/a <LocationMatch "^\/freepbx\/?$">\n  Redirect 301 "%{HTTP:X-Forwarded-Proto}:\/\/%{HTTP:X-Forwarded-Host}\/freepbx\/admin\/\n<\/LocationMatch>' \
+       -e '/<VirtualHost \*:80>/a <LocationMatch "^\/freepbx\/wizard$">\n  Redirect 301 "%{HTTP:X-Forwarded-Proto}:\/\/%{HTTP:X-Forwarded-Host}\/freepbx\/wizard\/\n<\/LocationMatch>' \
+       -e '/<VirtualHost \*:80>/a <LocationMatch "^\/freepbx\/visualplan$">\n  Redirect 301 "%{HTTP:X-Forwarded-Proto}:\/\/%{HTTP:X-Forwarded-Host}\/freepbx\/visualplan\/\n<\/LocationMatch>' \
+       -e 's/<VirtualHost \*:80>/<VirtualHost \*:\$\{APACHE_PORT\}>/' /etc/apache2/sites-enabled/000-default.conf
 sed -i 's/Listen 80/Listen \$\{APACHE_PORT\}/' /etc/apache2/ports.conf
 sed -i 's/Listen 443/Listen \$\{APACHE_SSL_PORT\}/' /etc/apache2/ports.conf
 echo '\n: \${APACHE_PORT:=80}\nexport APACHE_PORT\n: \${APACHE_SSL_PORT:=443}\nexport APACHE_SSL_PORT\n' >> /etc/apache2/envvars
