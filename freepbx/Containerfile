@@ -13,16 +13,15 @@ RUN mkdir -p \
 
 # Download framework module
 RUN curl -L https://github.com/FreePBX/framework/archive/refs/tags/release/16.0.39.tar.gz | tar xzp --strip-component=1 -C /var/www/html/freepbx/admin/modules/framework
-RUN cd /var/www/html/freepbx/admin/modules/framework
-RUN cp amp_conf/htdocs/* /var/www/html/freepbx/
-RUN cp amp_conf/astetc/enum.conf /etc/asterisk/
-RUN cp amp_conf/astetc/musiconhold.conf /etc/asterisk/
-RUN cp amp_conf/astetc/phpagi.conf /etc/asterisk/
-RUN cp amp_conf/astetc/privacy.conf /etc/asterisk/
-RUN cp amp_conf/astetc/queues.conf /etc/asterisk/
-RUN cp amp_conf/astetc/ucc_restrict.conf /etc/asterisk/
-RUN cp amp_conf/agi-bin /var/lib/asterisk/
-RUN cp amp_conf/bin /var/lib/asterisk/
+RUN cp -a /var/www/html/freepbx/admin/modules/framework/amp_conf/htdocs/* /var/www/html/freepbx/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/enum.conf /etc/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/musiconhold.conf /etc/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/phpagi.conf /etc/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/privacy.conf /etc/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/queues.conf /etc/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/astetc/ucc_restrict.conf /etc/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/agi-bin /var/lib/asterisk/
+RUN cp /var/www/html/freepbx/admin/modules/framework/amp_conf/bin /var/lib/asterisk/
 
 # Download other modules
 # for baseurl in $(grep wget retrieve_modules.sh | awk '{print $2}' | sed 's/archive.*/tags/'); do pkgurl=https://github.com$(curl $baseurl 2>/dev/null | grep '\.tar\.gz' | head -n1 | cut -d\" -f4) ; pkgname=$(echo $pkgurl | cut -d/ -f5 | tr '[:upper:]' '[:lower:]'); echo -e "RUN mkdir -p /var/www/html/freepbx/admin/modules/$pkgname && \\\n\t/bin/rm -fr /var/www/html/freepbx/admin/modules/$pkgname/* && \\\n\tcurl -sL $pkgurl -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/$pkgname"; done
@@ -247,25 +246,28 @@ COPY freepbx/var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/ht
 
 
 # sign modules
-RUN cat >> sh <EOF
+RUN cat >> sh <<EOF
 for MODULE in $(ls /var/www/html/freepbx/admin/modules/); do
 
     # check downloaded
     if [[ $(du -s /var/www/html/freepbx/admin/modules/$MODULE | awk '{print $1}' ) == 0 ]] ; then
-        echo "ERROR downloading module $BASENAME"
+        echo "ERROR downloading module $MODULE"
         exit 1
     fi
 
     # Remove older signature if it exists
-    rm -fr /var/www/html/freepbx/admin/modules/$MODULE/module.sig
+    rm -f /var/www/html/freepbx/admin/modules/$MODULE/module.sig
 
     # Sign the module 
-    [[ -n "${PASSPHRASE}" ]] && /usr/bin/expect <<EOD
-spawn ./sign.php /var/www/html/freepbx/admin/modules/$MODULE $GPGASH
-expect "Enter passphrase:"
-send "$PASSPHRASE\n"
-expect eof
-EOD
+    if [[ -n "${PASSPHRASE}" ]]; then
+        /usr/bin/expect <<-EOD
+		spawn ./sign.php /var/www/html/freepbx/admin/modules/$MODULE $GPGASH
+		expect "Enter passphrase:"
+		send "$PASSPHRASE\n"
+		expect eof
+		EOD
+	fi
+done
 EOF
 
 RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:\$\{APACHE_PORT\}>/' /etc/apache2/sites-enabled/000-default.conf && \
