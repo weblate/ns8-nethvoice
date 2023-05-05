@@ -14,8 +14,7 @@ RUN mkdir -p \
 # Download framework module
 RUN curl -L https://github.com/FreePBX/framework/archive/refs/tags/release/16.0.39.tar.gz | tar xzp --strip-component=1 -C /var/www/html/freepbx/admin/modules/framework
 RUN cd /var/www/html/freepbx/admin/modules/framework
-RUN cp amp_conf/htdocs /var/www/html/freepbx
-
+RUN cp amp_conf/htdocs/* /var/www/html/freepbx/
 RUN cp amp_conf/astetc/enum.conf /etc/asterisk/
 RUN cp amp_conf/astetc/musiconhold.conf /etc/asterisk/
 RUN cp amp_conf/astetc/phpagi.conf /etc/asterisk/
