@@ -239,7 +239,7 @@ RUN chown -R asterisk:asterisk \
 
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
-COPY freepbx/var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
+COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
 
 
 # sign modules
