@@ -253,6 +253,15 @@ ENTRYPOINT ["/entrypoint"]
 RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-pyodbc python3-pycurl pip
 RUN pip install mysql.connector
 
+# Use PHP development ini configuration and enable logging on syslog
+RUN cp -a /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+RUN sed -i 's/^;error_log = syslog/error_log = \/dev\/stderr/' /usr/local/etc/php/php.ini
+RUN echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/freepbx.ini
+RUN echo "variables_order = \"EGPCS\"" >> /usr/local/etc/php/conf.d/freepbx.ini
+
+# Enable environment variables
+RUN sed -i 's/^variables_order = "GPCS"/variables_order = "EGPCS"/' /usr/local/etc/php/php.ini
+
 # Install php additional modules
 RUN docker-php-source extract
 # install pdo_mysql
@@ -265,15 +274,6 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so && docker-php
 RUN docker-php-ext-configure sysvsem && docker-php-ext-install sysvsem
 # Remove php sources now that additional modules are installed
 RUN docker-php-source delete
-
-# Use PHP development ini configuration and enable logging on syslog
-RUN cp -a /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
-RUN sed -i 's/^;error_log = syslog/error_log = \/dev\/stderr/' /usr/local/etc/php/php.ini
-RUN echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/freepbx.ini
-RUN echo "variables_order = \"EGPCS\"" >> /usr/local/etc/php/conf.d/freepbx.ini
-
-# Enable environment variables
-RUN sed -i 's/^variables_order = "GPCS"/variables_order = "EGPCS"/' /usr/local/etc/php/php.ini
 
 # Install nethvoice-wizard-restapi
 RUN mkdir -p /var/www/html/freepbx/rest && \
