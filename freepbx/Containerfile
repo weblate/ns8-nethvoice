@@ -256,7 +256,7 @@ RUN pip install mysql.connector
 # Install php additional modules
 RUN docker-php-source extract
 # install pdo_mysql
-RUN docker-php-ext-configure pdo_mysql && ocker-php-ext-install pdo_mysql
+RUN docker-php-ext-configure pdo_mysql && docker-php-ext-install pdo_mysql
 # install php gettext
 RUN docker-php-ext-configure gettext && docker-php-ext-install gettext
 # install ldap
