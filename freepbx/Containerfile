@@ -250,7 +250,8 @@ COPY entrypoint.sh /entrypoint
 ENTRYPOINT ["/entrypoint"]
 
 # Install additional packages
-RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-mysql.connector python3-pyodbc python3-pycurl
+RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-pyodbc python3-pycurl pip
+RUN pip install mysql.connector
 
 # Install php additional modules
 RUN docker-php-source extract
