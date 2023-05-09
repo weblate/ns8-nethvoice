@@ -262,7 +262,7 @@ RUN docker-php-ext-configure gettext && docker-php-ext-install gettext
 # install ldap
 RUN ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so && docker-php-ext-configure ldap && docker-php-ext-install ldap
 # install php semaphores (sysvsem)
-RUN docker-php-ext-configure sysvsem docker-php-ext-install sysvsem
+RUN docker-php-ext-configure sysvsem && docker-php-ext-install sysvsem
 # Remove php sources now that additional modules are installed
 RUN docker-php-source delete
 
@@ -278,6 +278,7 @@ RUN sed -i 's/^variables_order = "GPCS"/variables_order = "EGPCS"/' /usr/local/e
 # Install nethvoice-wizard-restapi
 RUN mkdir -p /var/www/html/freepbx/rest && \
 	curl -L https://github.com/nethesis/nethvoice-wizard-restapi/archive/refs/heads/ns8.tar.gz -o - | tar xzp --strip-component=1 -C /var/www/html/freepbx/rest/ && \
+	cd /var/www/html/freepbx/rest/ && \
 	curl -s https://getcomposer.org/installer | php && \
 	COMPOSER_ALLOW_SUPERUSER=1 php composer.phar install --no-dev && \
 	rm -fr README.md composer.json composer.lock composer.phar
