@@ -262,13 +262,10 @@ RUN echo "variables_order = \"EGPCS\"" >> /usr/local/etc/php/conf.d/freepbx.ini
 # Enable environment variables
 RUN sed -i 's/^variables_order = "GPCS"/variables_order = "EGPCS"/' /usr/local/etc/php/php.ini
 
-RUN echo '############################################' && pwd && ls
 # Install php additional modules
 RUN docker-php-source extract
 # install pdo_mysql
-RUN echo '############################################' && pwd && ls
 RUN docker-php-ext-configure pdo_mysql && docker-php-ext-install pdo_mysql
-RUN echo '############################################' && pwd && ls
 # install php gettext
 RUN docker-php-ext-configure gettext && docker-php-ext-install gettext
 # install ldap
@@ -285,6 +282,9 @@ RUN mkdir -p /var/www/html/freepbx/rest && \
 	curl -s https://getcomposer.org/installer | php && \
 	COMPOSER_ALLOW_SUPERUSER=1 php composer.phar install --no-dev && \
 	rm -fr README.md composer.json composer.lock composer.phar
+
+# Install nethvoice-wizard-ui
+RUN curl -L https://github.com/nethesis/ns8-nethvoice/releases/download/0.0.0/wizard.tar.gz -o - | tar xzp --strip-component=1 -C /var/www/html/freepbx/
 
 # enable apache rewrite module
 RUN a2enmod rewrite proxy*
