@@ -284,7 +284,7 @@ RUN mkdir -p /var/www/html/freepbx/rest && \
 	rm -fr README.md composer.json composer.lock composer.phar
 
 # Install nethvoice-wizard-ui
-RUN curl -L https://github.com/nethesis/ns8-nethvoice/releases/download/0.0.0/wizard.tar.gz -o - | tar xzp --strip-component=1 -C /var/www/html/freepbx/
+RUN curl -L https://github.com/nethesis/ns8-nethvoice/releases/download/0.0.0/wizard.tar.gz -o - | tar xzp -C /var/www/html/freepbx/
 
 # enable apache rewrite module
 RUN a2enmod rewrite proxy*
