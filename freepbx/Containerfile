@@ -250,7 +250,7 @@ COPY entrypoint.sh /entrypoint
 ENTRYPOINT ["/entrypoint"]
 
 # Install additional packages
-RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-pyodbc python3-pycurl pip
+RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-pyodbc python3-pycurl pip gettext libldap-2.4-2 libsodium-dev
 RUN pip install mysql.connector
 
 # Use PHP development ini configuration and enable logging on syslog
