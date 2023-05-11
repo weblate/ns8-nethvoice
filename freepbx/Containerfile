@@ -1,4 +1,4 @@
-FROM docker.io/library/php:8.1-apache as production
+FROM docker.io/library/php:apache as production
 
 RUN groupadd -g 991 -r asterisk && useradd -u 990 -r -s /bin/false -d /var/lib/asterisk -M -c 'Asterisk User' -g asterisk asterisk
 
@@ -240,6 +240,11 @@ RUN chown -R asterisk:asterisk \
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
+#COPY freepbx/var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
+COPY etc /
+COPY initdb.d /
+COPY usr /
+COPY var /
 
 RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:\$\{APACHE_PORT\}>/' /etc/apache2/sites-enabled/000-default.conf && \
 	sed -i 's/Listen 80/Listen \$\{APACHE_PORT\}/' /etc/apache2/ports.conf && \

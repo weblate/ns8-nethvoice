@@ -52,7 +52,7 @@ images+=("${repobase}/${reponame}")
 
 
 ##########################
-##      FreePBX 14      ##
+##      FreePBX 16      ##
 ##########################
 echo "[*] Build FreePBX container"
 reponame="nethvoice-freepbx"
