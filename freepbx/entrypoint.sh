@@ -7,7 +7,7 @@
 
 # Customized wizard page
 cat > /etc/apache2/sites-available/wizard.conf <<EOF
-Alias /$(echo ${BRAND_NAME:=NethVoice} | tr '[:upper:]' '[:lower:]') /var/www/html/freepbx/wizard
+Alias /$(echo "${BRAND_NAME:=NethVoice}" | tr '[:upper:]' '[:lower:]') /var/www/html/freepbx/wizard
 EOF
 
 # Link rewrite configuration
@@ -137,5 +137,8 @@ fwconsole userman --syncall --force --verbose
 
 # Make sure config dir is writable from nethcti and freepbx containers
 chown -R asterisk:asterisk /etc/nethcti
+
+# Load apache envvars
+source /etc/apache2/envvars
 
 exec "$@"
