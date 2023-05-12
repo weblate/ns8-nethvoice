@@ -138,6 +138,10 @@ fwconsole userman --syncall --force --verbose
 # Make sure config dir is writable from nethcti and freepbx containers
 chown -R asterisk:asterisk /etc/nethcti
 
+# Change Apache httpd port
+sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:${APACHE_PORT}>/" /etc/apache2/sites-enabled/000-default.conf
+sed -i "s/Listen 80/Listen ${APACHE_PORT}/" /etc/apache2/ports.conf
+
 # Load apache envvars
 source /etc/apache2/envvars
 

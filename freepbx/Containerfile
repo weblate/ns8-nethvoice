@@ -252,11 +252,6 @@ COPY configure_users.php /
 
 RUN ln -sf /var/lib/asterisk/bin/fwconsole /usr/bin/fwconsole
 
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:\$\{APACHE_PORT\}>/' /etc/apache2/sites-enabled/000-default.conf && \
-	sed -i 's/Listen 80/Listen \$\{APACHE_PORT\}/' /etc/apache2/ports.conf && \
-	sed -i 's/Listen 443/Listen \$\{APACHE_SSL_PORT\}/' /etc/apache2/ports.conf && \
-	echo '\n: \${APACHE_PORT:=80}\nexport APACHE_PORT\n: \${APACHE_SSL_PORT:=443}\nexport APACHE_SSL_PORT\n' >> /etc/apache2/envvars
-
 # Install additional packages
 RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-pyodbc python3-pycurl pip gettext libldap-2.4-2 libsodium-dev
 RUN pip install mysql.connector
@@ -305,4 +300,5 @@ RUN mkdir -p /usr/share/phonebooks/ && \
 	curl -L https://github.com/nethesis/nethserver-phonebook-mysql/archive/refs/heads/ns8.tar.gz -o - | tar xzp --strip-component=5 -C /usr/share/phonebooks/ nethserver-phonebook-mysql-ns8/root/usr/share/phonebooks
 
 COPY entrypoint.sh /entrypoint
+CMD ["apache2-foreground","-f","/etc/apache2/apache2.conf"]
 ENTRYPOINT ["/entrypoint"]
