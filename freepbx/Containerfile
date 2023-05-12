@@ -1,4 +1,4 @@
-FROM docker.io/library/php:apache as production
+FROM docker.io/library/php:8.0-apache as production
 
 RUN groupadd -g 991 -r asterisk && useradd -u 990 -r -s /bin/false -d /var/lib/asterisk -M -c 'Asterisk User' -g asterisk asterisk
 
