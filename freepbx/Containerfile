@@ -245,6 +245,8 @@ RUN chown asterisk:asterisk \
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
+# fix endpointman (but we need to remove it)
+RUN sed -i 's/\(\$[a-zA-Z0-9_]*\){\([^}]*\)}/\1[\2]/g' /var/www/html/freepbx/admin/modules/endpointman/lib/json.class.php
 #COPY freepbx/var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
 COPY etc/amportal.conf /etc
 COPY initdb.d/initdb.php /initdb.d/
@@ -256,7 +258,20 @@ COPY configure_users.php /
 RUN ln -sf /var/lib/asterisk/bin/fwconsole /usr/bin/fwconsole
 
 # Install additional packages
-RUN apt-get update && apt-get install -y gnupg mycli libldap2-dev zip cron python3-pyodbc python3-pycurl pip gettext libldap-2.4-2 libsodium-dev
+RUN apt-get update && apt-get install -y \
+	gnupg \
+	mycli \
+	libldap2-dev \
+	zip \
+	cron \
+	python3-pyodbc \
+	python3-pycurl \
+	pip \
+	gettext \
+	libldap-2.4-2 \
+	libsodium-dev \
+	sox
+
 RUN pip install mysql.connector
 
 # Use PHP development ini configuration and enable logging on syslog
