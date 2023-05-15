@@ -239,6 +239,9 @@ RUN chown -R asterisk:asterisk \
 	/var/www/html/freepbx/admin/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/*/assets/less/cache
 
+RUN chown asterisk:asterisk \
+	/var/www/html/freepbx/admin/assets/js/
+
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
