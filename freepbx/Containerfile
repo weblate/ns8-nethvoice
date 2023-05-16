@@ -212,6 +212,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/voicemail && \
 
 RUN mkdir -p \
 	/var/www/html/freepbx/admin/assets/less/cache \
+	/var/www/html/freepbx/admin/brand/ \
 	/var/www/html/freepbx/admin/modules/calendar/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/cdr/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/certman/assets/less/cache \
@@ -254,6 +255,10 @@ COPY usr/sbin/asterisk /usr/sbin/
 COPY var/www/html/push-proxy /var/www/html/push-proxy
 COPY usr/src/nethvoice/samples/* /usr/src/nethvoice/samples/
 COPY configure_users.php /
+
+# Add branding
+COPY var/www/html/freepbx/admin/brand/* /var/www/html/freepbx/admin/brand/
+
 
 RUN ln -sf /var/lib/asterisk/bin/fwconsole /usr/bin/fwconsole
 
