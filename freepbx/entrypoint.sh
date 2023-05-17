@@ -145,4 +145,86 @@ sed -i "s/Listen 80/Listen ${APACHE_PORT}/" /etc/apache2/ports.conf
 # Load apache envvars
 source /etc/apache2/envvars
 
+# Install FreePBX modules if required
+module_status=$(mktemp)
+trap 'rm -f ${module_status}' EXIT
+fwconsole ma list | grep '^| ' | grep -v '^| Module'| awk '{print $2,$6}' > $module_status
+for module in \
+        recordings \
+        announcement \
+        framework \
+        arimanager \
+        asteriskinfo \
+        backup \
+        blacklist \
+        bosssecretary \
+        bulkdids \
+        calendar \
+        callback \
+        callforward \
+        callrecording \
+        callwaiting \
+        cdr \
+        cel \
+        certman \
+        conferences \
+        core \
+        customappsreg \
+        customcontexts \
+        dashboard \
+        daynight \
+        directdid \
+        disa \
+        donotdisturb \
+        endpointman \
+        extraoptions \
+        fax \
+        featurecodeadmin \
+        filestore \
+        findmefollow \
+        freepbx_pin \
+        googletts \
+        iaxsettings \
+        inboundlookup \
+        infoservices \
+        ivr \
+        languages \
+        logfiles \
+        manager \
+        miscapps \
+        music \
+        nethcqr \
+        nethcti3 \
+        nethdash \
+        outboundlookup \
+        outroutemsg \
+        paging \
+        parking \
+        pin \
+        pm2 \
+        queueexit \
+        queuemetrics \
+        queueoptions \
+        queueprio \
+        queues \
+        rapidcode \
+        recallonbusy \
+        returnontransfer \
+        ringgroups \
+        setcid \
+        sipsettings \
+        soundlang \
+        timeconditions \
+        userman \
+        visualplan \
+        vmblast \
+        voicemail
+do
+        if grep -q "$module Enabled" $module_status; then
+                echo "Module $module enabled"
+        else
+                fwconsole moduleadmin install $module
+        fi
+done
+
 exec "$@"
