@@ -259,7 +259,6 @@ COPY configure_users.php /
 # Add branding
 COPY var/www/html/freepbx/admin/brand/* /var/www/html/freepbx/admin/brand/
 
-
 RUN ln -sf /var/lib/asterisk/bin/fwconsole /usr/bin/fwconsole
 
 # Install additional packages
@@ -275,7 +274,8 @@ RUN apt-get update && apt-get install -y \
 	gettext \
 	libldap-2.4-2 \
 	libsodium-dev \
-	sox
+	sox \
+	node
 
 RUN pip install mysql.connector
 
