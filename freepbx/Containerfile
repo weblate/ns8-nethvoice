@@ -84,7 +84,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/dashboard && \
 	curl -sL https://github.com/FreePBX/dashboard/archive/refs/tags/release/16.0.16.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/dashboard
 RUN mkdir -p /var/www/html/freepbx/admin/modules/disa && \
 	/bin/rm -fr /var/www/html/freepbx/admin/modules/disa/* && \
-	curl -sL https://github.com/FreePBX/disa/archive/refs/tags/release/17.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/disa
+	curl -sL https://github.com/FreePBX/disa/archive/refs/tags/release/16.0.4.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/disa
 RUN mkdir -p /var/www/html/freepbx/admin/modules/donotdisturb && \
 	/bin/rm -fr /var/www/html/freepbx/admin/modules/donotdisturb/* && \
 	curl -sL https://github.com/FreePBX/donotdisturb/archive/refs/tags/release/16.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/donotdisturb
@@ -126,7 +126,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/manager && \
 	curl -sL https://github.com/FreePBX/manager/archive/refs/tags/release/16.0.17.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/manager
 RUN mkdir -p /var/www/html/freepbx/admin/modules/miscapps && \
 	/bin/rm -fr /var/www/html/freepbx/admin/modules/miscapps/* && \
-	curl -sL https://github.com/FreePBX/miscapps/archive/refs/tags/release/17.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/miscapps
+	curl -sL https://github.com/FreePBX/miscapps/archive/refs/tags/release/16.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/miscapps
 RUN mkdir -p /var/www/html/freepbx/admin/modules/music && \
 	/bin/rm -fr /var/www/html/freepbx/admin/modules/music/* && \
 	curl -sL https://github.com/FreePBX/music/archive/refs/tags/release/16.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/music
