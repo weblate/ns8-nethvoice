@@ -263,19 +263,19 @@ RUN ln -sf /var/lib/asterisk/bin/fwconsole /usr/bin/fwconsole
 
 # Install additional packages
 RUN apt-get update && apt-get install -y \
-	gnupg \
-	mycli \
-	libldap2-dev \
-	zip \
 	cron \
-	python3-pyodbc \
-	python3-pycurl \
-	pip \
 	gettext \
+	gnupg \
+	libldap2-dev \
 	libldap-2.4-2 \
 	libsodium-dev \
+	mycli \
+	node \
+	pip \
+	python3-pycurl \
+	python3-pyodbc \
 	sox \
-	node
+	zip
 
 RUN pip install mysql.connector
 
