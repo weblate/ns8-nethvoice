@@ -180,8 +180,6 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/customcontexts && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-customcontexts/archive/refs/tags/release/13.0.3.4.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/customcontexts
 RUN mkdir -p /var/www/html/freepbx/admin/modules/directdid && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/directdid/archive/1.1.8.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/directdid
-RUN mkdir -p /var/www/html/freepbx/admin/modules/endpointman && \
-	curl -sL ${GH_AUTH} https://github.com/nethesis/endpointman/archive/1.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/endpointman
 RUN mkdir -p /var/www/html/freepbx/admin/modules/extraoptions && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-extraoptions/archive/master.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/extraoptions
 RUN mkdir -p /var/www/html/freepbx/admin/modules/inboundlookup && \
@@ -246,8 +244,6 @@ RUN chown asterisk:asterisk \
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
-# fix endpointman (but we need to remove it)
-RUN sed -i 's/\(\$[a-zA-Z0-9_]*\){\([^}]*\)}/\1[\2]/g' /var/www/html/freepbx/admin/modules/endpointman/lib/json.class.php
 #COPY freepbx/var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
 COPY etc/amportal.conf /etc
 COPY initdb.d/initdb.php /initdb.d/
