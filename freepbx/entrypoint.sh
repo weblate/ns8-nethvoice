@@ -176,7 +176,6 @@ for module in \
         directdid \
         disa \
         donotdisturb \
-        endpointman \
         extraoptions \
         fax \
         featurecodeadmin \
@@ -220,12 +219,9 @@ for module in \
         vmblast \
         voicemail
 do
-    if grep -q $module $module_status; then
-        if grep -q "Enabled" $module_status; then
-            echo "Module $module enabled"
-        else
-            fwconsole moduleadmin install $module
-        fi
+    if grep -q "$module " $module_status && ! grep -q "$module Enabled" $module_status ; then
+        echo Installng module $module
+        fwconsole moduleadmin install $module
     fi
 done
 
