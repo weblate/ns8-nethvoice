@@ -85,3 +85,12 @@ if (empty($res)) {
         // Enable needreload
         $db->query("UPDATE `asterisk`.`admin` SET `value` = 'true' WHERE `variable` = 'need_reload'");
 }
+
+// Cleanup freepbx_settings from deprecated entries
+$deprecated = array(
+	'AST_FUNC_CONNECTEDLINE',
+	'AST_FUNC_MASTER_CHANNEL',
+	'AST_FUNC_SHARED'
+);
+$sql = 'DELETE FROM `asterisk`.`freepbx_settings` WHERE `keyword` IN ("'.implode('","',$deprecated).'")';
+$db->query($sql);
