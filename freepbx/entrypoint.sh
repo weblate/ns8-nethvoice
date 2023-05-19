@@ -150,12 +150,17 @@ module_status=$(mktemp)
 trap 'rm -f ${module_status}' EXIT
 fwconsole ma list | grep '^| ' | grep -v '^| Module'| awk '{print $2,$6}' > $module_status
 for module in \
+        framework \
+        soundlang \
         recordings \
         announcement \
-        framework \
+        manager \
         arimanager \
         asteriskinfo \
+        filestore \
         backup \
+        pm2 \
+        core \
         blacklist \
         bosssecretary \
         bulkdids \
@@ -168,7 +173,6 @@ for module in \
         cel \
         certman \
         conferences \
-        core \
         customappsreg \
         customcontexts \
         dashboard \
@@ -179,9 +183,7 @@ for module in \
         extraoptions \
         fax \
         featurecodeadmin \
-        filestore \
         findmefollow \
-        freepbx_pin \
         googletts \
         iaxsettings \
         inboundlookup \
@@ -189,7 +191,6 @@ for module in \
         ivr \
         languages \
         logfiles \
-        manager \
         miscapps \
         music \
         nethcqr \
@@ -201,23 +202,22 @@ for module in \
         parking \
         pin \
         pm2 \
+        queues \
         queueexit \
         queuemetrics \
         queueoptions \
         queueprio \
-        queues \
         rapidcode \
         recallonbusy \
         returnontransfer \
         ringgroups \
         setcid \
         sipsettings \
-        soundlang \
         timeconditions \
         userman \
         visualplan \
-        vmblast \
-        voicemail
+        voicemail \
+        vmblast
 do
     if grep -q "$module " $module_status && ! grep -q "$module Enabled" $module_status ; then
         echo Installng module $module
