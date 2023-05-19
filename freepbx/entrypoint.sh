@@ -155,6 +155,7 @@ for module in \
         backup \
         pm2 \
         core \
+        cdr \
         blacklist \
         bosssecretary \
         bulkdids \
@@ -163,7 +164,6 @@ for module in \
         callforward \
         callrecording \
         callwaiting \
-        cdr \
         cel \
         certman \
         conferences \
