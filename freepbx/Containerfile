@@ -148,6 +148,9 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/queuemetrics && \
 RUN mkdir -p /var/www/html/freepbx/admin/modules/queueprio && \
 	/bin/rm -fr /var/www/html/freepbx/admin/modules/queueprio/* && \
 	curl -sL https://github.com/FreePBX/queueprio/archive/refs/tags/release/16.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queueprio
+RUN mkdir -p /var/www/html/freepbx/admin/modules/recordings && \
+	/bin/rm -fr /var/www/html/freepbx/admin/modules/recordings/* && \
+	curl -sL https://github.com/FreePBX/recordings/archive/refs/tags/release/16.0.14.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/recordings
 RUN mkdir -p /var/www/html/freepbx/admin/modules/returnontransfer && \
 	/bin/rm -fr /var/www/html/freepbx/admin/modules/returnontransfer/* && \
 	curl -sL https://github.com/nethesis/returnontransfer/archive/refs/tags/1.1.10.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/returnontransfer
@@ -202,8 +205,6 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/freepbx_pin && \
 #	curl -sL ${GH_AUTH} https://github.com/nethesis/queueoptions/archive/0.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queueoptions
 RUN mkdir -p /var/www/html/freepbx/admin/modules/queues && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-queues/archive/14.0.2.39.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queues
-RUN mkdir -p /var/www/html/freepbx/admin/modules/recordings && \
-	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-recordings/archive/refs/tags/13.0.30.17.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/recordings
 RUN mkdir -p /var/www/html/freepbx/admin/modules/voicemail && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-voicemail/archive/14.0.6.26.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/voicemail
 
