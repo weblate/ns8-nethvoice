@@ -213,7 +213,7 @@ for module in \
         voicemail \
         vmblast
 do
-    if grep -q "$module " $module_status && ! grep -q "$module Enabled" $module_status ; then
+    if ! test -s $module_status grep -q "$module " $module_status && ! grep -q "$module Enabled" $module_status ; then
         echo Installng module $module
         fwconsole moduleadmin install $module
     fi
