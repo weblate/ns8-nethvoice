@@ -126,14 +126,8 @@ if [[ ! -f /etc/asterisk/extensions_additional.conf ]]; then
 	php -r 'include_once "/etc/freepbx_db.conf"; $db->query("UPDATE admin SET value = \"true\" WHERE variable = \"need_reload\"");'
 fi
 
-# Always apply changes on start
-su - asterisk -s /bin/sh -c "/var/lib/asterisk/bin/fwconsole reload"
-
 # Configure users
 php /configure_users.php
-
-# Sync users
-fwconsole userman --syncall --force --verbose
 
 # Make sure config dir is writable from nethcti and freepbx containers
 chown -R asterisk:asterisk /etc/nethcti
@@ -224,5 +218,11 @@ do
         fwconsole moduleadmin install $module
     fi
 done
+
+# Sync users
+fwconsole userman --syncall --force --verbose
+
+# Always apply changes on start
+su - asterisk -s /bin/sh -c "/var/lib/asterisk/bin/fwconsole reload"
 
 exec "$@"
