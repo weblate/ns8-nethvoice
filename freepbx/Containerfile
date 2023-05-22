@@ -210,6 +210,9 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/voicemail && \
 
 
 RUN mkdir -p \
+	/var/lib/asterisk/bin/backup \
+	/var/lib/asterisk/bin/callback \
+	/var/www/html/freepbx/admin/assets/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
 	/var/www/html/freepbx/admin/brand/ \
 	/var/www/html/freepbx/admin/modules/calendar/assets/less/cache \
@@ -223,6 +226,8 @@ RUN mkdir -p \
 	/var/www/html/freepbx/admin/modules/featurecodeadmin/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/ivr/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/music/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/pm2/node/logs \
+	/var/www/html/freepbx/admin/modules/pm2/node/node_modules \
 	/var/www/html/freepbx/admin/modules/recordings/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/soundlang/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/userman/assets/less/cache \
@@ -233,10 +238,16 @@ RUN mkdir -p \
 RUN chown -R asterisk:asterisk \
 	/etc/phonebook/sources.d/ \
 	/var/lib/asterisk/.gnupg \
+	/var/lib/asterisk/agi-bin \
 	/var/lib/asterisk/playback \
+	/var/lib/asterisk/bin/backup \
+	/var/lib/asterisk/bin/callback \
 	/var/run/asterisk/ \
 	/var/run/nethvoice/ \
+	/var/www/html/freepbx/admin/assets/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/pm2/node/logs \
+	/var/www/html/freepbx/admin/modules/pm2/node/node_modules \
 	/var/www/html/freepbx/admin/modules/*/assets/less/cache
 
 RUN chown asterisk:asterisk \
