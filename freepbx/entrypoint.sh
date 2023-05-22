@@ -214,7 +214,7 @@ for module in \
         vmblast
 do
     if ! test -s "$module_status" || grep -q "$module " "$module_status" && ! grep -q "$module Enabled" "$module_status" ; then
-        echo Installng module $module
+        echo Installing module $module
         fwconsole moduleadmin install $module
     fi
 done

@@ -240,6 +240,7 @@ RUN chown -R asterisk:asterisk \
 	/var/www/html/freepbx/admin/modules/*/assets/less/cache
 
 RUN chown asterisk:asterisk \
+	/var/lib/asterisk \
 	/var/www/html/freepbx/admin/assets/js/
 
 # PATCH FreePBX modules before signing again
