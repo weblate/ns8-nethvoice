@@ -90,7 +90,9 @@ if (empty($res)) {
 $deprecated = array(
 	'AST_FUNC_CONNECTEDLINE',
 	'AST_FUNC_MASTER_CHANNEL',
-	'AST_FUNC_SHARED'
+	'AST_FUNC_SHARED',
+	'AST_FUNC_EXTENSION_STATE',
+	'AST_FUNC_PRESENCE_STATE'
 );
 $sql = 'DELETE FROM `asterisk`.`freepbx_settings` WHERE `keyword` IN ("'.implode('","',$deprecated).'")';
 $db->query($sql);
