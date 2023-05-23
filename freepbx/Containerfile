@@ -212,6 +212,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/voicemail && \
 RUN mkdir -p \
 	/var/lib/asterisk/bin/backup \
 	/var/lib/asterisk/bin/callback \
+	/var/log/asterisk \
 	/var/www/html/freepbx/admin/assets/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
 	/var/www/html/freepbx/admin/brand/ \
@@ -237,6 +238,7 @@ RUN mkdir -p \
 
 RUN chown -R asterisk:asterisk \
 	/etc/phonebook/sources.d/ \
+	/var/log/asterisk \
 	/var/lib/asterisk/.gnupg \
 	/var/lib/asterisk/agi-bin \
 	/var/lib/asterisk/playback \
