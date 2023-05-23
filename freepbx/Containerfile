@@ -233,6 +233,7 @@ RUN mkdir -p \
 	/var/www/html/freepbx/admin/modules/soundlang/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/userman/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/voicemail/assets/less/cache \
+	/var/www/html/freepbx/admin/images/ \
 	/var/www/html/push-proxy \
 	/initdb.d
 
@@ -248,6 +249,7 @@ RUN chown -R asterisk:asterisk \
 	/var/run/nethvoice/ \
 	/var/www/html/freepbx/admin/assets/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
+	/var/www/html/freepbx/admin/images/ \
 	/var/www/html/freepbx/admin/modules/pm2/node/logs \
 	/var/www/html/freepbx/admin/modules/pm2/node/node_modules \
 	/var/www/html/freepbx/admin/modules/*/assets/less/cache
