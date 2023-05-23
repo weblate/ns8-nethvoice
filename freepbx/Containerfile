@@ -220,6 +220,7 @@ RUN mkdir -p \
 	/var/www/html/freepbx/admin/modules/cdr/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/certman/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/conferences/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/core/logs \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customdests/cache \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customextens/cache \
@@ -250,6 +251,7 @@ RUN chown -R asterisk:asterisk \
 	/var/www/html/freepbx/admin/assets/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
 	/var/www/html/freepbx/admin/images/ \
+	/var/www/html/freepbx/admin/modules/core/logs \
 	/var/www/html/freepbx/admin/modules/pm2/node/logs \
 	/var/www/html/freepbx/admin/modules/pm2/node/node_modules \
 	/var/www/html/freepbx/admin/modules/*/assets/less/cache
