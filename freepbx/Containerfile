@@ -187,10 +187,10 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/extraoptions && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-extraoptions/archive/master.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/extraoptions
 RUN mkdir -p /var/www/html/freepbx/admin/modules/inboundlookup && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/inboundlookup/archive/1.0.0.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/inboundlookup
-#RUN mkdir -p /var/www/html/freepbx/admin/modules/nethcqr && \
-#	curl -sL ${GH_AUTH} https://github.com/nethesis/nethcqr/archive/2.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcqr
-#RUN mkdir -p /var/www/html/freepbx/admin/modules/nethcti3freepbx && \
-#	curl -sL ${GH_AUTH} https://github.com/nethesis/nethcti3freepbx/archive/1.4.31.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcti3freepbx
+RUN mkdir -p /var/www/html/freepbx/admin/modules/nethcqr && \
+	curl -sL ${GH_AUTH} https://github.com/nethesis/nethcqr/archive/2.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcqr
+RUN mkdir -p /var/www/html/freepbx/admin/modules/nethcti3freepbx && \
+	curl -sL ${GH_AUTH} https://github.com/nethesis/nethcti3freepbx/archive/1.4.31.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcti3freepbx
 RUN mkdir -p /var/www/html/freepbx/admin/modules/nethdash && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/nethdash/archive/1.0.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethdash
 RUN mkdir -p /var/www/html/freepbx/admin/modules/outboundlookup && \
@@ -199,10 +199,10 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/paging && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-paging/archive/14.0.16.10.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/paging
 RUN mkdir -p /var/www/html/freepbx/admin/modules/pin && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx_pin/archive/0.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/pin
-#RUN mkdir -p /var/www/html/freepbx/admin/modules/queueexit && \
-#	curl -sL ${GH_AUTH} https://github.com/nethesis/queueexit/archive/0.0.1.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queueexit
-#RUN mkdir -p /var/www/html/freepbx/admin/modules/queueoptions && \
-#	curl -sL ${GH_AUTH} https://github.com/nethesis/queueoptions/archive/0.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queueoptions
+RUN mkdir -p /var/www/html/freepbx/admin/modules/queueexit && \
+	curl -sL ${GH_AUTH} https://github.com/nethesis/queueexit/archive/0.0.1.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queueexit
+RUN mkdir -p /var/www/html/freepbx/admin/modules/queueoptions && \
+	curl -sL ${GH_AUTH} https://github.com/nethesis/queueoptions/archive/0.0.2.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queueoptions
 RUN mkdir -p /var/www/html/freepbx/admin/modules/queues && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-queues/archive/14.0.2.39.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queues
 RUN mkdir -p /var/www/html/freepbx/admin/modules/voicemail && \
@@ -261,7 +261,7 @@ RUN chown asterisk:asterisk \
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
-#COPY freepbx/var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
+COPY freepbx/var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
 COPY etc/amportal.conf /etc
 COPY initdb.d/initdb.php /initdb.d/
 COPY usr/sbin/asterisk /usr/sbin/
