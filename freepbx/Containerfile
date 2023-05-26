@@ -298,6 +298,7 @@ RUN cp -a /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 RUN sed -i 's/^;error_log = syslog/error_log = \/dev\/stderr/' /usr/local/etc/php/php.ini
 RUN echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/freepbx.ini
 RUN echo "variables_order = \"EGPCS\"" >> /usr/local/etc/php/conf.d/freepbx.ini
+RUN echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/freepbx.ini
 
 # Enable environment variables
 RUN sed -i 's/^variables_order = "GPCS"/variables_order = "EGPCS"/' /usr/local/etc/php/php.ini
