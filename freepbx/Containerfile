@@ -215,24 +215,42 @@ RUN mkdir -p \
 	/var/www/html/freepbx/admin/assets/ \
 	/var/www/html/freepbx/admin/assets/less/cache \
 	/var/www/html/freepbx/admin/brand/ \
+	/var/www/html/freepbx/admin/modules/asteriskinfo/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/backup/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/blacklist/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/calendar/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/cdr/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/cdr/ucp/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/cel/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/cel/ucp/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/certman/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/conferences/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/ampusers/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/devices/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/did/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/extensions/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/routing/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/trunks/cache \
+	/var/www/html/freepbx/admin/modules/core/assets/less/users/cache \
 	/var/www/html/freepbx/admin/modules/core/logs \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customdests/cache \
 	/var/www/html/freepbx/admin/modules/customappsreg/assets/less/customextens/cache \
 	/var/www/html/freepbx/admin/modules/dashboard/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/featurecodeadmin/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/filestore/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/ivr/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/music/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/pm2/node/logs \
 	/var/www/html/freepbx/admin/modules/pm2/node/node_modules \
+	/var/www/html/freepbx/admin/modules/queueprio/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/recordings/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/soundlang/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/userman/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/vmblast/assets/less/cache \
 	/var/www/html/freepbx/admin/modules/voicemail/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/voicemail/ucp/assets/less/cache \
 	/var/www/html/freepbx/admin/images/ \
 	/var/www/html/push-proxy \
 	/initdb.d
@@ -252,10 +270,13 @@ RUN chown -R asterisk:asterisk \
 	/var/www/html/freepbx/admin/modules/core/logs \
 	/var/www/html/freepbx/admin/modules/pm2/node/logs \
 	/var/www/html/freepbx/admin/modules/pm2/node/node_modules \
-	/var/www/html/freepbx/admin/modules/*/assets/less/cache
+	/var/www/html/freepbx/admin/modules/*/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/*/ucp/assets/less/cache \
+	/var/www/html/freepbx/admin/modules/*/assets/less/*/cache
 
 RUN chown asterisk:asterisk \
 	/var/lib/asterisk \
+	/var/lib/asterisk/bin \
 	/var/www/html/freepbx/admin/assets/js/
 
 # PATCH FreePBX modules before signing again
