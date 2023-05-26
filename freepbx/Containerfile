@@ -343,7 +343,7 @@ RUN mkdir -p /var/www/html/freepbx/rest && \
 	cd /var/www/html/freepbx/rest/ && \
 	curl -s https://getcomposer.org/installer | php && \
 	COMPOSER_ALLOW_SUPERUSER=1 php composer.phar install --no-dev && \
-	rm -fr README.md composer.json composer.lock composer.phar
+	rm -fr README.md composer.json composer.lock composer.phar test
 
 # Install nethvoice-wizard-ui
 RUN curl -L https://github.com/nethesis/ns8-nethvoice/releases/download/0.0.0/wizard.tar.gz -o - | tar xzp -C /var/www/html/freepbx/
