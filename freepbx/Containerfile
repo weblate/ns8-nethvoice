@@ -206,7 +206,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/queueoptions && \
 RUN mkdir -p /var/www/html/freepbx/admin/modules/queues && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-queues/archive/14.0.2.39.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/queues
 RUN mkdir -p /var/www/html/freepbx/admin/modules/recallonbusy && \
-	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-module-recallonbusy/archive/refs/tags/1.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/recallonbusy
+	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-module-recallonbusy/archive/refs/tags/1.0.3.tar.gz -o - | tar xzp --strip-components=2 -C /var/www/html/freepbx/admin/modules/recallonbusy
 RUN mkdir -p /var/www/html/freepbx/admin/modules/voicemail && \
 	curl -sL ${GH_AUTH} https://github.com/nethesis/freepbx-voicemail/archive/14.0.6.26.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/voicemail
 
