@@ -29,13 +29,11 @@ mtraefik=$(redis-exec GET "node/${NODE_ID}/default_instance/traefik")
 redis-exec HGET "module/${mtraefik}/certificate/${NETHVOICE_HOST}" key | base64 -d > ${keytmp}
 redis-exec HGET "module/${mtraefik}/certificate/${NETHVOICE_HOST}" cert | base64 -d > ${certtmp}
 
-if [[ $(head -c 5 server.key) != '-----' || $(head -c 5 server.pem) != '-----' ]]; then
-    echo "[WARNING] ${service_image} certificate for ${NETHVOICE_HOST} not found" 1>&2
+if [[ $(head -c 5 ${keytmp}) != '-----' || $(head -c 5 ${certtmp}) != '-----' ]]; then
+    echo "[WARNING] ${mtraefik} certificate for ${NETHVOICE_HOST} not found" 1>&2
     exit 2
 fi
 
 cat ${keytmp} ${certtmp} > certificates/NethServer.pem
-mv ${keytmp} certificates/NethServer.key
-mv ${certmp} certificates/NethServer.crt
-
-# Important! preserve import-certificate exit code
+cat ${keytmp} > certificates/NethServer.key
+cat ${certtmp} > certificates/NethServer.crt
