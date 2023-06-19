@@ -443,7 +443,7 @@ function nethcti3_get_config_early($engine) {
     // Get CTI profile permissions
     $permissions = getCTIPermissionProfiles(false,true,true);
 
-    $tancrediUrl = 'http://localhost/tancredi/api/v1/';
+    $tancrediUrl = 'http://127.0.0.1:'+getenv('TANCREDIPORT')+'/tancredi/api/v1/';
 
     // Get Tancredi authentication variables
     include_once '/var/www/html/freepbx/rest/config.inc.php';
