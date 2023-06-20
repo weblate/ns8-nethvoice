@@ -133,7 +133,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/inboundlookup && \
 RUN mkdir -p /var/www/html/freepbx/admin/modules/nethcqr && \
 	curl -sL https://github.com/nethesis/nethcqr/archive/2.0.3.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcqr
 RUN mkdir -p /var/www/html/freepbx/admin/modules/nethcti3 && \
-	curl -sL https://github.com/nethesis/nethcti3freepbx/archive/1.4.31.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcti3
+	curl -sL https://github.com/nethesis/nethcti3freepbx/archive/refs/heads/ns8.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethcti3
 RUN mkdir -p /var/www/html/freepbx/admin/modules/nethdash && \
 	curl -sL https://github.com/nethesis/nethdash/archive/1.0.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/nethdash
 RUN mkdir -p /var/www/html/freepbx/admin/modules/outboundlookup && \
@@ -238,7 +238,6 @@ RUN chown asterisk:asterisk \
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
-COPY var/www/html/freepbx/admin/modules/nethcti3/functions.inc.php /var/www/html/freepbx/admin/modules/nethcti3/
 COPY etc/amportal.conf /etc
 COPY initdb.d/initdb.php /initdb.d/
 COPY usr/sbin/asterisk /usr/sbin/
