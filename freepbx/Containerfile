@@ -265,7 +265,8 @@ RUN apt-get update && apt-get install -y \
 	python3-pycurl \
 	python3-pyodbc \
 	sox \
-	zip
+	zip \
+	vim
 
 RUN pip install mysql.connector
 
