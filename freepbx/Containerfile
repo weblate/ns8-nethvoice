@@ -9,7 +9,10 @@ RUN mkdir -p \
 	/var/lib/asterisk/playback \
 	/var/run/asterisk/ \
 	/var/run/nethvoice/ \
-	/var/www/html/freepbx/admin/modules/framework
+	/var/www/html/freepbx/admin/modules/framework \
+	/var/lib/asterisk
+
+COPY var/lib/asterisk/bin /var/lib/asterisk
 
 # Download framework module
 RUN curl -L https://github.com/FreePBX/framework/archive/refs/tags/release/16.0.39.tar.gz | tar xzp --strip-component=1 -C /var/www/html/freepbx/admin/modules/framework
