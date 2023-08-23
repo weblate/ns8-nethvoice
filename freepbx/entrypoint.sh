@@ -219,6 +219,9 @@ do
     fi
 done
 
+# Disable signature check
+php -r 'include_once "/etc/freepbx_db.conf"; $db->query("UPDATE freepbx_settings SET value = 0 WHERE keyword = \"SIGNATURECHECK\"");'
+
 # Sync users
 fwconsole userman --syncall --force --verbose
 
