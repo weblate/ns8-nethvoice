@@ -238,6 +238,15 @@ RUN chown asterisk:asterisk \
 	/var/lib/asterisk/bin \
 	/var/www/html/freepbx/admin/assets/js/
 
+# Link visualplan directory to module
+RUN ln -s /var/www/html/freepbx/admin/modules/visualplan/htdocs /var/www/html/freepbx/visualplan
+
+# Link all mudule assets directories
+RUN for asset in $(find /var/www/html/freepbx/admin/modules/ -type d -name assets); do \
+	module=$(echo $asset | cut -d'/' -f7); \
+	ln -s $asset /var/www/html/freepbx/admin/assets/$module; \
+done
+
 # PATCH FreePBX modules before signing again
 # Replace FreepBX cron implementation with noop
 COPY var/www/html/freepbx/admin/libraries/BMO/Cron.class.php /var/www/html/freepbx/admin/libraries/BMO/Cron.class.php
