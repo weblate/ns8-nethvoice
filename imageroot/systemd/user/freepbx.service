@@ -32,7 +32,7 @@ ExecStart=/usr/bin/podman run \
     --volume=post_scripts:/usr/share/phonebooks/post_scripts/:z \
     --volume=/dev/log:/dev/log \
     --volume=./notify:/notify:z \
-    --volume=./certificates:/etc/asterisk/keys:z \
+    --volume=asterisk-cert:/etc/asterisk/keys:z \
     --volume=reports_config:/opt/nethvoice-report:z \
     --volume=tancredi:/var/lib/tancredi:z \
     --env=NETHVOICE* \
@@ -59,6 +59,7 @@ ExecStart=/usr/bin/podman run \
     --env=SUBSCRIPTION_SYSTEMID \
     --env=SUBSCRIPTION_SECRET \
     --network=host \
+    --hostname=${NETHVOICE_HOST} \
     ${NETHVOICE_FREEPBX_IMAGE}
 
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/freepbx.ctr-id

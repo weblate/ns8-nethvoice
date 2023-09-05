@@ -1,12 +1,18 @@
 #!/bin/bash
 
-cat <<EOF > /etc/flexisip/flexisip.conf
+set -e
+
+if [ "$1" == "/opt/belledonne-communications/bin/flexisip" ]; then
+
+    # generate config file
+    cat <<EOF > /etc/flexisip/flexisip.conf
 [global]
 default-servers=proxy
 enable-snmp=false
 log-directory=/var/log
+log-filename=flexisip.log
 log-level=${FLEXISIP_LOG_LEVEL}
-transports=sips:${NETHVOICE_HOST}:${FLEXISIP_PORT};maddr=0.0.0.0;tls-verify-outgoing=0
+transports=sip:${NETHVOICE_HOST}:${FLEXISIP_SIP_PORT};maddr=0.0.0.0 sips:${NETHVOICE_HOST}:${FLEXISIP_PORT};maddr=0.0.0.0;tls-verify-outgoing=0
 
 aliases=localhost,${NETHVOICE_HOST}
 udp-mtu=4000
@@ -62,6 +68,7 @@ reg-domains=*
 reg-on-response=true
 max-expires=604800
 db-implementation=redis
+redis-server-domain=127.0.0.1
 redis-server-port=${REDIS_FLEXISIP_PORT}
 
 [module::StatisticsCollector]
@@ -108,7 +115,8 @@ masquerade-contacts-for-invites=false
 insert-domain=true
 EOF
 
-cat <<EOF > /etc/asterisk/nethcti_push_configuration.json
+    # generate push notification config
+    cat <<EOF > /etc/asterisk/nethcti_push_configuration.json
 {
     "NotificationServerURL": "https://pp.nethesis.it/NotificaPush",
     "Host": ""${NETHVOICE_HOST},
@@ -117,5 +125,6 @@ cat <<EOF > /etc/asterisk/nethcti_push_configuration.json
     "AppBrandingID" : "${BRAND_APPID}"
 }
 EOF
+fi
 
 exec "$@"
