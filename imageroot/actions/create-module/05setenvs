@@ -26,11 +26,11 @@ def allocate_rtp_ports_range(size):
     """
     key_path = f'module/{os.environ["MODULE_ID"]}/rtp_ports_sequence'
     prdb = agent.redis_connect(privileged=True)
-    # Setup lower limit to 20001
+    # Setup lower limit to 20002
     if not prdb.get(key_path):
-        prdb.set(key_path, '20001')
+        prdb.set(key_path, '20002')
     # Check overflow
-    if (size + int(prdb.get(key_path))) > 60001:
+    if (size + int(prdb.get(key_path))) > 60002:
         print(agent.SD_ERROR + "RTP range exhausted", file=sys.stderr)
         sys.exit(3)
     # Allocate RTP ports
