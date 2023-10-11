@@ -37,6 +37,7 @@ COPY --from=repofetcher /app/root/usr/lib/node/nethcti-server/scripts scripts
 COPY --from=repofetcher /app/root/usr/lib/node/nethcti-server/sql sql
 COPY --from=repofetcher /app/root/usr/lib/node/nethcti-server/nethcti-cli.js .
 COPY --from=repofetcher /app/root/usr/lib/node/nethcti-server/nethcti.js .
+COPY --from=repofetcher /app/root/usr/local/bin/rpm /usr/local/bin/rpm
 # copy node_modules
 COPY --from=node_modules /app/package.json .
 COPY --from=node_modules /app/package-lock.json .
