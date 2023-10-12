@@ -28,4 +28,5 @@ if [ -f "${dest}"/NethServer.pem ] && diff -q server.pem "${dest}"/NethServer.pe
 fi
 
 install -o root -g root -m 444 server.pem "${dest}"/NethServer.pem
+install -o root -g root -m 444 server.pem "${dest}"/NethServer.crt
 install -o root -g root -m 444 server.key "${dest}"/NethServer.key
