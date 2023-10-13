@@ -271,11 +271,11 @@ FILE=/etc/nethcti/services.json
 cat > $FILE <<EOF
 {
   "tcp": {
-    "port": "NETHCTI_TCP_PORT",
+    "port": "${NETHCTI_TCP_PORT}",
     "base_templates": "http://${NETHVOICE_HOST}/webrest/static/templates/notification_popup"
   },
   "tls": {
-    "port": "NETHCTI_TLS_PORT",
+    "port": "${NETHCTI_TLS_PORT}",
     "key": "/etc/certificates/NethServer.key",
     "cert": "/etc/certificates/NethServer.crt"
   },
