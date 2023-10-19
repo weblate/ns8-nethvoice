@@ -12,6 +12,7 @@ reponame="nethvoice"
 
 # Build NS8 Module image
 buildah build \
+	--squash \
 	--force-rm \
 	--layers \
 	--jobs "$(nproc)" \
@@ -44,7 +45,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build Asterisk container"
 reponame="nethvoice-asterisk"
 pushd asterisk
-buildah build --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
 popd
 
 # Append the image URL to the images array
@@ -57,7 +58,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build FreePBX container"
 reponame="nethvoice-freepbx"
 pushd freepbx
-buildah build --force-rm --no-cache --jobs "$(nproc)" --target production --tag "${repobase}/${reponame}"
+buildah build --squash --force-rm --no-cache --jobs "$(nproc)" --target production --tag "${repobase}/${reponame}"
 popd
 
 # Append the image URL to the images array
@@ -125,7 +126,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build nethcti container"
 reponame="nethvoice-cti-server"
 pushd nethcti-server
-buildah build --force-rm --layers --jobs "$(nproc)" --target production --tag "${repobase}/${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --target production --tag "${repobase}/${reponame}"
 popd
 # Append the image URL to the images array
 images+=("${repobase}/${reponame}")
@@ -147,7 +148,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build Janus Gateway container"
 reponame="nethvoice-janus"
 pushd janus
-buildah build --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
 popd
 
 # Append the image URL to the images array
@@ -160,7 +161,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build Phonebook container"
 reponame="nethvoice-phonebook"
 pushd phonebook
-buildah build --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
 popd
 
 # Append the image URL to the images array
@@ -172,7 +173,7 @@ images+=("${repobase}/${reponame}")
 echo "[*] Build flexisip container"
 reponame="nethvoice-flexisip"
 pushd flexisip
-buildah build --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
 popd
 # Append the image URL to the images array
 images+=("${repobase}/${reponame}")
@@ -182,10 +183,10 @@ images+=("${repobase}/${reponame}")
 #########################
 pushd reports
 reponame="nethvoice-reports-api"
-buildah build --force-rm --layers --jobs "$(nproc)" --target api-production --tag "${repobase}"/"${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --target api-production --tag "${repobase}"/"${reponame}"
 images+=("${repobase}/${reponame}")
 reponame="nethvoice-reports-ui"
-buildah build --force-rm --layers --jobs "$(nproc)" --target ui-production --tag "${repobase}"/"${reponame}"
+buildah build --squash --force-rm --layers --jobs "$(nproc)" --target ui-production --tag "${repobase}"/"${reponame}"
 images+=("${repobase}/${reponame}")
 popd
 
