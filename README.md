@@ -13,6 +13,10 @@ Output example:
 
     {"module_id": "nethvoice1", "image_name": "nethvoice", "image_url": "ghcr.io/nethserver/nethvoice:latest"}
 
+## Proxy 
+
+This module is intended to be used with the ns8-nethvoice-proxy module as SIP proxy
+
 ## Configure
 
 Let's assume that the nethvoice instance is named `nethvoice1`.
