@@ -19,47 +19,9 @@ This module is intended to be used with the ns8-nethvoice-proxy module as SIP pr
 
 ## Configure
 
-Let's assume that the nethvoice instance is named `nethvoice1`.
+Module can be configured from cluster-admin NethServer 8 interface.
 
-Launch `configure-module`, by setting the following mandatory parameters:
--  `nethcti_ui_host`: the NethCTI virtualhost, for instance "cti.makako.nethesis.it"
--  `user_domain`: the user domain where users should be taken that has been configured on NS8 interface
--  `nethvoice_host`: the nethvoice virtualhost, for instance "makako.nethesis.it"
--  `nethvoice_host_local_networks`: an array of local networks used for SIP NAT. Each network is an object with `network`, `netmask`, `gateway`
--  `subscription_systemid`: the id of the system registered on my.nethesis.it "XXXXXXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"
--  `subscription_secret`: the secret of the system on my.nethesis.it "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
-Optional parameters:
--  `nethcti_prefix`: phone prefix. Suggested: ""
--  `nethcti_autoc2c`: enable automatic click to call on NethCTI. Suggested: "enabled"
--  `nethcti_trunks_events`: enable events from trunks. Suggested: "enabled"
--  `nethcti_alerts`: enable alerts. Suggested: "false"
--  `nethcti_authentication_enabled`: enable authentication on CTI. Suggested: "true"
--  `nethcti_unauthe_call`: allow to launch calls without authentication using NethCTI APIs. Suggested: "disabled"
--  `nethcti_unauthe_call_ip`: IP from wich is possible to launch unauthenticated calls""
--  `nethcti_jabber_url`: ""
--  `nethcti_jabber_domain`: ""
--  `nethcti_cdr_script`: ""
--  `nethcti_cdr_script_timeout`: ""
--  `nethcti_cdr_script_call_in`: ""
--  `nethvoice_public_host`: same as nethvoice_host. for instance "makako.nethesis.it"
--  `nethcti_log_level`: NethCTI log level. Suggested for development: "info"
--  `conference_jitsi_url`: "https://jitsi.nethserver.net"
--  `nethcti_server_host`: "cti.makako.nethesis.it"
--  `lets_encrypt`: set to `true` to enable Let's Encrypt certificate
-
-Example:
-```
-api-cli run module/nethvoice1/configure-module --data '{
-    "nethcti_ui_host": "cti.makako.nethesis.it",
-    "lets_encrypt": false,
-    "user_domain": "domain1.it",
-    "nethvoice_host": "makako.nethesis.it",
-    "nethvoice_host_local_networks": [],
-    "subscription_systemid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX",
-    "subscription_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
-```
+To make also provisioniong RPS work with Falconieri, you need to manualy set `SUBSCRIPTION_SECRET` and `SUBSCRIPTION_SYSTEMID` into `~/.config/state/environment` file and restart freepbx container with `systemctl --user restart freepbx`
 
 You can access NethVoice wizard at:
 ```
