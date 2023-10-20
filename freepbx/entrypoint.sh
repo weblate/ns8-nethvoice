@@ -121,6 +121,9 @@ while (\$row = \$sth->fetch(\PDO::FETCH_ASSOC)) {
 
 EOF
 
+# migrate database
+php /initdb.d/migration.php
+
 if [[ ! -f /etc/asterisk/extensions_additional.conf ]]; then
 	# First install, set needreload to true
 	php -r 'include_once "/etc/freepbx_db.conf"; $db->query("UPDATE admin SET value = \"true\" WHERE variable = \"need_reload\"");'

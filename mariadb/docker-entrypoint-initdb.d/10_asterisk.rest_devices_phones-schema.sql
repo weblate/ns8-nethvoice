@@ -15,6 +15,7 @@ CREATE TABLE `rest_devices_phones` (
   `web_user` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `web_password` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'physical',
+  `srtp` boolean DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mac` (`mac`,`line`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
