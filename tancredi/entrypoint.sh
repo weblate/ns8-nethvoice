@@ -49,7 +49,7 @@ if [[ ! -f ${dst_file} ]]; then
 	echo 'ui_first_config = "1"' >> ${dst_file}
 
 	# Remove variables if they exists
-	for variable in timezone language tonezone hostname provisioning_url_scheme provisioning_freq time_format date_format ldap_server ldap_port ldap_tls ldap_user ldap_password ldap_base ldap_name_display ldap_number_attr ldap_mainphone_number_attr ldap_mobilephone_number_attr ldap_otherphone_number_attr ldap_name_attr ldap_number_filter ldap_name_filter adminpw userpw; do
+	for variable in timezone language tonezone hostname outbound_proxy outbound_proxy_port provisioning_url_scheme provisioning_freq time_format date_format ldap_server ldap_port ldap_tls ldap_user ldap_password ldap_base ldap_name_display ldap_number_attr ldap_mainphone_number_attr ldap_mobilephone_number_attr ldap_otherphone_number_attr ldap_name_attr ldap_number_filter ldap_name_filter adminpw userpw; do
 		sed -i '/^'${variable}' =.*/d' ${dst_file}
 	done
 	# Add defaults
@@ -57,6 +57,8 @@ if [[ ! -f ${dst_file} ]]; then
 	echo 'language = "it"' >> ${dst_file}
 	echo 'tonezone = "it"' >> ${dst_file}
 	echo 'hostname = "'${NETHVOICE_HOST}'"' >> ${dst_file}
+	echo 'outbound_proxy_1 = "'${PUBLIC_IP}'"' >> ${dst_file}
+	echo 'outbound_proxy_port_1 = "5060"' >> ${dst_file}
 	echo 'provisioning_url_scheme = "https"' >> ${dst_file}
 	echo 'provisioning_freq = "everyday"' >> ${dst_file}
 

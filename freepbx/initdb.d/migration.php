@@ -39,3 +39,22 @@ $stmt->execute($extensions);
 $sql = "UPDATE `asterisk`.`rest_devices_phones` SET `srtp` = 1 WHERE `extension` IN ('".str_repeat('?, ', count($extensions) - 1) . '?'."')";
 $stmt = $db->prepare($sql);
 $stmt->execute($extensions);
+
+# configure proxy on all FreePBX extensions
+$proxy_host = $_ENV['PUBLIC_IP'];
+$proxy_port = 5060;
+
+$sql = "UPDATE `asterisk`.`sip` SET `data` = ? WHERE `keyword` = 'outbound_proxy' AND `id` IN ('".str_repeat('?, ', count($extensions) - 1) . '?'."')";
+$stmt = $db->prepare($sql);
+$stmt->execute(array_merge(['sip:'.$proxy_host.':'.$proxy_port], $extensions));
+
+# set rtp_symmetric to no in freepbx sip table
+$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'rtp_symmetric' WHERE `id` IN ('".str_repeat('?, ', count($extensions) - 1) . '?'."')";
+$stmt = $db->prepare($sql);
+$stmt->execute($extensions);
+
+# set rewrite_contact to no in freepbx sip table
+$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'rewrite_contact' WHERE `id` IN ('".str_repeat('?, ', count($extensions) - 1) . '?'."')";
+$db->query($sql);
+$stmt = $db->prepare($sql);
+$stmt->execute($extensions);

@@ -21,7 +21,10 @@ This module is intended to be used with the ns8-nethvoice-proxy module as SIP pr
 
 Module can be configured from cluster-admin NethServer 8 interface.
 
-To make also provisioniong RPS work with Falconieri, you need to manualy set `SUBSCRIPTION_SECRET` and `SUBSCRIPTION_SYSTEMID` into `~/.config/state/environment` file and restart freepbx container with `systemctl --user restart freepbx`
+To make also provisioniong RPS work with Falconieri, you need to manualy set `SUBSCRIPTION_SECRET` and `SUBSCRIPTION_SYSTEMID` into `~/.config/state/environment` 
+file and restart freepbx container with `systemctl --user restart freepbx`
+
+Also `PUBLIC_IP` environment variable should be configured
 
 You can access NethVoice wizard at:
 ```
