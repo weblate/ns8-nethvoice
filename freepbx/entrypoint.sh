@@ -121,6 +121,11 @@ while (\$row = \$sth->fetch(\PDO::FETCH_ASSOC)) {
 
 EOF
 
+# Set public ip if not already set
+if [[ -z "${PUBLIC_IP}" ]]; then
+    export PUBLIC_IP=$(curl -s https://api.ipify.org)
+fi
+
 # migrate database
 php /initdb.d/migration.php
 
