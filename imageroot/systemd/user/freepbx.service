@@ -58,7 +58,7 @@ ExecStart=/usr/bin/podman run \
     --env=PHONEBOOK* \
     --env=SUBSCRIPTION_SYSTEMID \
     --env=SUBSCRIPTION_SECRET \
-    --env=PUBLIC_IP \
+    --env=PROXY_IP \
     --network=host \
     --hostname=${NETHVOICE_HOST} \
     ${NETHVOICE_FREEPBX_IMAGE}
