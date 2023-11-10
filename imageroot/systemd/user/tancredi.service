@@ -30,6 +30,8 @@ ExecStart=/usr/bin/podman run \
     --env=NETHVOICE_MARIADB_PORT \
     --env=NETHVOICE_HOST \
     --env=TANCREDI_STATIC_TOKEN \
+    --env=PROXY_IP \
+    --env=PROXY_PORT \
     --network=host \
     ${NETHVOICE_TANCREDI_IMAGE}
 
