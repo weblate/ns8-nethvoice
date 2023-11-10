@@ -87,7 +87,7 @@ if [[ ! -f ${dst_file} ]]; then
 	
 	# Set proxy ip and port if not already set
 	if [[ -z "${PROXY_IP}" ]]; then
-    	export PROXY_IP=$(curl -s https://api.ipify.org)
+		export PROXY_IP=${NETHVOICE_HOST}
 	fi
 	if [[ -z "${PROXY_PORT}" ]]; then
     	export PROXY_PORT=5060

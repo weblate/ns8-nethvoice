@@ -33,7 +33,8 @@ This container also hosts push-proxy script for Flexisip.
 - `PHONEBOOK_LDAP_PORT` port of LDAP server
 - `PHONEBOOK_LDAP_USER` user of LDAP server
 - `PHONEBOOK_LDAP_PASS` password of LDAP server
-- `PROXY_IP` proxy ip address to be used in extensions. Default is own public IP
+- `PROXY_IP` sip proxy host or ip to be used in extensions. Default is host
+- `PROXY_PORT` sip proxy port. Default is 5060
 - `APACHE_PORT` Port used for httpd
 - `TANCREDIPORT` Port used bt Tancredi
 - `BRAND_NAME` Name for branding (default: NethVoice)
