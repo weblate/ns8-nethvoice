@@ -16,5 +16,5 @@
     "bug_url": "https://github.com/NethServer/dev",
     "code_url": "https://github.com/nethesis/ns8-nethvoice"
   },
-  "source": "ghcr.io/nethesis/ns8-nethvoice"
+  "source": "ghcr.io/nethesis/nethvoice"
 }
