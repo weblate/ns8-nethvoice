@@ -85,17 +85,19 @@ if [[ ! -f ${dst_file} ]]; then
 	echo 'adminpw = "'$(head /dev/urandom | tr -dc a-z0-9 | head -c 10)'"' >> ${dst_file}
 	echo 'userpw = "'$(head /dev/urandom | tr -dc a-z | head -c 6)'"' >> ${dst_file}
 	
-	# Set proxy ip and port if not already set
+	# Set proxy ip if not already set
 	if [[ -z "${PROXY_IP}" ]]; then
 		export PROXY_IP=${NETHVOICE_HOST}
-	fi
-	if [[ -z "${PROXY_PORT}" ]]; then
-    	export PROXY_PORT=5060
 	fi
 
 	# Set default proxy
 	echo 'outbound_proxy_1 = "${PROXY_IP}"' >> ${dst_file}
-	echo 'outbound_proxy_port_1 = "${PROXY_PORT}"' >> ${dst_file}
+
+	# Set proxy port if not empty
+	if [[ ! -z "${PROXY_PORT}" ]]; then
+		echo 'outbound_proxy_port_1 = "${PROXY_PORT}"' >> ${dst_file}
+	fi
+
 fi
 
 runuser -s /bin/bash -c "php /usr/share/tancredi/scripts/upgrade.php" - www-data
