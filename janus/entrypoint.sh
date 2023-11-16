@@ -6,7 +6,7 @@
 #
 
 # Change SIP plugins port
-if [[ -z ${LOCAL_IP} ]]; then
+if [[ ! -z ${LOCAL_IP} ]]; then
 	sed -i "s/\t#local_ip = .*/\tlocal_ip = \"${LOCAL_IP}\"/" /usr/local/etc/janus/janus.plugin.sip.jcfg
 	sed -i "s/\t#local_media_ip = .*/\tlocal_media_ip = \"${LOCAL_IP}\"/" /usr/local/etc/janus/janus.plugin.sip.jcfg
 fi
