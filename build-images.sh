@@ -85,7 +85,7 @@ echo -e '\n: ${TANCREDIPORT:=80}\nexport TANCREDIPORT\n: ${TANCREDI_SSL_PORT:=44
 
 # Install Tancredi files
 mkdir /usr/share/tancredi/
-BRANCH=proxy
+BRANCH=master
 curl -L https://github.com/nethesis/tancredi/archive/refs/heads/${BRANCH}.tar.gz -o - | tar xzp --strip-component=1 -C /usr/share/tancredi/ tancredi-${BRANCH}/data/ tancredi-${BRANCH}/public/ tancredi-${BRANCH}/scripts/ tancredi-${BRANCH}/src/ tancredi-${BRANCH}/composer.json tancredi-${BRANCH}/composer.lock
 
 BRANCH=master
