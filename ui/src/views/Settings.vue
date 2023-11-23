@@ -39,12 +39,6 @@
               :invalid-message="error.nethcti_ui_host"
               ref="nethcti_ui_host"
             />
-            <cv-toggle
-              :label="$t('settings.lets_encrypt')"
-              value="lets_encrypt"
-              :disabled="loadingState"
-              v-model="form.lets_encrypt"
-            />
             <NsComboBox
               :title="$t('settings.user_domain')"
               :options="domainList"
@@ -54,6 +48,12 @@
               :invalid-message="error.user_domain"
               v-model="form.user_domain"
               ref="user_domain"
+            />
+            <cv-toggle
+              :label="$t('settings.lets_encrypt')"
+              value="lets_encrypt"
+              :disabled="loadingState"
+              v-model="form.lets_encrypt"
             />
             <NsTextInput
               :label="$t('settings.reports_international_prefix')"
@@ -66,6 +66,14 @@
                 {{ $t("settings.reports_international_prefix_tooltip") }}
               </template>
             </NsTextInput>
+            <cv-text-input
+              :label="$t('settings.nethvoice_admin_password')"
+              v-model="form.nethvoice_admin_password"
+              placeholder=""
+              :disabled="loadingState"
+              :invalid-message="error.nethvoice_admin_password"
+              ref="nethvoice_admin_password"
+            />
             <cv-row v-if="error.configureModule">
               <cv-column>
                 <NsInlineNotification
@@ -122,6 +130,7 @@ export default {
       urlCheckInterval: null,
       form: {
         nethvoice_host: "",
+        nethvoice_admin_password: "",
         nethcti_ui_host: "",
         lets_encrypt: false,
         user_domain: "",
@@ -137,6 +146,7 @@ export default {
         getConfiguration: "",
         configureModule: "",
         nethvoice_host: "",
+        nethvoice_admin_password: "",
         nethcti_ui_host: "",
         lets_encrypt: "",
         user_domain: "",
@@ -214,6 +224,7 @@ export default {
 
       this.form.nethvoice_host = config.nethvoice_host;
       this.form.nethcti_ui_host = config.nethcti_ui_host;
+      this.form.nethvoice_admin_password = "";
       this.form.lets_encrypt = config.lets_encrypt;
       this.form.user_domain = config.user_domain;
       if (config.reports_international_prefix !== "") {
@@ -234,6 +245,11 @@ export default {
 
       if (!this.form.nethcti_ui_host) {
         this.error.nethcti_ui_host = this.$t("error.required");
+        isValidationOk = false;
+      }
+
+      if (!this.form.user_domain) {
+        this.error.user_domain = this.$t("error.required");
         isValidationOk = false;
       }
 
@@ -319,6 +335,50 @@ export default {
       if (err) {
         console.error(`error creating task ${taskAction}`, err);
         this.error.configureModule = this.getErrorMessage(err);
+        this.loading.configureModule = false;
+        return;
+      }
+
+      // execute set password
+      const taskActionPass = "set-nethvoice-admin-password";
+      const eventIdPass = this.getUuid();
+
+      // register to task error
+      this.core.$root.$once(
+        `${taskActionPass}-aborted-${eventIdPass}`,
+        this.configureModuleAborted
+      );
+
+      // register to task validation
+      this.core.$root.$once(
+        `${taskActionPass}-validation-failed-${eventIdPass}`,
+        this.configureModuleValidationFailed
+      );
+
+      // register to task completion
+      this.core.$root.$once(
+        `${taskActionPass}-completed-${eventIdPass}`,
+        this.configureModuleCompleted
+      );
+
+      const resPass = await to(
+        this.createModuleTaskForApp(this.instanceName, {
+          action: taskActionPass,
+          data: {
+            nethvoice_admin_password: this.form.nethvoice_admin_password,
+          },
+          extra: {
+            title: this.$t("settings.set_password"),
+            description: this.$t("common.processing"),
+            eventId,
+          },
+        })
+      );
+      const errPass = resPass[0];
+
+      if (errPass) {
+        console.error(`error creating task ${taskAction}`, errPass);
+        this.error.configureModule = this.getErrorMessage(errPass);
         this.loading.configureModule = false;
         return;
       }
