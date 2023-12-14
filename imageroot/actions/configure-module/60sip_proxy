@@ -22,7 +22,7 @@ response = agent.tasks.run(
     action='add-route',
     data={
         'domain': os.environ["NETHVOICE_HOST"],
-        'address': [{"uri":"sip:127.0.0.1:"+os.environ["ASTERISK_SIP_PORT"],"description":"nethvoice"}],
+        'address': [{"uri":"sip:127.0.0.1:"+os.environ["ASTERISK_SIP_PORT"],"description":os.environ["MODULE_ID"]}],
     },
 )
 
