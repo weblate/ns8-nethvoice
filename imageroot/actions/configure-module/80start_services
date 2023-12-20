@@ -5,6 +5,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+set -e    # exit immediately if an error occurs
+exec 1>&2 # ensure any output is sent to stderr
+
 # If the control reaches this step, the service can be enabled and started
 
 systemctl --user enable --now mariadb.service
