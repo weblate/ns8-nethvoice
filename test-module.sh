@@ -13,6 +13,7 @@ ssh_key="$(cat $SSH_KEYFILE)"
 
 podman run -i \
     -v .:/home/pwuser/ns8-module:z \
+    --volume=site-packages:/home/pwuser/.local/lib/python3.8/site-packages:Z \
     --name rf-core-runner ghcr.io/marketsquare/robotframework-browser/rfbrowser-stable:v10.0.3 \
     bash -l -s <<EOF
     set -e
