@@ -38,26 +38,13 @@ buildah commit "${container}" "${repobase}/${reponame}"
 images+=("${repobase}/${reponame}")
 
 
-########################
-##      Asterisk      ##
-########################
-echo "[*] Build Asterisk container"
-reponame="nethvoice-asterisk"
-pushd asterisk
-buildah build --force-rm --layers --jobs "$(nproc)" --tag "${repobase}/${reponame}"
-popd
-
-# Append the image URL to the images array
-images+=("${repobase}/${reponame}")
-
-
 ##########################
 ##      FreePBX 16      ##
 ##########################
 echo "[*] Build FreePBX container"
 reponame="nethvoice-freepbx"
 pushd freepbx
-buildah build --force-rm --no-cache --jobs "$(nproc)" --target production --tag "${repobase}/${reponame}"
+buildah build --force-rm --no-cache --jobs "$(nproc)" --tag "${repobase}/${reponame}"
 popd
 
 # Append the image URL to the images array
