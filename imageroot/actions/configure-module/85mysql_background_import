@@ -8,7 +8,7 @@
 # if there is a background dump, import it in background then remove it
 
 # check if there are dumps that need to be imported
-if [[ $(find ./restore_background -type f | wc -l ) ==  0 ]] ; then
+if [[ $(find ./restore_background -type f 2>/dev/null | wc -l ) ==  0 ]] ; then
     echo "no background dump found"
     exit 0
 fi
