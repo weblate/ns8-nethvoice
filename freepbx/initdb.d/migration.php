@@ -112,6 +112,10 @@ $db->query("INSERT INTO `rest_cti_macro_permissions_permissions` (`macro_permiss
 $db->query("DELETE FROM `rest_cti_macro_permissions_permissions` WHERE `macro_permission_id` = 1 AND `permission_id` = 3000");
 $db->query("INSERT INTO `rest_cti_macro_permissions_permissions` (`macro_permission_id`, `permission_id`) VALUES (12,3000);");
 
+# change default host for nethcqr from localhost to 127.0.0.1:${NETHVOICE_MARIADB_PORT}
+$db->query("UPDATE `asterisk`.`nethcqr_details` SET `db_url` = '127.0.0.1:{$_ENV['NETHVOICE_MARIADB_PORT']}' WHERE `db_url` = 'localhost'");
+$db->query("UPDATE `asterisk`.`nethcqr_details` SET `cc_db_url` = '127.0.0.1:{$_ENV['NETHVOICE_MARIADB_PORT']}' WHERE `cc_db_url` = 'localhost'");
+
 # Migrate old mobile app extensions to new Acrobit mobile app
 $sip_options=[
 	'force_rport' => 'no',
