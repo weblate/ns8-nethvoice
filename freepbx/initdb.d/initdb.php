@@ -30,6 +30,7 @@ $vars = array(
 	'CELDBTABLENAME' => 'cel',
 	'FPBXDBUGFILE' => 'php://stderr',
 	'FPBX_LOG_FILE' => 'php://stderr',
+	'HTTPBINDPORT' => (empty($_ENV['ASTERISK_ARI_PORT']) ? '8088' : $_ENV['ASTERISK_ARI_PORT']),
 );
 
 $exec = [];
