@@ -27,7 +27,6 @@ INSERT INTO `modules` (`id`,`modulename`,`version`,`enabled`,`signature`) VALUES
 (22,"asteriskinfo","13.0.7.1",1,"{\"status\":129,\"details\":[]}"),
 (23,"blacklist","14.0.2",1,"{\"status\":129,\"details\":[]}"),
 (24,"bosssecretary","1.0",1,"{\"status\":129,\"details\":[]}"),
-(25,"bulkdids","13.0.2",1,"{\"status\":129,\"details\":[]}"),
 (26,"calendar","14.0.2.16",1,"{\"status\":129,\"details\":[]}"),
 (27,"callback","13.0.5.4",1,"{\"status\":129,\"details\":[]}"),
 (28,"callforward","14.0.1.3",1,"{\"status\":129,\"details\":[]}"),

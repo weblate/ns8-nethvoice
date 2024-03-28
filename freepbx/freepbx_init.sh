@@ -25,7 +25,6 @@ for module in \
     cdr \
     blacklist \
     bosssecretary \
-    bulkdids \
     calendar \
     callback \
     callforward \
@@ -86,6 +85,7 @@ done
 
 # Remove obsolete modules if required
 for module in \
+    bulkdids \
     inboundlookup \
     outboundlookup
 do
