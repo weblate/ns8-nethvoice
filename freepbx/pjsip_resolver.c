@@ -285,6 +285,7 @@ static void sip_resolve_callback(const struct ast_dns_query_set *query_set)
 	 * drilling down from other records. Each completed query set replaces the results
 	 * of the last.
 	 */
+	ast_debug(2, "NethDEBUG FOOOOO\n", resolve);
 	for (idx = 0; idx < ast_dns_query_set_num_queries(queries); ++idx) {
 		struct ast_dns_query *query = ast_dns_query_set_get(queries, idx);
 		struct ast_dns_result *result = ast_dns_query_get_result(query);
