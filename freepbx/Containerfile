@@ -72,6 +72,8 @@ RUN cd /usr/src/asterisk && \
 	cd .. && \
 	cd asterisk-${ASTERISK_VERSION} && \
 	mv ../pjsip_resolver.c ./res/res_pjsip/pjsip_resolver.c && \
+	find ./ && \
+	exit 1 && \
 	patch -p1 < ../asterisk-18-mp3.patch && \
 	patch -p1 < ../lazymembers.patch && \
 	mv ../menuselect.make* ./ && \
