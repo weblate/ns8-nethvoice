@@ -71,6 +71,9 @@ RUN cd /usr/src/asterisk && \
 	wget https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/${PJSIP_VERSION}/pjproject-${PJSIP_VERSION}.tar.bz2 && \
 	cd .. && \
 	cd asterisk-${ASTERISK_VERSION} && \
+	mv ../pjsip_resolver.c ./res/res_pjsip/pjsip_resolver.c && \
+	find ./ && \
+	exit 1 && \
 	patch -p1 < ../asterisk-18-mp3.patch && \
 	patch -p1 < ../lazymembers.patch && \
 	mv ../menuselect.make* ./ && \
@@ -105,9 +108,6 @@ RUN cd /usr/src/asterisk && \
 	./configure --without-imap --with-externals-cache=/usr/src/asterisk/cache --with-gsm=/usr --without-ilbc --with-libedit=yes --with-srtp --with-jansson-bundled --with-pjproject-bundled --with-libjwt-bundled LDFLAGS="${LDFLAGS}" NOISY_BUILD=1 CPPFLAGS="-fPIC" && \
 	make menuselect-tree && \
 	perl -n -i -e 'print unless /openr2/i' menuselect-tree && \
-	mv ../pjsip_resolver.c ./res/res_pjsip/pjsip_resolver.c && \
-	find ./ && \
-	exit 1 && \
 	make ${MAKEARGS} && \
 	make install ${MAKEARGS} && \
 	make samples ${MAKEARGS} && \
