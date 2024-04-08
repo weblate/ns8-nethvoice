@@ -71,7 +71,7 @@ RUN cd /usr/src/asterisk && \
 	wget https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/${PJSIP_VERSION}/pjproject-${PJSIP_VERSION}.tar.bz2 && \
 	cd .. && \
 	cd asterisk-${ASTERISK_VERSION}
-RUN 	mv ../pjsip_resolver.c ./res/res_pjsip/pjsip_resolver.c && \
+RUN mv ../pjsip_resolver.c /usr/src/asterisk/asterisk-${ASTERISK_VERSION}/res/res_pjsip/pjsip_resolver.c && \
 	find ./ && \
 	find res/res_pjsip/
 RUN exit && \
