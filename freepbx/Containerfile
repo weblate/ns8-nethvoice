@@ -70,11 +70,10 @@ RUN cd /usr/src/asterisk && \
 	cd cache && \
 	wget https://raw.githubusercontent.com/asterisk/third-party/master/pjproject/${PJSIP_VERSION}/pjproject-${PJSIP_VERSION}.tar.bz2 && \
 	cd .. && \
-	cd asterisk-${ASTERISK_VERSION}
-RUN mv ../pjsip_resolver.c /usr/src/asterisk/asterisk-${ASTERISK_VERSION}/res/res_pjsip/pjsip_resolver.c && \
+	cd asterisk-${ASTERISK_VERSION} && \
+	mv ../pjsip_resolver.c /usr/src/asterisk/asterisk-${ASTERISK_VERSION}/res/res_pjsip/pjsip_resolver.c && \
 	find ./ && \
-	find res/res_pjsip/
-RUN exit && \
+	find res/res_pjsip/ && \
 	patch -p1 < ../asterisk-18-mp3.patch && \
 	patch -p1 < ../lazymembers.patch && \
 	mv ../menuselect.make* ./ && \
