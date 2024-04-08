@@ -286,6 +286,8 @@ static void sip_resolve_callback(const struct ast_dns_query_set *query_set)
 	 * of the last.
 	 */
 	ast_debug(2, "NethDEBUG FOOOOO\n");
+	ast_debug(2, "NethDEBUG queries  %d\n", ast_dns_query_set_num_queries(queries));
+
 	for (idx = 0; idx < ast_dns_query_set_num_queries(queries); ++idx) {
 		ast_debug(2, "NethDEBUG BAR\n");
 		struct ast_dns_query *query = ast_dns_query_set_get(queries, idx);
@@ -298,8 +300,9 @@ static void sip_resolve_callback(const struct ast_dns_query_set *query_set)
 				ast_dns_query_get_name(query), ast_dns_query_get_rr_type(query));
 			continue;
 		}
-
+		ast_debug(2, "NethDEBUG record %s\n", ast_dns_result_get_records(result));
 		target = AST_VECTOR_GET_ADDR(&resolving, idx);
+		ast_debug(2, "NethDEBUG target %s\n", target);
 		for (record = ast_dns_result_get_records(result); record; record = ast_dns_record_get_next(record)) {
 			ast_debug(2, "NethDEBUG record %s target %p record type %s", record, resolve, ast_dns_record_get_rr_type(record));
 			if (ast_dns_record_get_rr_type(record) == T_A ||
@@ -545,6 +548,7 @@ static void sip_resolve(pjsip_resolver_t *resolver, pj_pool_t *pool, const pjsip
 	}
 
 	ast_debug(2, "[%p] Created resolution tracking for target '%s'\n", resolve, host);
+	ast_debug(2, "NethDEBUG port %d\n", target->addr.port);
 
 	/* If no port has been specified we can do NAPTR + SRV */
 	if (!target->addr.port) {
