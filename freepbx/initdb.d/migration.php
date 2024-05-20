@@ -47,22 +47,22 @@ if (count($res) > 0) {
 	$db->commit();
 
 	# set rtp_symmetric to no in freepbx sip table
-	$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'rtp_symmetric' WHERE `id` IN ($qm_string)";
+	$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'rtp_symmetric' AND `id` IN ($qm_string)";
 	$stmt = $db->prepare($sql);
 	$stmt->execute(array_column($res, 'extension'));
 
 	# set rewrite_contact to no in freepbx sip table
-	$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'rewrite_contact' WHERE `id` IN ($qm_string)";
+	$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'rewrite_contact' AND `id` IN ($qm_string)";
 	$stmt = $db->prepare($sql);
 	$stmt->execute(array_column($res, 'extension'));
 
 	# set force_rport to no in freepbx sip table
-	$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'force_rport' WHERE `id` IN ($qm_string)";
+	$sql = "UPDATE `asterisk`.`sip` SET `data` = 'no' WHERE `keyword` = 'force_rport' AND `id` IN ($qm_string)";
 	$stmt = $db->prepare($sql);
 	$stmt->execute(array_column($res, 'extension'));
 
 	# set transport to udp in freepbx sip table
-	$sql = "UPDATE `asterisk`.`sip` SET `data` = '0.0.0.0-udp' WHERE `keyword` = 'transport' WHERE `id` IN ($qm_string)";
+	$sql = "UPDATE `asterisk`.`sip` SET `data` = '0.0.0.0-udp' WHERE `keyword` = 'transport' AND `id` IN ($qm_string)";
 	$stmt = $db->prepare($sql);
 	$stmt->execute(array_column($res, 'extension'));
 }
