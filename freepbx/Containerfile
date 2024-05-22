@@ -364,7 +364,7 @@ RUN mkdir -p /var/www/html/freepbx/admin/modules/announcement && \
 	mkdir -p /var/www/html/freepbx/admin/modules/timeconditions && \
 	curl -sL https://github.com/FreePBX/timeconditions/archive/refs/tags/release/16.0.10.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/timeconditions && \
 	mkdir -p /var/www/html/freepbx/admin/modules/userman && \
-	curl -sL https://github.com/FreePBX/userman/archive/refs/tags/release/16.0.44.8.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/userman && \
+	curl -sL https://github.com/FreePBX/userman/archive/refs/tags/release/16.0.44.9.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/userman && \
 	mkdir -p /var/www/html/freepbx/admin/modules/vmblast && \
 	curl -sL https://github.com/FreePBX/vmblast/archive/refs/tags/release/16.0.10.tar.gz -o - | tar xzp --strip-components=1 -C /var/www/html/freepbx/admin/modules/vmblast
 
