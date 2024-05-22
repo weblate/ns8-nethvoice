@@ -51,7 +51,7 @@ This container also hosts push-proxy script for Flexisip.
 - `NETHVOICE_LDAP_USER` ldap username in the format od user@domain or basedn
 - `NETHVOICE_LDAP_HOST` ldap host
 
-If userbase is customized in FreePBX userman module, "Directory Name" in FreePBX directory configuration should be "NethVoice8 [custom]" and it won't be overwritten
+If userbase is customized in FreePBX userman module, "Directory Name" in FreePBX directory configuration should be "NethServer8 [custom]" and it won't be overwritten
 
 ## Asterisk Environment variables
 
