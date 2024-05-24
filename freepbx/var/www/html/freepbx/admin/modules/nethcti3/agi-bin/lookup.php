@@ -103,27 +103,26 @@ if (strlen($number)> 4) {
             //get company
             foreach ($res as $row) {
                 if (!empty($row[1])) {
-                    $company = $row[1];
+                    $company = trim($row[1]);
                     @$agi->verbose("Company = $company");
                     break; //company setted, no need to continue
                 }
             }
+
             //get name
+            $names = [];
             foreach ($res as $row) {
                 if (!empty($row[0])) {
-                    $name = $row[0];
-                    //if company is setted, make sure that there is only one name that correspond to this number, clear name if there are more than one
-                    if ($company != '') {
-                        $namecount++;
-                        if ( $namecount > 1) {
-                            $name = '';
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
+                    $names[] = trim($row[0]);
                 }
             }
+            $names = array_unique($names);
+            // Name should be empty if there are more different names for the same company
+            if (count($names) > 1) {
+                @$agi->verbose("WARNING: more than one names found for this number");
+                $name = '';
+            }
+            else $name = $names[0];
         }
         @$agi->verbose("Name = $name, Company = $company, Number = $number, source = Mysql");
     }
@@ -144,4 +143,4 @@ if ($direction == 'out') {
     if ($name !== '' ) @$agi->set_variable("CDR(cnam)","$name");
     if ($company !== '' ) @$agi->set_variable("CDR(ccompany)","$company");
 }
-@$agi->verbose("Name = \"$name\", Company = \"$company\", Number = \"$number\"");
+@$agi->verbose("Name = $name, Company = $company, Displayname = $displayname, Number = $number");
