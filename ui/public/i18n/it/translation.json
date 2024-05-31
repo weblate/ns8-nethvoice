@@ -51,7 +51,8 @@
     "timezone_tooltip": "Imposta la timezone di default per questa installazione di NethVoice",
     "create_nethvoice_adm": "Creazione NethVoice Administrator per gestione utenti",
     "remove_nethvoice_adm": "Rimozione NethVoice Administrator per gestione utenti",
-    "set_nethvoice_adm_password": "Impostazione NethVoice Administrator password per gestione utenti"
+    "set_nethvoice_adm_password": "Impostazione NethVoice Administrator password per gestione utenti",
+    "Error message hostname": "Modificando questo campo tutte le configurazioni utenti saranno resettate."
   },
   "status": {
     "app_images": "Immagine app|Immagini app",
