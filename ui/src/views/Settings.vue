@@ -105,6 +105,7 @@
               :disabled="loadingState"
               :invalid-message="error.nethvoice_admin_password"
               ref="nethvoice_admin_password"
+              :type="passwordFieldType"
             />
             <cv-row v-if="error.configureModule">
               <cv-column>
@@ -182,6 +183,7 @@ export default {
       timezoneList: [],
       providers: {},
       initialUserDomainSet: false,
+      passwordFieldType: "password",
       users: {},
       error: {
         getConfiguration: "",
