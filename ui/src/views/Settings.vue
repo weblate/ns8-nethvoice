@@ -39,24 +39,17 @@
               :invalid-message="error.nethcti_ui_host"
               ref="nethcti_ui_host"
             />
-            <div
-              class="form-group"
-              :class="{ 'error-message': warning.user_domain }"
-            >
-              <NsComboBox
-                :title="$t('settings.user_domain')"
-                :options="domainList"
-                :auto-highlight="true"
-                :label="$t('settings.user_domain_placeholder')"
-                :disabled="loadingState"
-                :invalid-message="error.user_domain"
-                v-model="form.user_domain"
-                ref="user_domain"
-              />
-              <p v-if="warning.user_domain" class="warning-message">
-                {{ warning.user_domain }}
-              </p>
-            </div>
+            <NsComboBox
+              :title="$t('settings.user_domain')"
+              :options="domainList"
+              :auto-highlight="true"
+              :label="$t('settings.user_domain_placeholder')"
+              :disabled="loadingState"
+              :invalid-message="error.user_domain"
+              :warnText="warning.user_domain"
+              v-model="form.user_domain"
+              ref="user_domain"
+            />
             <NsComboBox
               v-model.trim="form.timezone"
               :autoFilter="true"
@@ -747,22 +740,4 @@ export default {
 <style scoped lang="scss">
 @import "../styles/carbon-utils";
 
-.error-message::v-deep .bx--list-box__field {
-  border: 2px solid #f1c21b !important;
-}
-
-.error-message::v-deep .bx--text-input:active,
-.error-message::v-deep .bx--text-input:focus {
-  outline: 0px solid #00a2de !important;
-  outline-offset: 0px !important;
-}
-
-.warning-message {
-  color: #f1c21b;
-  font-weight: 700;
-  margin-top: -21px;
-  margin-left: 5px;
-  margin-bottom: 14px;
-  font-size: 12px !important;
-}
 </style>
