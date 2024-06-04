@@ -98,7 +98,7 @@
               :disabled="loadingState"
               :invalid-message="error.nethvoice_admin_password"
               ref="nethvoice_admin_password"
-              :type="passwordFieldType"
+              type="password"
             />
             <cv-row v-if="error.configureModule">
               <cv-column>
@@ -731,7 +731,7 @@ export default {
       this.previousUserDomain = newValue;
     },
     warnUser() {
-      this.warning.user_domain = this.$t("settings.Error message hostname");
+      this.warning.user_domain = this.$t("settings.error_message_hostname");
     },
   },
 };
@@ -739,5 +739,4 @@ export default {
 
 <style scoped lang="scss">
 @import "../styles/carbon-utils";
-
 </style>
