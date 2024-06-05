@@ -46,6 +46,7 @@
               :label="$t('settings.user_domain_placeholder')"
               :disabled="loadingState"
               :invalid-message="error.user_domain"
+              :warnText="warning.user_domain"
               v-model="form.user_domain"
               ref="user_domain"
             />
@@ -97,6 +98,7 @@
               :disabled="loadingState"
               :invalid-message="error.nethvoice_admin_password"
               ref="nethvoice_admin_password"
+              type="password"
             />
             <cv-row v-if="error.configureModule">
               <cv-column>
@@ -173,6 +175,8 @@ export default {
       domainList: [],
       timezoneList: [],
       providers: {},
+      initialUserDomainSet: false,
+      passwordFieldType: "password",
       users: {},
       error: {
         getConfiguration: "",
@@ -187,7 +191,23 @@ export default {
         reports_international_prefix: "",
         timezone: "",
       },
+      warning: {
+        user_domain: "",
+      },
     };
+  },
+  mounted() {
+    this.previousUserDomain = this.form.user_domain;
+    this.$refs.user_domain.$el.addEventListener(
+      "input",
+      this.handleUserDomainInput
+    );
+  },
+  beforeDestroy() {
+    this.$refs.user_domain.$el.removeEventListener(
+      "input",
+      this.handleUserDomainInput
+    );
   },
   computed: {
     ...mapState(["instanceName", "core", "appName"]),
@@ -699,6 +719,19 @@ export default {
     getUsersCompleted(taskContext, taskResult) {
       this.users[taskContext.data.domain] = taskResult.output.users;
       this.loading.getUsers = false;
+    },
+    handleUserDomainInput(event) {
+      const newValue = event.target.value;
+      if (
+        this.previousUserDomain !== newValue &&
+        this.form.user_domain !== ""
+      ) {
+        this.warnUser();
+      }
+      this.previousUserDomain = newValue;
+    },
+    warnUser() {
+      this.warning.user_domain = this.$t("settings.error_message_hostname");
     },
   },
 };
