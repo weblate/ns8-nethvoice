@@ -174,8 +174,8 @@ $extensions_destinations_table_field = array(
 	'timeconditions' => ['truegoto','falsegoto'],
 );
 
-if (empty($old_domain)) {
-	$db->prepare('INSERT INTO `freepbx_settings` (`keyword`, `value`) VALUES ("NETHVOICE_LDAP_DOMAIN", ?)')->execute([$_ENV['NETHVOICE_LDAP_DOMAIN']]);
+if (empty($old_domain) && !empty($_ENV['NETHVOICE_LDAP_BASE'])) {
+	$db->prepare('INSERT IGNORE INTO `freepbx_settings` (`keyword`, `value`, `name`, `level`, `description`, `type`, `options`, `defaultval`,`readonly`,`hidden`,`category`,`module`,`emptyok`,`sortorder`) VALUES ("NETHVOICE_LDAP_DOMAIN", ?, "Name of NethVoice user base domain", 0, "This is automatically configured at FreePBX container startup using environment NETHVOICE_LDAP_ variables", "text", "", "",1,1,"System Setup","",1,0)')->execute([$_ENV['NETHVOICE_LDAP_DOMAIN']]);
 } elseif ($old_domain !== $_ENV['NETHVOICE_LDAP_BASE']) {
 	$db->prepare('UPDATE `freepbx_settings` SET `value` = ? WHERE `keyword` = "NETHVOICE_LDAP_DOMAIN"')->execute([$_ENV['NETHVOICE_LDAP_DOMAIN']]);
 	// Clean extensions
