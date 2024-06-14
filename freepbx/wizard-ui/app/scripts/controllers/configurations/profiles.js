@@ -108,7 +108,8 @@ angular.module('nethvoiceWizardUiApp')
 
     $scope.saveProfile = function (profile, obj_permissions, permission, macro) {
       // show queueManager missing license error
-      if ( profile.macro_permissions.qmanager.value && !isLicenseActive){
+      // check if queue manager permission is active and license is not active
+      if (profile.macro_permissions.qmanager.value && !$scope.isLicenseActive) {
         $scope.showLicenseError = true;
           $timeout(function() {
             profile.macro_permissions.qmanager.value = false;
@@ -234,10 +235,17 @@ angular.module('nethvoiceWizardUiApp')
     $scope.getAllProfiles(true);
 
     //Retrieve information about user status
+    //example subscription not active
+    //{
+    //  "configured": 7,
+    //  "limit": 8,
+    //  "configurable": 8
+    //}
     $scope.getInformationLicense = function () {
       UserService.statusLicense().then(function (res) {
         $scope.licenseInformation  = res.data
-        if($scope.licenseInformation.limit !== false) {
+        //if limit is set to false it means that the license is active
+        if ($scope.licenseInformation.limit === false) {
           $scope.isLicenseActive = false;
         } else {
           $scope.isLicenseActive = true;
