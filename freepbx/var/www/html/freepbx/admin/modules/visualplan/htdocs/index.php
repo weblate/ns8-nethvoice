@@ -240,7 +240,7 @@ if (!isset($_SESSION['AMP_user']) || !$_SESSION['AMP_user']->checkSection('visua
 			<a href="http://www.nethvoice.it" target="_blank">Copyright © 2016</a>
 		</p>
 		<p class="right_floated">
-			<a href="http://nethvoice.docs.nethesis.it/it/latest/amministrazione.html#visual-plan-ref-label" target="_blank">Documentazione</a>
+			<a href="https://docs.nethserver.org/projects/ns8/it/latest/nethvoice.html#inbound" target="_blank">Documentazione</a>
 		</p>
 	</footer>
 </body>
