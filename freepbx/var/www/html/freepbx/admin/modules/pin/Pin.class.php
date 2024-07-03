@@ -86,7 +86,7 @@ class Pin implements \BMO
             $sth->execute(array(
                 $_REQUEST['extension'],
                 $_REQUEST['pin'],
-                $_REQUEST['enabled'],
+                (int) $_REQUEST['enabled'],
             ));
             break;
         case 'edit':
@@ -97,7 +97,7 @@ class Pin implements \BMO
             $sth->execute(array(
                 $_REQUEST['extension'],
                 $_REQUEST['pin'],
-                $_REQUEST['enabled'],
+                (int) $_REQUEST['enabled'],
             ));
             break;
         case 'delete':
