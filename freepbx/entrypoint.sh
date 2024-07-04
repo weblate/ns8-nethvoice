@@ -227,4 +227,26 @@ source /etc/apache2/envvars
 # Install freepbx modules and apply changes after asterisk is started by supervisor
 /freepbx_init.sh &
 
+# Configure SMTP for Voicemail
+if [ "$SMTP_ENABLED" = "1" ]; then
+	cat <<EOF >> /etc/s-nail.rc
+set smtp-auth=login
+set tls-verify=$(if [ "$SMTP_TLSVERIFY" = "1" ]; then echo "strict"; else echo "ignore"; fi)
+set v15-compat=yes
+EOF
+
+	# Check if encryption is specified and modify configuration accordingly
+	USER_ENCODED_STRING=$(printf %s "${SMTP_USERNAME}"|jq -sRr @uri)
+	PASSWORD_ENCODED_STRING=$(printf %s "${SMTP_PASSWORD}"|jq -sRr @uri)
+	if [ "$SMTP_ENCRYPTION" = "starttls" ]; then
+		echo "set smtp-use-starttls" >> /etc/s-nail.rc
+		echo "set mta=smtp://${USER_ENCODED_STRING}:${PASSWORD_ENCODED_STRING}@${SMTP_HOST}:${SMTP_PORT}" >> /etc/s-nail.rc
+	elif [ "$SMTP_ENCRYPTION" = "tls" ]; then
+		echo "set mta=smtps://$(printf %s "${SMTP_USERNAME}"|jq -sRr @uri):$(printf %s "${SMTP_PASSWORD}"|jq -sRr @uri)@${SMTP_HOST}:${SMTP_PORT}" >> /etc/s-nail.rc
+	fi
+fi
+# customize voicemail branding
+sed 's/FreePBX/'"${BRAND_NAME}"'/' -i /etc/asterisk/voicemail.conf*
+sed 's/http:\/\/AMPWEBADDRESS\/ucp/https:\/\/'"${NETHCTI_UI_HOST}"'\/history/' -i /etc/asterisk/voicemail.conf*
+
 exec "$@"
