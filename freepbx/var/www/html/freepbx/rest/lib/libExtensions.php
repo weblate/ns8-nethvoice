@@ -730,10 +730,8 @@ function createMainExtensionForUser($username,$mainextension,$outboundcid='') {
 
     //Update user to add this extension as default extension
     //get uid
-    if (checkUsermanIsUnlocked()) {
-        $user = $fpbx->Userman->getUserByUsername($username);
-        $uid = $user['id'];
-    }
+    $user = $fpbx->Userman->getUserByUsername($username);
+    $uid = $user['id'];
     if (!isset($uid)) {
         return [array('message'=>'User not found' ), 404];
     }
@@ -780,9 +778,8 @@ function createMainExtensionForUser($username,$mainextension,$outboundcid='') {
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array($uid));
 
-        if (checkUsermanIsUnlocked()) {
-            $fpbx->Userman->updateUser($uid, $username, $username);
-        }
+        $u = $fpbx->Userman->getUserByID($uid);
+        $status = $fpbx->Userman->directories[$u['auth']]->updateUser($uid, $username, $username, null, null, array(), null, false);
     }
 
     //exit if extension is empty
@@ -816,9 +813,8 @@ function createMainExtensionForUser($username,$mainextension,$outboundcid='') {
 
     //update user with $extension as default extension
     $res['status'] = false;
-    if (checkUsermanIsUnlocked()) {
-        $res = $fpbx->Userman->updateUser($uid, $username, $username, $mainextension);
-    }
+    $u = $fpbx->Userman->getUserByID($uid);
+    $res = $fpbx->Userman->directories[$u['auth']]->updateUser($uid, $username, $username, $mainextension, null, array(), null, false);
     if (!$res['status']) {
         //Can't assign extension to user, delete extension
         deleteExtension($mainextension);
@@ -829,25 +825,6 @@ function createMainExtensionForUser($username,$mainextension,$outboundcid='') {
         return [array('message'=>$res['message']), 500];
     }
     return true;
-}
-
-function checkUsermanIsUnlocked(){
-    // Check if user directory is locked, wait if it is and exit fail
-    $locked=1;
-    $dbh = FreePBX::Database();
-    for ($i=0; $i<30; $i++) {
-        $sql = 'SELECT `locked` FROM userman_directories WHERE `name` LIKE "NethServer %"';
-        $sth = $dbh->prepare($sql);
-        $sth->execute(array());
-        $locked = $sth->fetchAll()[0][0];
-        if ($locked == 0) {
-            return true;
-        }
-        sleep(1+0.2*$i);
-    }
-    if ($locked == 1) {
-        return false;
-    }
 }
 
 function checkTableExists($table) {
