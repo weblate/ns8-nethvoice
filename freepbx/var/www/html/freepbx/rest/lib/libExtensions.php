@@ -985,7 +985,7 @@ function getProvisioningEngine() {
     return 'tancredi';
 }
 
-function updateUsermanUser($username, $mainextension = null) {
+function updateUsermanUser($username, $mainextension = 'none') {
     global $amp_conf;
     $fpbx = FreePBX::create();
     $uid = $fpbx->Userman->getUserByUsername($username)['id'];
