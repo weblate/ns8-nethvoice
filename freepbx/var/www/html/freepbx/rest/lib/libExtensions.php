@@ -997,7 +997,11 @@ function updateUsermanUser($username, $mainextension = 'none') {
                 include($amp_conf['AMPWEBROOT']."/admin/modules/userman/functions.inc/auth/modules/".$directory['driver'].".php");
             }
             $d = new $class($fpbx->Userman, $fpbx, $directory['config']);
-            return $d->updateUser($uid, $username, $username, $mainextension, null, array(), null, false);
+            $status = $d->updateUser($uid, $username, $username, $mainextension, null, array(), null, false);
+            if ($status['status'] == false) {
+                error_log(__FUNCTION__ . 'ERROR: ' . $status['message']);
+            }
+            return $status;
         }
     }
 }
