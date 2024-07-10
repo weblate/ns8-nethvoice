@@ -778,8 +778,7 @@ function createMainExtensionForUser($username,$mainextension,$outboundcid='') {
         $stmt = $dbh->prepare($sql);
         $stmt->execute(array($uid));
 
-        $u = $fpbx->Userman->getUserByID($uid);
-        $status = $fpbx->Userman->directories[$u['auth']]->updateUser($uid, $username, $username, null, null, array(), null, false);
+        $status = updateUsermanUser($username);
     }
 
     //exit if extension is empty
@@ -812,9 +811,7 @@ function createMainExtensionForUser($username,$mainextension,$outboundcid='') {
     $astman->database_del("CW",$mainextension);
 
     //update user with $extension as default extension
-    $res['status'] = false;
-    $u = $fpbx->Userman->getUserByID($uid);
-    $res = $fpbx->Userman->directories[$u['auth']]->updateUser($uid, $username, $username, $mainextension, null, array(), null, false);
+    $res = updateUsermanUser($username,$mainextension);
     if (!$res['status']) {
         //Can't assign extension to user, delete extension
         deleteExtension($mainextension);
@@ -986,4 +983,21 @@ function setExtensionCustomContextProfile($extension) {
 
 function getProvisioningEngine() {
     return 'tancredi';
+}
+
+function updateUsermanUser($username, $mainextension = null) {
+    $fpbx = FreePBX::create();
+    $dbh = FreePBX::Database();
+    $uid = $fpbx->Userman->getUserByUsername($username)['id'];
+    $u = $fpbx->Userman->getUserByID($uid);
+    foreach ($fpbx->Userman->getAllDirectories() as $directory) {
+        if ($directory['id'] == $u['auth']) {
+            $class = 'FreePBX\modules\Userman\Auth\\'.$directory['driver'];
+            if(!class_exists($class)) {
+                include("/var/www/html/freepbx/admin/modules/userman/functions.inc/auth/modules/".$directory['driver'].".php");
+            }
+            $d = new $class($fpbx->Userman, $fpbx, $directory['config']);
+            return $d->updateUser($uid, $username, $username, $mainextension, null, array(), null, false);
+        }
+    }
 }
