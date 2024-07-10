@@ -986,15 +986,15 @@ function getProvisioningEngine() {
 }
 
 function updateUsermanUser($username, $mainextension = null) {
+    global $amp_conf;
     $fpbx = FreePBX::create();
-    $dbh = FreePBX::Database();
     $uid = $fpbx->Userman->getUserByUsername($username)['id'];
     $u = $fpbx->Userman->getUserByID($uid);
     foreach ($fpbx->Userman->getAllDirectories() as $directory) {
         if ($directory['id'] == $u['auth']) {
             $class = 'FreePBX\modules\Userman\Auth\\'.$directory['driver'];
             if(!class_exists($class)) {
-                include("/var/www/html/freepbx/admin/modules/userman/functions.inc/auth/modules/".$directory['driver'].".php");
+                include($amp_conf['AMPWEBROOT']."/admin/modules/userman/functions.inc/auth/modules/".$directory['driver'].".php");
             }
             $d = new $class($fpbx->Userman, $fpbx, $directory['config']);
             return $d->updateUser($uid, $username, $username, $mainextension, null, array(), null, false);
