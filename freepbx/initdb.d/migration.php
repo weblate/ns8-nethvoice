@@ -81,7 +81,7 @@ $sql = "UPDATE `asterisk`.`pjsip`
 	SET `pjsip`.`data` = ?
 	WHERE `pjsip`.`keyword` = 'outbound_proxy'
 	AND `pjsip`.`id` IN (
-		SELECT `pjsip`.`id`
+		SELECT `id`
 		FROM `asterisk`.`pjsip` as pjsip_inner
 		WHERE `pjsip_inner`.`keyword` = 'trunk_name'
 		AND `pjsip_inner`.`data` NOT LIKE '%custom%'
