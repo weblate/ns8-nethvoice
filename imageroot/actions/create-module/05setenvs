@@ -81,21 +81,21 @@ agent.set_env('ASTERISK_SIPS_PORT', port_list[25])
 agent.set_env('ASTERISK_IAX_PORT', port_list[26])
 
 # Set root password for MariaDB
-agent.set_env('MARIADB_ROOT_PASSWORD', gen_password())
+# MARIADB_ROOT_PASSWORD written to passwords.env
 
 # Set DB configuration variables
 agent.set_env('AMPDBUSER', 'freepbxuser')
 agent.set_env('AMPDBHOST', '127.0.0.1')
 agent.set_env('AMPDBNAME', 'asterisk')
 agent.set_env('AMPDBENGINE', 'mysql')
-agent.set_env('AMPDBPASS', gen_password())
+# 'AMPDBPASS' written to passwords.env
 agent.set_env('AMPMGRUSER', 'asterisk')
-agent.set_env('AMPMGRPASS', gen_password())
+# 'AMPMGRPASS' written to passwords.env
 agent.set_env('APACHE_RUN_USER', 'asterisk')
 agent.set_env('APACHE_RUN_GROUP', 'asterisk')
 agent.set_env('AMPASTERISKWEBGROUP', 'asterisk')
 agent.set_env('AMPASTERISKWEBUSER', 'asterisk')
-agent.set_env('NETHCTI_AMI_PASSWORD', gen_password())
+# 'NETHCTI_AMI_PASSWORD' written to passwords.env
 
 agent.set_env('BRAND_NAME', 'NethVoice')
 agent.set_env('BRAND_SITE', 'http://www.nethvoice.it')
@@ -104,17 +104,17 @@ agent.set_env('BRAND_DOCS', 'https://docs.nethserver.org/projects/ns8/it/latest/
 agent.set_env('CDRDBHOST', '127.0.0.1')
 agent.set_env('CDRDBNAME', 'asteriskcdrdb')
 agent.set_env('CDRDBUSER', 'cdruser')
-agent.set_env('CDRDBPASS', gen_password())
+# 'CDRDBPASS' written to passwords.env
 
 agent.set_env('NETHCTI_DB_HOST', '127.0.0.1')
 agent.set_env('NETHCTI_DB_PORT', port_list[0])
 agent.set_env('NETHCTI_DB_USER', 'nethcti3')
-agent.set_env('NETHCTI_DB_PASSWORD', gen_password())
+# 'NETHCTI_DB_PASSWORD' written to passwords.env
 
-agent.set_env('TANCREDI_STATIC_TOKEN', gen_password())
-agent.set_env('NETHVOICESECRETKEY', gen_password())
+# 'TANCREDI_STATIC_TOKEN' written to passwords.env
+# 'NETHVOICESECRETKEY' written to passwords.env
 
-agent.set_env('JANUS_ADMIN_SECRET', gen_password())
+# 'JANUS_ADMIN_SECRET' written to passwords.env
 agent.set_env('JANUS_DEBUG_LEVEL', 5)
 agent.set_env('JANUS_RTPSTART', janus_start)
 agent.set_env('JANUS_RTPEND', janus_end)
@@ -130,16 +130,36 @@ agent.set_env('PHONEBOOK_DB_HOST', '127.0.0.1')
 agent.set_env('PHONEBOOK_DB_PORT', port_list[0])
 agent.set_env('PHONEBOOK_DB_NAME', 'phonebook')
 agent.set_env('PHONEBOOK_DB_USER', 'pbookuser')
-agent.set_env('PHONEBOOK_DB_PASS', gen_password())
+# 'PHONEBOOK_DB_PASS' written to passwords.env
 agent.set_env('PHONEBOOK_DB_USER', 'pbookuser')
 agent.set_env('PHONEBOOK_LDAP_USER', 'ldapuser')
-agent.set_env('PHONEBOOK_LDAP_PASS', gen_password())
+# 'PHONEBOOK_LDAP_PASS' written to passwords.env
 agent.set_env('PHONEBOOK_LDAP_LIMIT', '500')
 
 # Reports
 agent.set_env('REPORTS_REDIS_PORT', port_list[27])
 agent.set_env('REPORTS_API_PORT', port_list[28])
-agent.set_env('REPORTS_PASSWORD', gen_password())
-agent.set_env('REPORTS_API_KEY', gen_password())
-agent.set_env('REPORTS_SECRET', gen_password())
+# 'REPORTS_PASSWORD' written to passwords.env
+# 'REPORTS_API_KEY' written to passwords.env
+# 'REPORTS_SECRET' written to passwords.env
 agent.set_env('REPORTS_UI_PORT', port_list[29])
+
+# password file
+passwords = {
+    "MARIADB_ROOT_PASSWORD": gen_password(),
+    "AMPDBPASS": gen_password(),
+    "AMPMGRPASS": gen_password(),
+    "NETHCTI_AMI_PASSWORD": gen_password(),
+    "CDRDBPASS": gen_password(),
+    "NETHCTI_DB_PASSWORD": gen_password(),
+    "TANCREDI_STATIC_TOKEN": gen_password(),
+    "NETHVOICESECRETKEY": gen_password(),
+    "JANUS_ADMIN_SECRET": gen_password(),
+    "PHONEBOOK_DB_PASS": gen_password(),
+    "PHONEBOOK_LDAP_PASS": gen_password(),
+    "REPORTS_PASSWORD": gen_password(),
+    "REPORTS_API_KEY": gen_password(),
+    "REPORTS_SECRET": gen_password()
+}
+
+agent.write_envfile("passwords.env", passwords)
