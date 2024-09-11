@@ -31,6 +31,7 @@ ExecStart=/usr/bin/podman run \
     --volume=spool:/var/spool/asterisk:z \
     --volume=reports_config:/opt/nethvoice-report:z \
     --volume=/dev/log:/dev/log \
+    --env-file=%S/state/passwords.env \
     --env=ASTMANAGERPORT \
     --env=APACHE_PORT \
     --env=NETHCTI* \

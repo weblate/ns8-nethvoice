@@ -20,6 +20,7 @@ ExecStart=/usr/bin/podman run \
     --cgroups=no-conmon \
     --log-opt=tag=%u \
     --replace --name=%N \
+    --env-file=%S/state/passwords.env \
     --env=LOCAL_IP \
     --env=JANUS_TRANSPORT_PORT \
     --volume=/dev/log:/dev/log \

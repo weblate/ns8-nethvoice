@@ -18,6 +18,7 @@ ExecStart=/usr/bin/podman run \
         --replace \
         --volume=reports_config:/opt/nethvoice-report:z \
         --network=host \
+        --env-file=%S/state/passwords.env \
         --env REPORTS_INTERNATIONAL_PREFIX \
         --env NETHVOICE_HOST \
         --env NETHVOICE_LDAP_SCHEMA \
