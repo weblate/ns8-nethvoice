@@ -10,6 +10,8 @@ import os
 
 # Set new service ports
 
+MARIADB_ROOT_PASSWORD = agent.read_envfile("passwords.env")["MARIADB_ROOT_PASSWORD"]
+
 # SQL query to update kvstore_Sipsettings
 SQL_QUERY = f"""
 UPDATE `kvstore_Sipsettings`
@@ -20,7 +22,7 @@ SET `val` = CASE
 END
 WHERE `key` IN ('udpport-0.0.0.0', 'tlsport-0.0.0.0', 'tcpport-0.0.0.0');
 """
-agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{os.environ["MARIADB_ROOT_PASSWORD"]} -e'.split(), SQL_QUERY).check_returncode()
+agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{MARIADB_ROOT_PASSWORD} -e'.split(), SQL_QUERY).check_returncode()
 
 # SQL query to update freepbx_settings
 SQL_QUERY = f"""
@@ -40,7 +42,7 @@ SET `value` = '{os.environ['ASTMANAGERPORT']}',
     `sortorder` = 0
 WHERE `keyword` = 'ASTMANAGERPORT'
 """
-agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{os.environ["MARIADB_ROOT_PASSWORD"]} -e'.split(), SQL_QUERY).check_returncode()
+agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{MARIADB_ROOT_PASSWORD} -e'.split(), SQL_QUERY).check_returncode()
 
 # SQL query to update kvstore_Sipsettings with bindport and tlsbindport
 SQL_QUERY = f"""
@@ -51,7 +53,7 @@ SET `val` = CASE
 END
 WHERE `key` IN ('bindport', 'tlsbindport');
 """
-agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{os.environ["MARIADB_ROOT_PASSWORD"]} -e'.split(), SQL_QUERY).check_returncode()
+agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{MARIADB_ROOT_PASSWORD} -e'.split(), SQL_QUERY).check_returncode()
 
 # SQL query to update iaxsettings
 SQL_QUERY = f"""
@@ -61,7 +63,7 @@ SET `data` = '{os.environ['ASTERISK_IAX_PORT']}',
     `type` = 0
 WHERE `keyword` = 'bindport';
 """
-agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{os.environ["MARIADB_ROOT_PASSWORD"]} -e'.split(), SQL_QUERY).check_returncode()
+agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{MARIADB_ROOT_PASSWORD} -e'.split(), SQL_QUERY).check_returncode()
 
 # SQL query to update sipsettings
 SQL_QUERY = f"""
@@ -71,7 +73,7 @@ SET `data` = '{os.environ['ASTERISK_SIP_PORT']}',
     `type` = 0
 WHERE `keyword` = 'bindport';
 """
-agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{os.environ["MARIADB_ROOT_PASSWORD"]} -e'.split(), SQL_QUERY).check_returncode()
+agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{MARIADB_ROOT_PASSWORD} -e'.split(), SQL_QUERY).check_returncode()
 
 # SQL query to update freepbx_settings for HTTPTLSENABLE
 SQL_QUERY = f"""
@@ -91,4 +93,4 @@ SET `value` = '0',
     `sortorder` = 0
 WHERE `keyword` = 'HTTPTLSENABLE';
 """
-agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{os.environ["MARIADB_ROOT_PASSWORD"]} -e'.split(), SQL_QUERY).check_returncode()
+agent.run_helper(*f'podman exec mariadb mysql asterisk -u root -p{MARIADB_ROOT_PASSWORD} -e'.split(), SQL_QUERY).check_returncode()
