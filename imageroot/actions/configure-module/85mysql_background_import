@@ -20,6 +20,7 @@ podman run \
     --name=mariadb_background_restore \
     --network=host \
     --volume=./restore_background:/restore_background:z \
+    --env-file=./passwords.env \
     --env=MARIADB_ROOT_PASSWORD \
     --env=NETHVOICE_MARIADB_PORT \
     "${NETHVOICE_MARIADB_IMAGE}" \
