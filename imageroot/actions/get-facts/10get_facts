@@ -11,13 +11,15 @@ import os
 import sys
 import agent
 
+# retrieve the root password from the passwords.env file
+MARIADB_ROOT_PASSWORD = agent.read_envfile("passwords.env")['MARIADB_ROOT_PASSWORD']
+
 counter_script=f"""
-podman exec mariadb mariadb {os.environ['AMPDBNAME']}  -uroot  -p{os.environ['MARIADB_ROOT_PASSWORD']} -BN \
+podman exec mariadb mariadb {os.environ['AMPDBNAME']}  -uroot  -p{MARIADB_ROOT_PASSWORD} -BN \
   -e "SELECT COUNT(*) FROM userman_users WHERE default_extension != 'none' UNION ALL SELECT COUNT(*) FROM rest_devices_phones WHERE type = 'mobile';"
 """
 
 nethvoice_users = {}
-
 try:
     with subprocess.Popen(counter_script, stdout=subprocess.PIPE, shell=True, text=True) as fcounter:
         res = fcounter.stdout.read().split('\n')
