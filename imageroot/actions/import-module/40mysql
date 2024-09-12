@@ -68,6 +68,7 @@ podman run \
     --network=none \
     --volume=./restore:/docker-entrypoint-initdb.d:z \
     --volume=mariadb-data:/var/lib/mysql:Z \
+    --env-file=./passwords.env \
     --env=MARIADB_ROOT_PASSWORD \
     --env=NETHVOICE_MARIADB_PORT \
     --env=AMPDBUSER \
