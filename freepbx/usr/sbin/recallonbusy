@@ -20,7 +20,6 @@
 # along with NethVoice.  If not, see COPYING.
 #
 
-import syslog
 import sys
 import time
 from asterisk.ami import AMIClient,SimpleAction,AutoReconnect
@@ -58,7 +57,7 @@ for key,value in DEFAULT_CONFIG.items():
 def log_debug(msg):
     global CONFIG
     if CONFIG['Debug'] == True:
-        syslog.syslog(syslog.LOG_INFO,'recallonbusy: %s' % msg)
+        print('recallonbusy: %s' % msg)
 
 def get_extension_state(extension):
     global device_state_map
@@ -155,7 +154,7 @@ def ami_client_connect_and_login(address,port,username,secret):
         log_debug('AMI client connected')
         return True
     except Exception as err:
-        syslog.syslog(syslog.LOG_ERR,'AMI client ERROR: %s' % str(err))
+        print('AMI client ERROR: %s' % str(err), file=sys.stderr)
         return False
 
 device_state_map = {}
@@ -172,7 +171,7 @@ while True:
             client.send_action(SimpleAction('DeviceStateList'))
 
     except Exception as e:
-        syslog.syslog(syslog.LOG_ERR,"Error: " + str(e))
+        print("Error: " + str(e), file=sys.stderr)
         connected = False
 
     time.sleep(CONFIG['CheckInterval'])
