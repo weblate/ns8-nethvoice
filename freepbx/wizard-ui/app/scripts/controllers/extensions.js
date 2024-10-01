@@ -24,9 +24,6 @@ angular.module('nethvoiceWizardUiApp')
     $scope.localDomain = "";
     $scope.licenseMissing = false;
     $scope.unitLeftInformation = {};
-    $scope.userSyncronization = '';
-    $scope.userNotReadyFirstTime = false;
-    $scope.intervalId = '';
 
     $scope.error = {
       file: {
