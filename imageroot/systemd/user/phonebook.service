@@ -22,6 +22,7 @@ ExecStart=/usr/bin/podman run \
     --log-opt=tag=%u \
     --replace --name=%N \
     --env=PHONEBOOK* \
+    --env-file=%S/state/passwords.env \
     --env=NETHVOICE_MARIADB_PORT \
     --volume=/dev/log:/dev/log \
     --volume=tancredi:/var/lib/tancredi:z \

@@ -68,16 +68,13 @@ podman run \
     --network=none \
     --volume=./restore:/docker-entrypoint-initdb.d:z \
     --volume=mariadb-data:/var/lib/mysql:Z \
-    --env=MARIADB_ROOT_PASSWORD \
+    --env-file=./passwords.env \
     --env=NETHVOICE_MARIADB_PORT \
     --env=AMPDBUSER \
-    --env=AMPDBPASS \
     --env=CDRDBUSER \
     --env=CDRDBHOST \
-    --env=CDRDBPASS \
     --env=CTIUSER \
     --env=NETHCTI_DB_USER \
-    --env=NETHCTI_DB_PASSWORD \
     --env=PHONEBOOK* \
     --env=ASTERISK_RTPSTART \
     --env=ASTERISK_RTPEND \
@@ -85,6 +82,5 @@ podman run \
     --env=ASTERISK_SIPS_PORT \
     --env=ASTERISK_IAX_PORT \
     --env=ASTMANAGERPORT \
-    --env=REPORTS_PASSWORD \
     --env=MARIADB_AUTO_UPGRADE=1 \
     "${NETHVOICE_MARIADB_IMAGE}"

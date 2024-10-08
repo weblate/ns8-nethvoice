@@ -8,6 +8,8 @@
 # Redirect any output to the journal (stderr)
 exec 1>&2
 
+# sourcing the file directly is broken with quotes
+NETHVOICE_USER_PORTAL_PASSWORD=$(grep '^NETHVOICE_USER_PORTAL_PASSWORD=' ./passwords.env) && export $NETHVOICE_USER_PORTAL_PASSWORD
 
 #Try to cleanup the NethVoice user domain administrator from the accounts provider
 

@@ -12,6 +12,10 @@ import agent
 
 request = json.load(sys.stdin)
 
+# read from  the passwords.env file
+passwordsfile = agent.read_envfile("passwords.env")
+
 # PHONEBOOK_DB_PASS from migration
 if "phonebook_db_password" in request:
-    agent.set_env('PHONEBOOK_DB_PASS', request["phonebook_db_password"])
+    passwordsfile['PHONEBOOK_DB_PASS'] = request.get('phonebook_db_password', "")
+    agent.write_envfile("passwords.env", passwordsfile)
