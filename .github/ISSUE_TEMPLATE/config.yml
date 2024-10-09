@@ -1,0 +1,6 @@
+---
+blank_issues_enabled: false
+contact_links:
+  - name: NethServer 8 issue tracker
+    url: https://github.com/NethServer/dev/issues
+    about: Please open a new issues here
