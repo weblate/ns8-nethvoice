@@ -13,7 +13,7 @@ on:
       - 'test-module.sh'
 
 env:
-  GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+  GH_TOKEN: ${{ secrets.NS8_MODULE_RELEASES_TOKEN }}
 
 jobs:
   release-module:
