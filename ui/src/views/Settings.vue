@@ -392,7 +392,7 @@ export default {
         rebranding_login_logo_dark_url: "",
         rebranding_login_people: false,
         nethvoice_adm: {},
-        nethcti_privacy_numbers,
+        nethcti_privacy_numbers: "",
       },
       isDarkMode: false,
       proxy_installed: false,
@@ -430,6 +430,7 @@ export default {
         rebranding_favicon_url: "",
         rebranding_login_logo_url: "",
         rebranding_login_logo_dark_url: "",
+        nethcti_privacy_numbers: "",
       },
       warning: {
         user_domain: "",
