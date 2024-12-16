@@ -99,7 +99,7 @@ if [[ ! -f /etc/apache2/sites-enabled/wizard.conf ]] ; then
 	ln -sf /etc/apache2/sites-available/wizard.conf /etc/apache2/sites-enabled/wizard.conf
 fi
 
-# Write wizard and restapy configuration
+# Write wizard and restapi configuration
 cat > /var/www/html/freepbx/wizard/scripts/custom.js <<EOF
 var customConfig = {
   BRAND_NAME: '${BRAND_NAME:=NethVoice}',
