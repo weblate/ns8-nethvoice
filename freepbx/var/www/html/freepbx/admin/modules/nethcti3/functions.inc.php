@@ -90,7 +90,7 @@ function nethcti3_get_config($engine) {
             if (isset($core_conf) && (method_exists($core_conf, 'addSipNotify'))) {
                 $core_conf->addSipNotify('generic-reload', array('Event' => 'check-sync\;reboot=false', 'Content-Length' => '0'));
             }
-	    /*Add contexts for gateway trunks identity*/
+        /*Add contexts for gateway trunks identity*/
             $context = 'from-pstn-identity';
             $ext->add($context, '_X!', '', new ext_noop('P-Preferred-Identity ${CUT(CUT(PJSIP_HEADER(read,P-Preferred-Identity),@,1),:,2)}'));
             $ext->add($context, '_X!', '', new ext_noop('P-Asserted-Identity ${CUT(CUT(PJSIP_HEADER(read,P-Asserted-Identity),@,1),:,2)}'));
@@ -113,8 +113,8 @@ function nethcti3_get_config_late($engine) {
     global $db;
     switch($engine) {
         case "asterisk":
-	    /* Change CF for CTI voicemail status */
-	    $ext->replace('macro-dial-one', 'cf', '2', new ext_execif('$["${DB(AMPUSER/${DB_RESULT}/cidnum)}" == "" && "${DB_RESULT:0:2}" != "vm"]', 'Set','__REALCALLERIDNUM=${DEXTEN}'));
+        /* Change CF for CTI voicemail status */
+        $ext->replace('macro-dial-one', 'cf', '2', new ext_execif('$["${DB(AMPUSER/${DB_RESULT}/cidnum)}" == "" && "${DB_RESULT:0:2}" != "vm"]', 'Set','__REALCALLERIDNUM=${DEXTEN}'));
 
             /* Use main extension on login/logout/pause*/
             if (!empty(\FreePBX::Queues()->listQueues())) {
@@ -138,30 +138,32 @@ function nethcti3_get_config_late($engine) {
                 $ext->splice('macro-dial-one','s','dial', new ext_execif('$["${DB(AMPUSER/${ARG3}/cidname)}" != "" && "${DB(AMPUSER/${CALLERID(num)}/cidname)}" = "" && "${ATTENDEDTRANSFER}" != "" && "${DB(AMPUSER/${FROMEXTEN}/cidname)}" != ""]', 'Set', 'CALLERID(num)=${DB(AMPUSER/${FROMEXTEN}/cidnum)}'),'',-1);
                 $ext->splice('macro-dial-one','s','dial', new ext_execif('$["${DB(AMPUSER/${CALLERID(num)}/cidname)}" != "" && "${ATTENDEDTRANSFER}" != ""]', 'Set', 'CALLERID(name)=${DB(AMPUSER/${CALLERID(num)}/cidname)}'),'',-1);
             }
-            /*Add isTrunk = 1 header to VoIP trunks that doesn't require SRTP encryption*/
-            // Get all voip providers ip that doesn't need media encryption
-            $sql = "SELECT t1.data
-                FROM rest_pjsip_trunks_defaults AS t1
-                JOIN rest_pjsip_providers AS t2 ON t1.provider_id = t2.id
-                JOIN rest_pjsip_trunks_defaults AS t3 ON t2.id = t3.provider_id
-                WHERE t3.keyword = 'media_encryption' AND t3.data = 'no'
-                AND t1.keyword = 'sip_server'";
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            $voip_providers = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            // Get all trunks
+            $nethcti3 = \FreePBX::Nethcti3();
             $trunks = FreePBX::Core()->listTrunks();
-            $voip_trunk_if = [];
             foreach ($trunks as $trunk) {
-                $details = FreePBX::Core()->getTrunkDetails($trunk['trunkid']);
-                if (in_array($details['sip_server'], $voip_providers)) {
-                    // Trunk needs needs media encryption disabled, set isTrunk header to 1
-                    try {
-                        $ext->splice('macro-dialout-trunk', 's', 'gocall', new ext_gosubif('$["${DIAL_TRUNK}" = "' . $trunk['trunkid'] . '"]', 'func-set-sipheader,s,1', false, 'isTrunk,1'));
-                    } Catch(Exception $e) {
-                        error_log('error adding isTrunk header setter to dialplan');
+                try {
+                    /*Add isTrunk = 1 header to VoIP trunks that doesn't require SRTP encryption*/
+                    $disable_srtp_header = $nethcti3->getConfig('disable_srtp_header', $trunk['trunkid']);
+                    if ($disable_srtp_header==1) {
+                        $ext->splice('macro-dialout-trunk', 's', 'gocall', new ext_gosubif('$["${DIAL_TRUNK}" = "' . $trunk['trunkid'] . '"]', 'func-set-sipheader,s,1', false, 'isTrunk,1'),'',6);
+                        $add_unset_istrunk = true;
                     }
+                    /*Add topos=0 header to voip trunks with disabled TOPOS for compatibility*/
+                    $disable_topos_header = $nethcti3->getConfig('disable_topos_header', $trunk['trunkid']);
+                    if ($disable_topos_header==1) {
+                        $ext->splice('macro-dialout-trunk', 's', 'gocall', new ext_gosubif('$["${DIAL_TRUNK}" = "' . $trunk['trunkid'] . '"]', 'func-set-sipheader,s,1', false, 'topos,0'),'',6);
+                        $add_unset_topos = true;
+                    }
+                } catch (Exception $e) {
+                    error_log('Error adding additional headers to trunk: '.$e->getMessage());
                 }
+            }
+            /* unset topos and isTrunk headers for calls to local extensions */
+            if ($add_unset_istrunk) {
+                $ext->splice('macro-dial-one', 's', 'setexttocall', new ext_gosub(1,'s','func-set-sipheader', 'isTrunk,unset'), '', 1);
+            }
+            if ($add_unset_topos) {
+                $ext->splice('macro-dial-one', 's', 'setexttocall', new ext_gosub(1,'s','func-set-sipheader', 'topos,unset'), '', 1);
             }
         /* Add inboundlookup agi for each inbound routes*/
         $dids = FreePBX::Core()->getAllDIDs();
@@ -458,10 +460,10 @@ function nethcti3_get_config_late($engine) {
         // Generate nethvoice report based on NethCTI configuration
         nethvoice_report_config();
 
-	// Convert /etc/asterisk symlinks to file copied
-	if (file_exists('/var/lib/asterisk/bin/symlink2copies.sh')) {
-	        system("/var/lib/asterisk/bin/symlink2copies.sh");
-	}
+    // Convert /etc/asterisk symlinks to file copied
+    if (file_exists('/var/lib/asterisk/bin/symlink2copies.sh')) {
+            system("/var/lib/asterisk/bin/symlink2copies.sh");
+    }
 
         //Reload CTI
         system("/var/www/html/freepbx/rest/lib/ctiReloadHelper.sh > /dev/null 2>&1 &");
