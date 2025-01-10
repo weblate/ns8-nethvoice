@@ -332,7 +332,7 @@ $stmt->execute();
 $res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 $trunk_ids = array_column($res, 'id');
 foreach ($trunk_ids as $trunk_id) {
-	$sql = "INSERT IGNORE INTO `kvstore_FreePBX_modules_Nethcti3` (`key`, `value`,`id`) VALUES ('disable_srtp_header`,'1',?)";
+	$sql = "INSERT IGNORE INTO `kvstore_FreePBX_modules_Nethcti3` (`key`, `val`,`id`) VALUES ('disable_srtp_header','1',?)";
 	$stmt = $db->prepare($sql);
 	$stmt->execute([$trunk_id]);
 }
